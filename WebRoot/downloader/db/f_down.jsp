@@ -51,7 +51,7 @@ if(range != null)
 }//第一次请求需要返回文件总大小
 else
 {
-	response.addHeader("Content-Length",Long.toString(inf.FileLength) );
+	response.addHeader("Content-Length",Long.toString(inf.lenLoc) );
 }
 
 response.setHeader("Content-Range",new StringBuffer()
