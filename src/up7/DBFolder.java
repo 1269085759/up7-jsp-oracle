@@ -27,7 +27,7 @@ public class DBFolder {
 	static public int Add(FolderInf inf)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("insert into up6_folders(");
+		sb.append("insert into up7_folders(");
 		sb.append(" fd_id");
 		sb.append(",fd_name");
 		sb.append(",fd_pid");
@@ -86,7 +86,7 @@ public class DBFolder {
 	 */
 	static public void Complete(int fid,int uid)
 	{
-		String sql = "update up6_folders set fd_complete=1 where fd_id=? and fd_uid=?";
+		String sql = "update up7_folders set fd_complete=1 where fd_id=? and fd_uid=?";
 		DbHelper db = new DbHelper();
 		PreparedStatement cmd = db.GetCommand(sql);
 		try 
@@ -104,9 +104,9 @@ public class DBFolder {
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("begin ");
-		sb.append("update up6_files set f_deleted=1 where f_idSvr=? and f_uid=?;");
-		sb.append("update up6_files set f_deleted=1 where f_pidRoot=? and f_uid=?;");
-		sb.append("update up6_folders set fd_delete=1 where fd_id=? and fd_uid=?;");
+		sb.append("update up7_files set f_deleted=1 where f_idSvr=? and f_uid=?;");
+		sb.append("update up7_files set f_deleted=1 where f_pidRoot=? and f_uid=?;");
+		sb.append("update up7_folders set fd_delete=1 where fd_id=? and fd_uid=?;");
 		sb.append(" end;");		
 		DbHelper db = new DbHelper();
 		PreparedStatement cmd = db.GetCommand(sb.toString());
@@ -144,7 +144,7 @@ public class DBFolder {
 		sb.append(",fd_folders");
 		sb.append(",fd_files");
 		sb.append(",fd_filesComplete");
-		sb.append(" from up6_folders where fd_id=?");
+		sb.append(" from up7_folders where fd_id=?");
 
 		DbHelper db = new DbHelper();
 		PreparedStatement cmd = db.GetCommand(sb.toString());
@@ -230,7 +230,7 @@ public class DBFolder {
 		sb.append(",fd_folders");
 		sb.append(",fd_files");
 		sb.append(",fd_filesComplete");
-		sb.append(" from up6_folders where fd_id=?");
+		sb.append(" from up7_folders where fd_id=?");
 
 		DbHelper db = new DbHelper();
 		PreparedStatement cmd = db.GetCommand(sb.toString());
@@ -272,7 +272,7 @@ public class DBFolder {
 	/// <returns></returns>
 	static public long GetLenPosted(int fidRoot)
 	{
-		String sql = "select sum(f_lenSvr) as lenPosted from (select distinct f_md5,f_lenSvr from up6_files where f_pidRoot=? and length(f_md5)>1) a";
+		String sql = "select sum(f_lenSvr) as lenPosted from (select distinct f_md5,f_lenSvr from up7_files where f_pidRoot=? and length(f_md5)>1) a";
 		DbHelper db = new DbHelper();
 		PreparedStatement cmd = db.GetCommand(sql);
 		try {
@@ -296,7 +296,7 @@ public class DBFolder {
         sb.append(",fd_folders");
         sb.append(",fd_files");
         sb.append(",fd_filesComplete");
-        sb.append(" from up6_folders");
+        sb.append(" from up7_folders");
         sb.append(" where fd_id=? and fd_complete=1");
 
         DbHelper db = new DbHelper();
@@ -344,7 +344,7 @@ public class DBFolder {
     /// <param name="fd_idSvr"></param>
 	public  static void child_complete(int fd_idSvr)
     {
-        String sql = "update up6_folders set fd_filesComplete=fd_filesComplete+1 where fd_id=?";
+        String sql = "update up7_folders set fd_filesComplete=fd_filesComplete+1 where fd_id=?";
         DbHelper db = new DbHelper();
         PreparedStatement cmd = db.GetCommand(sql);
 		try {

@@ -1,5 +1,5 @@
---drop table up6_folders
-CREATE TABLE up6_folders
+--drop table up7_folders
+CREATE TABLE up7_folders
 (
 	   fd_id				number NOT NULL   		 /*文件夹ID*/
 	  ,fd_name  			varchar2(50) DEFAULT ''   /*文件夹名称*/
@@ -21,7 +21,7 @@ CREATE TABLE up6_folders
 );
 
 --创建主键
-ALTER TABLE up6_folders ADD CONSTRAINT PK_up6_folders PRIMARY KEY(fd_id);
+ALTER TABLE up7_folders ADD CONSTRAINT PK_up7_folders PRIMARY KEY(fd_id);
 
 --创建自动编号列
 --DROP SEQUENCE SEQ_fd_id

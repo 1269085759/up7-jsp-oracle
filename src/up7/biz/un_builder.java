@@ -51,7 +51,7 @@ public class un_builder
         sb.append(",f_perSvr");//17
         sb.append(",f_complete");//18
         //
-        sb.append(" from up6_files");
+        sb.append(" from up7_files");
         //
         sb.append(" where f_uid=? and f_complete=0 and f_deleted=0");
 

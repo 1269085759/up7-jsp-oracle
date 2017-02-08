@@ -4,8 +4,8 @@
 		2015-11-10 将注释改为/**/方式
 		2016-04-11 完善字段
 */
-drop table up6_files;
-CREATE TABLE up6_files
+drop table up7_files;
+CREATE TABLE up7_files
 (
 	 f_idSvr			number NOT NULL			 /*文件ID，唯一。由于f_fid与oracle数据库字段有冲突，现改为f_idSign*/
 	,f_pid				number DEFAULT 0		 /**/
@@ -31,7 +31,7 @@ CREATE TABLE up6_files
 );
 
 --创建主键
-ALTER TABLE up6_files ADD CONSTRAINT PK_up6_files PRIMARY KEY(f_idSvr);
+ALTER TABLE up7_files ADD CONSTRAINT PK_up7_files PRIMARY KEY(f_idSvr);
 
 --创建存储过程
 create or replace procedure f_process(
@@ -42,7 +42,7 @@ create or replace procedure f_process(
 ,fidSvr in number
 ,complete in number)is
 begin
-  update up6_files
+  update up7_files
   set f_pos=posSvr,f_lenSvr=lenSvr,f_perSvr=perSvr,f_complete=complete
   where f_uid=uidSvr and f_idSvr=fidSvr;
 end;
@@ -56,7 +56,7 @@ create or replace procedure fd_process(
 )is
 begin
 	/*更新文件进度*/
-  update up6_files
+  update up7_files
   set f_lenSvr=fd_lenSvr,f_perSvr=fd_perSvr
   where f_uid=uidSvr and f_idSvr=fd_idSvr;
 end;

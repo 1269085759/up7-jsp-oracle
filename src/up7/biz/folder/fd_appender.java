@@ -221,7 +221,7 @@ public class fd_appender
     void pre_udpate_fd() throws SQLException
     {
         StringBuilder sb = new StringBuilder();        
-        sb.append("update up6_folders set");
+        sb.append("update up7_folders set");
         sb.append(" fd_name=?");
         sb.append(",fd_pid=?");
         sb.append(",fd_uid=?");
@@ -266,7 +266,7 @@ public class fd_appender
 
     protected void get_md5_files() 
     {
-        String sql =" select * from ( select * from up6_files where f_idSvr in ( select max(f_idSvr) from up6_files group by f_md5 ) )fs where f_md5 in( " + this.m_md5s + " ) ";
+        String sql =" select * from ( select * from up7_files where f_idSvr in ( select max(f_idSvr) from up7_files group by f_md5 ) )fs where f_md5 in( " + this.m_md5s + " ) ";
 
         PreparedStatement cmd;
 		try 
@@ -331,7 +331,7 @@ public class fd_appender
     void pre_update_files() throws SQLException
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("update up6_files set");
+        sb.append("update up7_files set");
         sb.append(" f_pid=?");
         sb.append(",f_pidRoot=?");
         sb.append(",f_fdTask=?");
