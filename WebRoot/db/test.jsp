@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="up6.*" %><%@
-	page import="up6.model.*" %><%@
-	page import="up6.biz.folder.*" %><%@
+	page import="up7.*" %><%@
+	page import="up7.model.*" %><%@
+	page import="up7.biz.folder.*" %><%@
 	page import="java.sql.*" %><%@
 	page import="oracle.sql.*" %><%@
 	page import="oracle.jdbc.*" %><%@ 

@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="down2.model.*" %><%@
-	page import="down2.biz.*" %><%@ 
+	page import="down3.model.*" %><%@
+	page import="down3.biz.*" %><%@ 
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
 	page import="org.apache.commons.lang.*" %><%@ 

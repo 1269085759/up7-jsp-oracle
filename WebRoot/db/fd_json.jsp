@@ -1,6 +1,6 @@
-<%@ page language="java" import="up6.DBFolder" pageEncoding="UTF-8"%><%@
+<%@ page language="java" import="up7.DBFolder" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="up6.model.FolderInf" %><%@
+	page import="up7.model.FolderInf" %><%@
 	page import="org.apache.commons.lang.StringUtils" %><%/*
 	以JSON格式返回文件夹信息。
 	更新记录：

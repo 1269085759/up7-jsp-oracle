@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="up6.*" %><%@ 
+	page import="up7.*" %><%@ 
 	page import="org.apache.commons.lang.*" %><%@ 
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
