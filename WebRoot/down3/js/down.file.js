@@ -227,7 +227,7 @@ function FileDownloader(fileLoc, mgr)
     //更新服务器进度
     this.down_part = function (json)
     {
-        this.svr_update();
+        //this.svr_update();
     };
 
     this.down_begin = function (json)
@@ -256,6 +256,6 @@ function FileDownloader(fileLoc, mgr)
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
-        //this.svr_update();
+        this.svr_update();
     };
 }

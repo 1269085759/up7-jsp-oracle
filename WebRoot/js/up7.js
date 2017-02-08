@@ -76,43 +76,45 @@ function HttpUploaderMgr()
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
         , "CryptoType"      : "md5"//验证方式：md5,sha1,crc
+        , "CryptoBlockSize" : 52428800//md5验证块大小
+        , "CryptoChunkSize" : 52428800//md5验证片大小
 		, "FileFilter"		: "*"//文件类型。所有类型：*。自定义类型：jpg,bmp,png,gif,rar,zip,7z,doc
 		, "FileSizeLimit"	: "0"//自定义允许上传的文件大小，以字节为单位。0表示不限制。字节计算工具：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilesLimit"		: "0"//文件选择数限制。0表示不限制
 		, "AllowMultiSelect": true//多选开关。1:开启多选。0:关闭多选
-		, "RangeSize"		: "1048576"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：1MB。
-		, "Debug"			: true//是否打开调式模式。true,false
+		, "RangeSize"		: "5242880"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：5MB。
+		, "Debug"			: false//是否打开调式模式。true,false
 		, "LogFile"			: "F:\\log.txt"//日志文件路径。需要先打开调试模式。
 		, "InitDir"			: ""//初始化路径。示例：D:\\Soft
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 1//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:8080/Uploader6.3Oracle/db/fd_create_uuid.jsp"
-		, "UrlFdComplete"	: "http://localhost:8080/Uploader6.3Oracle/db/fd_complete.jsp"
-		, "UrlFdDel"	    : "http://localhost:8080/Uploader6.3Oracle/db/fd_del.jsp"
+		, "UrlFdCreate"		: "http://localhost:8080/Uploader7Oracle/db/fd_create_uuid.jsp"
+		, "UrlFdComplete"	: "http://localhost:8080/Uploader7Oracle/db/fd_complete.jsp"
+		, "UrlFdDel"	    : "http://localhost:8080/Uploader7Oracle/db/fd_del.jsp"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:8080/Uploader6.3Oracle/db/f_create.jsp"
-		, "UrlPost"			: "http://localhost:8080/Uploader6.3Oracle/db/f_post.jsp"
-		, "UrlComplete"		: "http://localhost:8080/Uploader6.3Oracle/db/f_complete.jsp"
-		, "UrlList"			: "http://localhost:8080/Uploader6.3Oracle/db/f_list.jsp"
-		, "UrlDel"			: "http://localhost:8080/Uploader6.3Oracle/db/f_del.jsp"
+		, "UrlCreate"		: "http://localhost:8080/Uploader7Oracle/db/f_create.jsp"
+		, "UrlPost"			: "http://localhost:8080/Uploader7Oracle/db/f_post.jsp"
+		, "UrlComplete"		: "http://localhost:8080/Uploader7Oracle/db/f_complete.jsp"
+		, "UrlList"			: "http://localhost:8080/Uploader7Oracle/db/f_list.jsp"
+		, "UrlDel"			: "http://localhost:8080/Uploader7Oracle/db/f_del.jsp"
 	    //x86
         , ie: {
-              drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
-            , part: { clsid: "BA0B719E-F4B7-464b-A664-6FC02126B652", name: "Xproer.HttpPartition6" }
-            , path: "http://www.ncmem.com/download/up6.2/up6.cab"
+              drop: { clsid: "D75AD7E8-CC9C-48BD-984C-6FBBAC1CD122", name: "Xproer.HttpDroper7" }
+            , part: { clsid: "F7E405D6-AD98-4565-84FD-2AA9AED9F507", name: "Xproer.HttpPartition7" }
+            , path: "http://www.ncmem.com/download/up7/up7.cab"
         }
 	    //x64
         , ie64: {
-              drop: { clsid: "7B9F1B50-A7B9-4665-A6D1-0406E643A856", name: "Xproer.HttpDroper6x64" }
-            , part: { clsid: "307DE0A1-5384-4CD0-8FA8-500F0FFEA388", name: "Xproer.HttpPartition6x64" }
-            , path: "http://www.ncmem.com/download/up6.2/up64.cab"
+              drop: { clsid: "DD51A458-19D2-483F-9AB1-95DC153ADD5C", name: "Xproer.HttpDroper7x64" }
+            , part: { clsid: "E01D2121-3C80-4A4E-A653-6032EC552BCE", name: "Xproer.HttpPartition7x64" }
+            , path: "http://www.ncmem.com/download/up7/up64.cab"
         }
-        , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.xpi" }
-        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.crx" }
-        , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/up6.nat.crx" }
-        , exe: { path: "http://www.ncmem.com/download/up6.2/up6.exe" }
+        , firefox: { name: "", type: "application/npHttpUp7", path: "http://www.ncmem.com/download/up7/up7.xpi" }
+        , chrome: { name: "npHttpUp7", type: "application/npHttpUp7", path: "http://www.ncmem.com/download/up7/up7.crx" }
+        , chrome45: { name: "com.xproer.up7", path: "http://www.ncmem.com/download/up7/up7.nat.crx" }
+        , exe: { path: "http://www.ncmem.com/download/up7/up7.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
 	};
@@ -477,6 +479,11 @@ function HttpUploaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.post_error(json);
 	};
+	this.post_stoped = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.post_stoped(json);
+	};
 	this.post_complete = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -506,6 +513,7 @@ function HttpUploaderMgr()
 	    else if (json.name == "paste_files") { _this.paste_files(json); }
 	    else if (json.name == "post_process") { _this.post_process(json); }
 	    else if (json.name == "post_error") { _this.post_error(json); }
+	    else if (json.name == "post_stoped") { _this.post_stoped(json); }
 	    else if (json.name == "post_complete") { _this.post_complete(json); }
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
@@ -515,7 +523,7 @@ function HttpUploaderMgr()
 
 	//IE浏览器信息管理对象
 	this.browser = {
-	      entID: "Uploader6Event"
+	      entID: "Uploader7Event"
 		, check : function ()//检查插件是否已安装
 		  {
 		      return null != this.GetVersion();
@@ -577,7 +585,7 @@ function HttpUploaderMgr()
         {
             if (!_this.chrome45) return;
             this.exitEvent();
-            document.addEventListener('Uploader6EventCallBack', function (evt)
+            document.addEventListener('Uploader7EventCallBack', function (evt)
             {
                 _this.recvMessage(JSON.stringify(evt.detail));
             });
@@ -751,8 +759,8 @@ function HttpUploaderMgr()
 	    var filesLoc = dom.find('li[name="filesLoc"]');
 	    this.parter = dom.find('object[name="parter"]').get(0);
 	    this.Droper = dom.find('object[name="droper"]').get(0);
-	    if (this.firefox || this.chrome) this.parter = dom.find('embed[name="parter"]').get(0);
-	    if (!this.chrome45) this.parter.recvMessage = this.recvMessage;
+	    if (this.firefox||this.chrome) this.parter = dom.find('embed[name="parter"]').get(0);
+	    if(!this.chrome45) this.parter.recvMessage = this.recvMessage;
 
 	    var panel           = filesLoc.html(this.GetHtmlFiles());
         var post_panel      = dom.find("div[name='tab-body']");
@@ -951,10 +959,11 @@ function HttpUploaderMgr()
 	参数:
 		fid 上传项ID。唯一标识
 	*/
-	this.Delete = function(fid)
+	this.Delete = function(idLoc)
 	{
-		_this.RemoveQueue(fid); //从队列中删除
-		_this.RemoveQueueWait(fid);//从未上传列表中删除
+	    _this.filesMap[idLoc].LocalFile = null;
+	    _this.RemoveQueue(idLoc); //从队列中删除
+	    _this.RemoveQueueWait(idLoc);//从未上传列表中删除
 	};
 
 	/*
@@ -1090,9 +1099,9 @@ function HttpUploaderMgr()
 	    var fdLoc = json;
 		//本地文件夹存在
 	    if (this.Exist(fdLoc.pathLoc)) return;
-        //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:{}});
-	    //if (json.lenLoc == 0) return;
+	    //针对空文件夹的处理
+	    if (json.files == null) jQuery.extend(fdLoc, { files:{}});
+        //if (json.lenLoc == 0) return;
 
 	    var idLoc = this.idCount++;
 		this.AppendQueue(idLoc);//添加到队列

@@ -113,9 +113,13 @@
 
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
         jQuery.extend(param, { idSvr: this.fileSvr.idSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
-        //子文件
-        var f = this.fileSvr.files[json.file.id];        
-        jQuery.extend(param, { file_id: f.idSvr, file_lenLoc: f.lenLoc, file_per: f.perLoc });
+
+        if (json != null)
+        {
+            //子文件
+            var f = this.fileSvr.files[json.file.id];
+            jQuery.extend(param, { file_id: f.idSvr, file_lenLoc: f.lenLoc, file_per: f.perLoc });
+        }
 
         $.ajax({
             type: "GET"
@@ -147,7 +151,7 @@
             , success: function (msg)
             {
                 var json = JSON.parse(decodeURIComponent(msg));
-                jQuery.extend(true,_this.fileSvr, json);
+                jQuery.extend(true, _this.fileSvr, json);
                 ptr.ui.btn.down.show();
                 ptr.ui.msg.text("初始化完毕...");
             }
@@ -216,14 +220,15 @@
             f.lenLoc = f.lenSvr;
             this.fileSvr.success = json.success;
             this.svr_delete_file(f.idSvr);
+            //this.svr_update(null);//更新文件夹进度
         }
     };
 
     this.down_recv_size = function (json)
     {
-        this.ui.size.text(json.size);
-        this.fileSvr.sizeSvr = json.size;
-        this.fileSvr.lenSvr = json.len;
+        //this.ui.size.text(json.size);
+        this.fileSvr.files[json.id].sizeSvr = json.size;
+        this.fileSvr.files[json.id].lenSvr = json.len;
     };
 
     this.down_recv_name = function (json)
@@ -253,7 +258,7 @@
     //更新服务器进度
     this.down_part = function (json)
     {
-        this.svr_update(json);
+        //this.svr_update(json);//更新频繁，对服务器会造成较大压力。考虑做优化。
     };
 
     this.init_end = function (json)
@@ -282,6 +287,6 @@
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
-        //this.svr_update();
+        this.svr_update();
     };
 }

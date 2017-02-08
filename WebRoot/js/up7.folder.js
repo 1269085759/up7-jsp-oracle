@@ -113,12 +113,11 @@ function FolderUploader(idLoc, fdLoc, mgr)
     this.post_process = function (json)
     {
         if (this.State == HttpUploaderState.Stop) return;
-        this.folderSvr.files[json.id_f].lenSvr = json.lenSvr;
-        this.folderSvr.files[json.id_f].perSvr = json.perSvr;
-        this.folderSvr.lenSvr = json.lenSvrFD;
-        this.ui.percent.text("("+json.percentFD+")");
-        this.ui.process.css("width", json.percentFD);
-        var str = "("+json.fileIndex +"/"+this.folderSvr.files.length+") " + json.lenPostFD + " " + json.speed + " " + json.timeFD;
+        this.folderSvr.lenSvr = json.lenSvr;
+        this.folderSvr.perSvr = json.percent;
+        this.ui.percent.text("("+json.percent+")");
+        this.ui.process.css("width", json.percent);
+        var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
         this.ui.msg.text(str);
     };
     this.post_complete = function (json)
@@ -126,7 +125,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
         if (!json.all)
         {
             this.folderSvr.files[json.id_f].complete = true;
-            this.folderSvr.filesComplete++;//
+            this.folderSvr.filesComplete = json.compCount;//
             return;
         }
 
@@ -146,8 +145,8 @@ function FolderUploader(idLoc, fdLoc, mgr)
         this.manager.RemoveQueuePost(this.idLoc);
         //从未上传列表中删除
         this.manager.RemoveQueueWait(this.idLoc);
-        var str = "文件数：" + this.folderSvr.files.length + "，成功：" + json.completes;
-        if(json.errors > 0 ) str += " 失败：" + json.errors
+        var str = "文件数：" + json.fileCount + "，成功：" + json.compCount;
+        if (json.errorCount > 0) str += " 失败：" + json.errorCount
         this.ui.msg.text(str);
 
         $.ajax({
