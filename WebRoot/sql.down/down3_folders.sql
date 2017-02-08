@@ -1,5 +1,5 @@
---drop table hup_folders
-CREATE TABLE down_folders
+--drop table down3_folders
+CREATE TABLE down3_folders
 (
    fd_id				number NOT NULL   		 --文件夹ID，自动编号
   ,fd_name  			varchar(50) DEFAULT ''   --文件夹名称。test
@@ -12,7 +12,7 @@ CREATE TABLE down_folders
 );
 
 --创建主键
-ALTER TABLE down_folders ADD CONSTRAINT PK_down_folders PRIMARY KEY(fd_id);
+ALTER TABLE down3_folders ADD CONSTRAINT PK_down3_folders PRIMARY KEY(fd_id);
 
 --创建自动编号列
 --DROP SEQUENCE SEQ_dn_fd_id

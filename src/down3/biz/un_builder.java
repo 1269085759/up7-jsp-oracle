@@ -42,7 +42,7 @@ public class un_builder
         sb.append(",f_pidRoot");//10
         sb.append(",f_fdTask");//11
         //
-        sb.append(" from down_files");
+        sb.append(" from down3_files");
         //
         sb.append(" where f_uid=? and f_complete=0");
 

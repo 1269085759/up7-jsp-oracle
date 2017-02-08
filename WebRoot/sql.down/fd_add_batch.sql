@@ -13,7 +13,7 @@ begin
 
   /*批量添加文件*/
   while(i<fCount) loop
-    insert into down_files(f_idSvr,f_uid) values(SEQ_dn_f_idSvr.nextval,uid);
+    insert into down3_files(f_idSvr,f_uid) values(SEQ_dn_f_idSvr.nextval,uid);
     f_ids := concat( f_ids,',');
     select SEQ_dn_f_idSvr.Currval into id_cur from dual;
     f_ids := concat( f_ids,id_cur );

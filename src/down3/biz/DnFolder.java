@@ -24,7 +24,7 @@ public class DnFolder
     public static int Add(DnFolderInf inf)
     {
 		StringBuilder sb = new StringBuilder();
-		sb.append("insert into down_folders(");		
+		sb.append("insert into down3_folders(");		
 		sb.append(" fd_name");
 		sb.append(",fd_uid");
 		sb.append(",fd_mac");
@@ -61,13 +61,13 @@ public class DnFolder
     public static void Clear()
     {
 		DbHelper db = new DbHelper();
-		db.ExecuteNonQuery("truncate table down_folders");
-		db.ExecuteNonQuery("truncate table down_files");
+		db.ExecuteNonQuery("truncate table down3_folders");
+		db.ExecuteNonQuery("truncate table down3_files");
     }
     
     public static void Del(String idF,String idFD,String uid,String mac)
     {
-        String sql = "delete from down_folders where fd_id=? and fd_mac=? and fd_uid=?";
+        String sql = "delete from down3_folders where fd_id=? and fd_mac=? and fd_uid=?";
         DbHelper db = new DbHelper();
         PreparedStatement cmd = db.GetCommand(sql);
         try
@@ -77,8 +77,8 @@ public class DnFolder
 			cmd.setString(3, uid);
 			db.ExecuteNonQuery(cmd);
 			
-			//删除down_files
-			sql = "delete from down_files where f_id=? and f_mac=? and f_uid=?";
+			//删除down3_files
+			sql = "delete from down3_files where f_id=? and f_mac=? and f_uid=?";
 			cmd = db.GetCommand(sql);
 			cmd.setInt(1, Integer.parseInt(idF));
 			cmd.setString(2, mac);
@@ -93,7 +93,7 @@ public class DnFolder
     
     public static void Update(String fid,String uid,String mac,String percent)
     {
-        String sql = "update down_folders set fd_percent=? where fd_id=? and fd_uid=? and fd_mac=?";
+        String sql = "update down3_folders set fd_percent=? where fd_id=? and fd_uid=? and fd_mac=?";
         DbHelper db = new DbHelper();
         PreparedStatement cmd = db.GetCommand(sql);
         try
@@ -131,7 +131,7 @@ public class DnFolder
         sb.append(",xf.fd_folders");
         sb.append(",xf.fd_files");
         sb.append(",xf.fd_filesComplete");
-        sb.append(" from down_folders as df");
+        sb.append(" from down3_folders as df");
         sb.append(" left join xdb_files as xf");
         sb.append(" on xf.f_fID = df.fd_id");
         sb.append(" where df.fd_id=? and xf.fd_complete=1");

@@ -1,5 +1,5 @@
---drop table down_files
-CREATE TABLE down_files
+--drop table down3_files
+CREATE TABLE down3_files
 (
 	 f_idSvr   		number NOT NULL    
 	,f_uid        	number DEFAULT '0'       --用户ID
@@ -17,7 +17,7 @@ CREATE TABLE down_files
 );
 
 --创建主键
-ALTER TABLE down_files ADD CONSTRAINT PK_down_files PRIMARY KEY(f_idSvr);
+ALTER TABLE down3_files ADD CONSTRAINT PK_down3_files PRIMARY KEY(f_idSvr);
 
 --创建自动编号列
 --DROP SEQUENCE SEQ_dn_f_idSvr
