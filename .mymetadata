@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="Uploader6.3Oracle"
+  name="Uploader7Oracle"
   id="myeclipse.1459737191466"
-  context-root="/Uploader6.3Oracle"
+  context-root="/Uploader7Oracle"
   j2ee-spec="5.0"
-  archive="Uploader6.3Oracle.war">
+  archive="Uploader7Oracle.war">
   <attributes>
     <attribute name="webrootdir" value="/WebRoot" />
   </attributes>
