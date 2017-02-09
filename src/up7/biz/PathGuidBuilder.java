@@ -8,7 +8,7 @@ import java.util.UUID;
 import up7.model.xdb_files;
 
 
-public class PathUuidBuilder extends PathBuilder{
+public class PathGuidBuilder extends PathBuilder{
 	/* 生成文件夹存储路径，完全与客户端文件夹结构保持一致
 	 * 格式： 	
 	 *  upload/2016/05/17/uuid/folder_name

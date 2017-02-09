@@ -383,6 +383,7 @@ public class DBFile {
 		sb.append(",f_pathRel");
 		sb.append(",f_md5");
 		sb.append(",f_lenLoc");
+		sb.append(",f_sign");
 		
 		sb.append(") values (");
 		
@@ -402,6 +403,7 @@ public class DBFile {
 		sb.append(",?");//sb.append(",@f_pathRel");
 		sb.append(",?");//sb.append(",@f_md5");
 		sb.append(",?");//sb.append(",@f_lenLoc");
+		sb.append(",?");//sb.append(",@f_sign");
 		sb.append(") ");
 
 		DbHelper db = new DbHelper();
@@ -424,6 +426,7 @@ public class DBFile {
 			cmd.setString(13, model.pathRel);
 			cmd.setString(14, model.md5);
 			cmd.setLong(15, model.lenLoc);
+			cmd.setString(16, model.sign);
 		} catch (SQLException e) {e.printStackTrace();}
 
 		int fid = (int)db.ExecuteGenKey(cmd);

@@ -42,11 +42,10 @@ fileSvr.pathLoc = pathLoc;
 fileSvr.lenLoc = Long.parseLong(lenLoc);
 fileSvr.sizeLoc = sizeLoc;
 fileSvr.deleted = false;
-fileSvr.md5 = md5;
-fileSvr.nameSvr = md5 + "." + PathTool.getExtention(fileSvr.nameLoc);
+fileSvr.nameSvr = fileSvr.nameLoc;
 
-//所有单个文件均以md5方式存储
-PathMd5Builder pb = new PathMd5Builder();
+//所有单个文件均以guid方式存储
+PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
 
 	DBFile db = new DBFile();

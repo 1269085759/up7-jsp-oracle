@@ -50,6 +50,7 @@ public class un_builder
         sb.append(",f_lenSvr");//16
         sb.append(",f_perSvr");//17
         sb.append(",f_complete");//18
+        sb.append(",f_sign");//19
         //
         sb.append(" from up7_files");
         //

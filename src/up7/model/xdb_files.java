@@ -1,5 +1,6 @@
 package up7.model;
 import java.util.Date;
+import java.util.UUID;
 
 /*
  * 原型
@@ -16,6 +17,8 @@ public class xdb_files {
 	public xdb_files()
 	{
 		this.complete = false;
+		this.sign = UUID.randomUUID().toString();
+		this.sign = this.sign.replace("-", "");
 	}
 
 	//数据表唯一ID
@@ -125,6 +128,8 @@ public class xdb_files {
 	public void setLenSvr(long lenSvr) {
 		this.lenSvr = lenSvr;
 	}
+	public String getSign() { return this.sign;}
+	public void setSign(String v) { this.sign = v;}
 	public String getPerSvr() {	return perSvr;}
 	public void setPerSvr(String perSvr) {this.perSvr = perSvr;}
 	public boolean isComplete() {return complete;}
@@ -176,6 +181,7 @@ public class xdb_files {
 	public boolean complete=false;
 	public Date PostedTime = new Date();
 	public boolean deleted=false;
+	public String sign = "";
 	/**	 * 文件夹JSON信息	 */
 	public String fd_json="";	
 	public int filesCount=0;//add(2015-03-18):供JS调用

@@ -1,4 +1,5 @@
 package up7.biz.folder;
+import java.util.UUID;
 
 public class fd_file 
 {
@@ -25,5 +26,5 @@ public class fd_file
     public int foldersCount = 0;
     public Boolean complete = false;
     public Boolean fdTask = false;
-
+    public String sign = UUID.randomUUID().toString().replace("-", "");
 }

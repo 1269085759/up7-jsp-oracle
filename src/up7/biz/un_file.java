@@ -26,6 +26,7 @@ public class un_file extends fd_root
         this.pos = r.getLong("f_pos");
         this.complete = r.getBoolean("f_complete");
         this.md5 = r.getString("f_md5");
+        this.sign = r.getString("f_sign");
     }
     
     public void copy(un_file f)
@@ -47,5 +48,6 @@ public class un_file extends fd_root
         this.pos = f.pos;
         this.complete = f.complete;
         this.md5 = f.md5;
+        this.sign = f.sign;
     }
 }

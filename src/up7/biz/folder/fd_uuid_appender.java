@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import up7.PathTool;
-import up7.biz.PathUuidBuilder;
+import up7.biz.PathGuidBuilder;
 
 /**
  * uuid模式会在服务端创建文件夹层级结构，所有文件以原始名称命名。
@@ -16,7 +16,7 @@ public class fd_uuid_appender extends fd_appender
 {
 	public fd_uuid_appender()
 	{
-		this.pb = new PathUuidBuilder();
+		this.pb = new PathGuidBuilder();
 	}
 
     public void save() throws IOException, SQLException
