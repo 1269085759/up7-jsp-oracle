@@ -74,13 +74,16 @@ if (StringUtils.isBlank(uid)
 	out.write(0);
 	return;
 }
-Gson g = new Gson();
+//fix(2016-02-09):修复=号被转成unicode
+GsonBuilder gb = new GsonBuilder();
+gb.disableHtmlEscaping();
+Gson g = gb.create();
 DnFolderInf fd = g.fromJson(fdSvr,DnFolderInf.class);
 folder_appender fa = new folder_appender();
 fa.add(fd);
 
 String json = g.toJson(fd);
-json = URLEncoder.encode(json,"utf-8");
+json = URLEncoder.encode(json,"UTF-8");
 //UrlEncode会将空格解析成+号
 json = json.replaceAll("\\+", "%20");
 out.write(json);

@@ -29,19 +29,19 @@ public class cmp_builder {
 	{
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append(" up6_files.f_idSvr");//1
-        sb.append(",up6_files.f_pid");//2
-        sb.append(",up6_files.f_fdTask");//3
-        sb.append(",up6_files.f_fdID");//4
-        sb.append(",up6_files.f_fdChild");//5
-        sb.append(",up6_files.f_pidRoot");//6
-        sb.append(",up6_files.f_nameLoc");//7
-        sb.append(",up6_files.f_sizeLoc");//8
-        sb.append(",up6_files.f_pathLoc");//9
-        sb.append(",up6_files.f_lenSvr");//10
-        sb.append(" from up6_files ");
+        sb.append(" up7_files.f_idSvr");//1
+        sb.append(",up7_files.f_pid");//2
+        sb.append(",up7_files.f_fdTask");//3
+        sb.append(",up7_files.f_fdID");//4
+        sb.append(",up7_files.f_fdChild");//5
+        sb.append(",up7_files.f_pidRoot");//6
+        sb.append(",up7_files.f_nameLoc");//7
+        sb.append(",up7_files.f_sizeLoc");//8
+        sb.append(",up7_files.f_pathLoc");//9
+        sb.append(",up7_files.f_lenSvr");//10
+        sb.append(" from up7_files ");
         //
-        sb.append(" where up6_files.f_uid=? and up6_files.f_deleted=0 and up6_files.f_complete=1");
+        sb.append(" where up7_files.f_uid=? and up7_files.f_deleted=0 and up7_files.f_complete=1");
 
         DbHelper db = new DbHelper();
         PreparedStatement cmd = db.GetCommand(sb.toString());
