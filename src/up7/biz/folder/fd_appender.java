@@ -18,7 +18,7 @@ import oracle.sql.ARRAY;
 import org.apache.commons.lang.StringUtils;
 
 import up7.DbHelper;
-import up7.FileResumerPart;
+import up7.FileBlockWriter;
 import up7.PathTool;
 import up7.XDebug;
 import up7.biz.PathBuilder;
@@ -94,13 +94,6 @@ public class fd_appender
         for(int i = 0 , l = this.m_root.files.size();i<l;++i)
         {
         	fd_file f = this.m_root.files.get(i);
-        	//文件不存在
-        	if(!PathTool.exist(f.pathSvr))
-        	{
-            	FileResumerPart fr = new FileResumerPart();
-            	fr.CreateFile(f.pathSvr);        		
-        	}
-        		
             this.update_file(f);
         }
         this.update_file(this.m_root);

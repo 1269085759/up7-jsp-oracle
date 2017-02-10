@@ -1,6 +1,7 @@
 package up7;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -14,14 +15,14 @@ import org.apache.commons.fileupload.FileItem;
 /**
  *文件续传类，负责将文件块写入硬盘中
  */
-public class FileResumerPart {
+public class FileBlockWriter {
 	public long			m_RangeSize;	//当前文件块大小。由SaveFileRange()负责赋值
 	public long 		m_RangePos;		//文件块起始位置。一般在ajax_post.jsp中赋值
 	public String		m_pathSvr;	//远程文件路径。D:\\webapps\\upload\\2012\\05\\24\\QQ2012.exe
 	HttpServletRequest 	m_hsr;
 	ServletContext		m_sc;
 	
-	public FileResumerPart()
+	public FileBlockWriter()
 	{
 	}
 	
@@ -30,7 +31,7 @@ public class FileResumerPart {
 	 * 	sc	this.getServletContext()
 	 * 	hsr	request
 	 * */
-	public FileResumerPart(ServletContext sc,HttpServletRequest hsr)
+	public FileBlockWriter(ServletContext sc,HttpServletRequest hsr)
 	{
 		this.m_sc = sc;
 		this.m_hsr = hsr;
@@ -57,30 +58,29 @@ public class FileResumerPart {
 	 * @param path	远程文件完整路径。例：d:\\soft\\qq.exe
 	 * @param strLen 远程文件大小，以字节为单位。1201254
 	 */
-	public void CreateFile(String path)
+	public Boolean make(String path,long len)
 	{
+		Boolean ret = false;
 		try 
-		{
-			try
-			{
-				//wrtLock = m_wrtLock.writeLock();
-				//wrtLock.lock();  
-				File fp = new File(path);
-				PathTool.createDirectory( fp.getParent());//
-			    RandomAccessFile raf = new RandomAccessFile(path, "rw");
-			    raf.setLength(0);//fix(2015-03-18):取消按实际大小创建文件，减少用户上传大文件等待的时间。
-			    //raf.setLength(Long.parseLong(strLen));//
-			    raf.close();
-			}
-			finally
-			{
-				//wrtLock.unlock();
-			}
-
+		{  
+			File fp = new File(path);
+			PathTool.createDirectory( fp.getParent());//
+			RandomAccessFile raf = new RandomAccessFile(path, "rw");
+			raf.setLength(len);
+			raf.close();
+			ret = true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally
+		{
+			//wrtLock.unlock();
+		}
+		return ret;
 	}
 	
 	/*
@@ -116,103 +116,24 @@ public class FileResumerPart {
 	 * 	http://bbs.csdn.net/topics/80382727
 	 * 
 	 * */
-	public synchronized void WriteRangeData(FileItem rangeFile)
-	{	
-		//根据索引将文件块数据写入到在服务端文件中
+	public synchronized void write(String path,long offset,FileItem rangeFile)
+	{
 		try {
-			//rangeFile.saveAs(tmpName);
-
 			InputStream stream = rangeFile.getInputStream();			
-			byte[] data = new byte[(int)this.m_RangeSize];//128k
-			int readLen = stream.read(data);//实际读取的大小
-			stream.close();
-			XDebug.Output("实际读取的大小",readLen);
+			byte[] data = new byte[(int)rangeFile.getSize()];
+			stream.read(data);//实际读取的大小
+			stream.close();			
 			
 			//bug:在部分服务器中会出现错误：(另一个程序正在使用此文件，进程无法访问。)
-			RandomAccessFile raf = new RandomAccessFile(this.m_pathSvr,"rw");
+			RandomAccessFile raf = new RandomAccessFile(path,"rw");
 			//定位文件位置
-			raf.seek(this.m_RangePos);
+			raf.seek(offset);
 			raf.write(data);
 
 			raf.close();
-			XDebug.Output("文件块保存完毕",readLen);
-			//file.delete();//删除临时文件		
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/*
-	 * 保存文件块
-	 * 参数：
-	 * 	rangeFile 	文件块
-	 *	fileRemote	远程文件路径。d:\\webapps\\httpuploader3\\upload\\QQ2012.exe
-	 * */
-	public void SaveFileRange(FileItem rangeFile,String pathSvr)
-	{
-		this.m_pathSvr = pathSvr;
-		this.m_RangeSize = rangeFile.getSize();
-		try
-		{
-			File f = new File(pathSvr);
-			
-			//文件不存在则创建
-			if(!f.exists()) this.CreateFile();
-			
-			
-			boolean writeRange = f.length() == 0;
-			if(!writeRange) writeRange = this.m_RangePos == 0;
-			if(!writeRange) writeRange = f.length() <= this.m_RangePos;
-
-			//文件块大小不为空
-			if (rangeFile.getSize() > 0
-				&& writeRange //服务器没有当前块数据	
-				)
-			{
-				this.WriteRangeData(rangeFile);
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-		
-	/*
-	 * 保存文件块。
-	 * 参数：
-	 * 		rangeFile	文件块。
-	 * 		md5			文件MD5
-	 * 		fileSize	文件总大小
-	 * */
-	public void SaveFileRange(FileItem rangeFile,String uploadPath,String md5,long fileSize)
-	{
-		this.m_RangeSize = rangeFile.getSize();
-		
-		String fname = rangeFile.getName();
-		int i = fname.lastIndexOf('.');
-		String ext = fname.substring(i+1);
-		this.m_pathSvr = uploadPath + md5 + "." + ext;
-
-		this.CreateFile();
-		
-		try
-		{
-			File f = new File(this.m_pathSvr);
-			
-			//文件不存在则创建
-			if(!f.exists()) this.CreateFile();
-
-			//文件块大小不为空
-			if (rangeFile.getSize() > 0)
-			{
-				this.WriteRangeData(rangeFile);
-			}
-		}
-		catch(Exception e)
-		{
 			e.printStackTrace();
 		}
 	}

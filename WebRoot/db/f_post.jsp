@@ -1,6 +1,6 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="up7.FileResumerPart" %><%@
+	page import="up7.FileBlockWriter" %><%@
 	page import="up7.XDebug" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
 	page import="org.apache.commons.fileupload.FileItemFactory" %><%@
@@ -124,9 +124,8 @@ if(	 StringUtils.isBlank( lenSvr )
 	boolean cmp = StringUtils.equals(complete,"true");
 	
 	//保存文件块数据
-	FileResumerPart res = new FileResumerPart();
-	res.m_RangePos = Long.parseLong(f_pos);
-	res.SaveFileRange(rangeFile, pathSvr);
+	FileBlockWriter res = new FileBlockWriter();
+	res.write(pathSvr,Long.parseLong(f_pos),rangeFile);
 	
 	//更新文件进度信息
 	DBFile db = new DBFile();
@@ -134,13 +133,18 @@ if(	 StringUtils.isBlank( lenSvr )
 	if(fd) fd = !StringUtils.isBlank(fd_lenSvr);
 	if(fd) fd = Integer.parseInt(fd_idSvr)>0;
 	if(fd) fd = Long.parseLong(fd_lenSvr)>0;
-	if(fd)
+	
+	//第一块数据
+	if(Long.parseLong(f_pos) == 0 )
 	{
-		db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
-	}
-	else
-	{
-		db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,cmp);		
+		if(fd)
+		{
+			db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
+		}
+		else
+		{
+			db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,cmp);		
+		}
 	}
 			
 	out.write("ok");
