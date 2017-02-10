@@ -694,8 +694,9 @@ public class DBFile {
 	static public void fd_complete(String fid, String fd_id, String uid)
 	{
 		String sql = "begin ";
-		sql += "update up7_files set f_perSvr='100%' ,f_complete=1 where f_idSvr=?;";
+		sql += "update up7_files set f_perSvr='100%' ,f_lenSvr=f_lenLoc,f_complete=1 where f_idSvr=?;";
 		sql += "update up7_folders set fd_complete=1 where fd_id=? and fd_uid=?;";
+		sql += "update up7_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_pidRoot=?;";//更新所有子文件状态，设为已完成
 		sql += "end;";
 		
 		DbHelper db = new DbHelper();
@@ -704,6 +705,7 @@ public class DBFile {
 			cmd.setInt(1, Integer.parseInt(fid));
 			cmd.setInt(2, Integer.parseInt(fd_id));
 			cmd.setInt(3, Integer.parseInt(uid));
+			cmd.setInt(4, Integer.parseInt(fd_id));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -768,15 +770,20 @@ public class DBFile {
 	/// <summary>
 	/// 上传完成。将所有相同MD5文件进度都设为100%
 	/// </summary>
-	public void UploadComplete(String md5)
+	public void complete(int uid,int idSvr)
 	{
-		String sql = "update up7_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_md5='"+md5+"'";
+		String sql = "update up7_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_idSvr=? and f_uid=?";
 		DbHelper db = new DbHelper();
-		//PreparedStatement cmd = db.GetCommand(sql);
+		PreparedStatement cmd = db.GetCommand(sql);
 		
-		//cmd.setString(1, md5);
-		//db.ExecuteNonQuery(cmd);//在部分环境中测试发现执行后没有效果。f_complete仍然为0
-		db.ExecuteNonQuery(sql);
+		try
+		{
+			cmd.setInt(1, idSvr);
+			cmd.setInt(2, uid);
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		db.ExecuteNonQuery(cmd);//在部分环境中测试发现执行后没有效果。f_complete仍然为0
 	}
 
 	/// <summary>

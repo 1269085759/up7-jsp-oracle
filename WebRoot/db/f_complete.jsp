@@ -9,7 +9,6 @@
 		2012-06-29 增加创建文件逻辑，
 */
 
-String md5 		= request.getParameter("md5");
 String uid 		= request.getParameter("uid");
 String fid		= request.getParameter("idSvr");
 String fd_id	= request.getParameter("fd_idSvr");
@@ -18,11 +17,10 @@ String callback = request.getParameter("callback");//jsonp
 //返回值。1表示成功
 int ret = 0;
 if ( !StringUtils.isBlank(uid)
-	&& !StringUtils.isBlank(fid)
-	&& !StringUtils.isBlank(md5))
+	&& !StringUtils.isBlank(fid))
 {
 	DBFile db = new DBFile();
-	db.UploadComplete(md5);	
+	db.complete(Integer.parseInt(uid),Integer.parseInt(fid));	
 	ret = 1;
 }
 

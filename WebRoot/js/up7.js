@@ -91,10 +91,12 @@ function HttpUploaderMgr()
         , "QueueCount"      : 1//同时上传的任务数
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8080/Uploader7Oracle/db/fd_create_uuid.jsp"
+		, "UrlFdUpdate"		: "http://localhost:8080/Uploader7Oracle/db/fd_update.jsp"
 		, "UrlFdComplete"	: "http://localhost:8080/Uploader7Oracle/db/fd_complete.jsp"
 		, "UrlFdDel"	    : "http://localhost:8080/Uploader7Oracle/db/fd_del.jsp"
 		//文件操作相关
 		, "UrlCreate"		: "http://localhost:8080/Uploader7Oracle/db/f_create.jsp"
+		, "UrlUpdate"		: "http://localhost:8080/Uploader7Oracle/db/f_update.jsp"
 		, "UrlPost"			: "http://localhost:8080/Uploader7Oracle/db/f_post.jsp"
 		, "UrlComplete"		: "http://localhost:8080/Uploader7Oracle/db/f_complete.jsp"
 		, "UrlList"			: "http://localhost:8080/Uploader7Oracle/db/f_list.jsp"

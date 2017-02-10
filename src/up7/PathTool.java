@@ -38,7 +38,7 @@ public class PathTool {
 	//规范化路径，与操作系统保持一致。
 	public static String canonicalPath(String v) throws IOException{
 		File f = new File(v);
-		return f.getCanonicalPath();
+		return f.getPath();
 	}
 	
 	public static String combine(String a,String b) throws IOException
@@ -49,11 +49,11 @@ public class PathTool {
 		if(!split)
 		{
 			File ps = new File(a.concat("/").concat(b));
-			return ps.getCanonicalPath();
+			return ps.getPath();
 		}//有斜框
 		else{
 			File ps = new File(a.concat(b));
-			return ps.getCanonicalPath();
+			return ps.getPath();
 		}
 	}
 }

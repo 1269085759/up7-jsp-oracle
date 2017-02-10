@@ -54,6 +54,20 @@ function FolderUploader(idLoc, fdLoc, mgr)
         });
         this.ui.btn.post.show();
     };
+    this.svr_update = function ()
+    {
+        var param = jQuery.extend({}, this.fields, { uid: this.folderSvr.uid, sign: this.folderSvr.sign, idSvr: this.folderSvr.idSvr, lenSvr: this.folderSvr.lenSvr, perSvr: this.folderSvr.perSvr, time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlFdUpdate"]
+            , data: param
+            , success: function (sv) { }
+            , error: function (req, txt, err) { }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     //上传，创建文件夹结构信息
     this.post = function ()
     {
@@ -70,9 +84,49 @@ function FolderUploader(idLoc, fdLoc, mgr)
         }
         else
         {
-            this.check_fd();//计算文件夹md5
+            if (!this.check_opened()) return;
+            //在此处增加服务器验证代码。
+            this.ui.msg.text("初始化...");
+            var f_data = jQuery.extend({}, this.fields, { folder: encodeURIComponent(JSON.stringify(this.folderSvr)), time: new Date().getTime() });
+
+            $.ajax({
+                type: "POST"
+                //, dataType: 'jsonp'
+                //, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                , url: this.Config["UrlFdCreate"]
+                , data: f_data
+                , success: function (msg)
+                {
+                    var json = JSON.parse(decodeURIComponent(msg));
+                    _this.svr_create(json);
+                }
+                , error: function (req, txt, err)
+                {
+                    alert("向服务器发送文件夹信息错误！" + req.responseText);
+                    _this.svr_create_err();
+                }
+                , complete: function (req, sta) { req = null; }
+
+            });
             return;
         }
+    };
+    this.check_opened = function ()
+    {
+        if (this.folderSvr.files == null) return false;
+        for (var i = 0, l = this.folderSvr.files.length; i < l; ++i)
+        {
+            var f = this.folderSvr.files[i];
+            if (f.opened)
+            {
+                this.ui.btn.del.show();
+                this.ui.btn.stop.hide();
+                this.manager.RemoveQueuePost(this.idLoc);//从上传队列中删除
+                this.ui.msg.text("文件被占用，请关闭后重选文件夹：" + f.pathLoc);
+                return false;
+            }
+        }
+        return true;
     };
     this.check_fd = function ()
     {
@@ -107,8 +161,10 @@ function FolderUploader(idLoc, fdLoc, mgr)
         this.manager.RemoveQueuePost(this.idLoc);
         //添加到未上传列表
         this.manager.AppendQueueWait(this.idLoc);
-        
-        setTimeout(function () { _this.manager.PostNext();}, 500);
+
+        this.svr_update();//
+
+        setTimeout(function () { _this.manager.PostNext(); }, 500);
     };
     this.post_process = function (json)
     {
@@ -281,12 +337,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
         this.ui.btn.cancel.hide();
         this.ui.btn.stop.hide();
 
-        if (this.arrFiles.length > 0)
-        {
-        }
-        else
-        {
-        }
+        this.svr_update();//
     };
 
     //从上传列表中删除上传任务

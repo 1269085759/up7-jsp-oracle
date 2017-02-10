@@ -16,7 +16,6 @@
 		2016-04-09 完善逻辑。
 */
 
-String md5 			= request.getParameter("md5");
 String uid 			= request.getParameter("uid");
 String lenLoc 		= request.getParameter("lenLoc");//数字化的文件大小。12021
 String sizeLoc 		= request.getParameter("sizeLoc");//格式化的文件大小。10MB
@@ -26,11 +25,10 @@ pathLoc			= pathLoc.replace("+","%20");
 pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 
 //参数为空
-if (	StringUtils.isBlank(md5)
-	&& StringUtils.isBlank(uid)
+if (	StringUtils.isBlank(uid)
 	&& StringUtils.isBlank(sizeLoc))
 {
-	out.write(callback + "({\"value\":null})");
+	out.write(callback + "({\"value\":null,\"inf\":\"参数为空，请检查uid,sizeLoc参数。\"})");
 	return;
 }
 
@@ -51,23 +49,10 @@ fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
 	DBFile db = new DBFile();
 	xdb_files fileExist = new xdb_files();
 	
-	boolean exist = db.exist_file(md5,fileExist);
-	//数据库已存在相同文件，且有上传进度，则直接使用此信息
-	if(exist && fileExist.lenSvr > 1)
-	{
-		fileSvr.pathSvr 		= fileExist.pathSvr;
-		fileSvr.perSvr 			= fileExist.perSvr;
-		fileSvr.lenSvr 			= fileExist.lenSvr;
-		fileSvr.complete		= fileExist.complete;
-		fileSvr.idSvr 			= db.Add(fileSvr);
-	}//此文件不存在
-	else
-	{
-		fileSvr.idSvr = db.Add(fileSvr);
-		
-		FileResumerPart fr = new FileResumerPart();
-		fr.CreateFile(fileSvr.pathSvr);		
-	}
+	fileSvr.idSvr = db.Add(fileSvr);
+	
+	FileResumerPart fr = new FileResumerPart();
+	fr.CreateFile(fileSvr.pathSvr);		
 
 JSONObject obj = JSONObject.fromObject(fileSvr);
 String json = obj.toString();

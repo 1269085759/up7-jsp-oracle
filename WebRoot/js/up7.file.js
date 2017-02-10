@@ -48,9 +48,9 @@ function FileUploader(fileLoc, mgr)
         this.State = HttpUploaderState.Ready;
     };
 
-    this.svr_error = function ()
+    this.svr_error = function (sv)
     {
-        this.ui.msg.text("参数为空，请检查uid,sizeLoc参数");
+        this.ui.msg.text(sv.inf);
         //this.ui.btn.cancel.text("续传");
         this.ui.btn.stop.hide();
         this.ui.btn.cancel.hide();
@@ -61,7 +61,7 @@ function FileUploader(fileLoc, mgr)
     {
         if (sv.value == null)
         {
-            this.svr_error(); return;
+            this.svr_error(sv); return;
         }
 
         var str = decodeURIComponent(sv.value);//
@@ -77,6 +77,60 @@ function FileUploader(fileLoc, mgr)
             if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
             this.post_file();
         }
+    };
+    this.svr_init = function ()
+    {
+        var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
+        var loc_len = this.fileSvr.lenLoc;
+        var loc_size = this.fileSvr.sizeLoc;
+        var param = jQuery.extend({}, this.fields, { lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlCreate"]
+            , data: param
+            , success: function (sv)
+            {
+                _this.svr_init_end(sv);
+            }
+            , error: function (req, txt, err)
+            {
+                alert("初始化数据失败！" + req.responseText);
+                _this.ui.msg.text("服务器初始化失败");
+                _this.ui.btn.del.text("续传");
+            }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
+    this.svr_init_end = function (sv)
+    {
+        if (sv.value == null)
+        {
+            this.svr_error(sv); return;
+        }
+
+        var str = decodeURIComponent(sv.value);//
+        this.fileSvr = JSON.parse(str);//
+        if (null == this.root) this.ui.process.css("width", this.fileSvr.perSvr);
+        if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
+        this.post_file();
+    };
+    //在停止和出错时调用
+    this.svr_update = function ()
+    {
+        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSvr:this.fileSvr.idSvr,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr, time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlUpdate"]
+            , data: param
+            , success: function (sv){}
+            , error: function (req, txt, err){}
+            , complete: function (req, sta) { req = null; }
+        });
     };
     this.post_process = function (json)
     {
@@ -145,6 +199,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.post_error = function (json)
     {
+        this.svr_update();//
         this.ui.msg.text(HttpUploaderErrorCode[json.value]);
         var btnTxt = "续传";
         //文件大小超过限制,文件大小为0
@@ -254,7 +309,7 @@ function FileUploader(fileLoc, mgr)
         }
         else
         {
-            this.check_file();
+            this.svr_init();
         }
     };
     this.post_file = function ()
@@ -279,6 +334,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.stop = function ()
     {
+        this.svr_update();
         this.ui.btn.post.hide();
         this.ui.btn.stop.hide();
         this.ui.btn.cancel.hide();
