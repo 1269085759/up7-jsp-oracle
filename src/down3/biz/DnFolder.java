@@ -132,7 +132,7 @@ public class DnFolder
         sb.append(",xf.fd_files");
         sb.append(",xf.fd_filesComplete");
         sb.append(" from down3_folders as df");
-        sb.append(" left join xdb_files as xf");
+        sb.append(" left join up7_files as xf");
         sb.append(" on xf.f_fID = df.fd_id");
         sb.append(" where df.fd_id=? and xf.fd_complete=1");
 
