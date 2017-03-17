@@ -1,22 +1,29 @@
 /*
-	版权所有 2009-2015 荆门泽优软件有限公司
+	版权所有 2009-2016 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
-	产品首页：http://www.ncmem.com/webplug/http-uploader5/index.asp
+	产品首页：http://www.ncmem.com/webplug/http-uploader6/
 	产品介绍：http://www.cnblogs.com/xproer/archive/2012/05/29/2523757.html
 	开发文档-ASP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355458.html
 	开发文档-PHP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355467.html
 	开发文档-JSP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355462.html
 	开发文档-ASP.NET：http://www.cnblogs.com/xproer/archive/2012/02/17/2355469.html
 	升级日志：http://www.cnblogs.com/xproer/archive/2012/02/17/2355449.html
-	文档下载：http://yunpan.cn/lk/sVRrBEVQ7w5cw
-	问题反馈：http://www.ncmem.com/bbs/showforum-19.aspx
-	VC运行库：http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=29
+	证书补丁：http://www.ncmem.com/download/WoSignRootUpdate.rar
+	VC运行库：http://www.microsoft.com/en-us/download/details.aspx?id=29
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
     更新记录：
         2015-08-01 优化
 */
+var HttpUploaderErrorCode = {
+    "0": "发送数据错误"
+	, "1": "接收数据错误"
+	, "2": "访问本地文件错误"
+	, "3": "域名未授权"
+	, "4": "文件大小超过限制"
+	, "5": "文件大小为0"
+};
 
 //删除元素值
 Array.prototype.remove = function(val)
@@ -30,368 +37,334 @@ Array.prototype.remove = function(val)
 	}
 	this.length -= 1
 }
-
+function debugMsg(v) { }
 /*
-    方法：
-    postAuto(dom-id),打开文件选择窗口并自动上传
-    postLoc(pathLoc,dom-id),上传指定路径的文件。
-	更新记录：
-        2009-11-05 文件管理类
-        2016-02-26 优化
+	2009-11-5 文件管理类
+	属性：
+		UpFileList
 */
 function HttpUploaderMgr()
 {
 	var _this = this;
 	this.Config = {
-		"EncodeType"		: "GB2312"
+		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,8,104,31473"
-		, "License"			: "159FFE4029895139C58DD0B959749C59BA521C1B59074B4AB1F57296115BFC8CCB8157762B203AFA597034A95D1530EEF52047D9FA36B363137718601FEEA3E1ED08F913195A39D1080EC794CB443F94BC2096B85B78AE365BFBEFFB95859D2CA09B7F95CE3F2063B29CBF7DA44CE84914"//
-		, "Cloud"			: "aliyun"//云存储：qiniu,upyun,aliyun
-		, "CloudBucket"		: "ncmem"//空间名
+		, "Version"			: "2,7,103,31652"
+		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
+        , "CryptoType"      : "md5"//验证方式：md5,sha1,crc
 		, "FileFilter"		: "*"//文件类型。所有类型：*。自定义类型：jpg,bmp,png,gif,rar,zip,7z,doc
 		, "FileSizeLimit"	: "0"//自定义允许上传的文件大小，以字节为单位。0表示不限制。字节计算工具：http://www.beesky.com/newsite/bit_byte.htm
-		, "FilesLimit"		: 0//文件选择数限制。0表示不限制
-		, "AllowMultiSelect": 0//多选开关。1:开启多选。0:关闭多选
-		, "RangeSize"		: 1048576//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：1MB。
-		, "Debug"			: true//是否打开调式模式。true,false
+		, "FilesLimit"		: "0"//文件选择数限制。0表示不限制
+		, "AllowMultiSelect": false//多选开关。1:开启多选。0:关闭多选
+		, "RangeSize"		: "1048576"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：1MB。
+		, "Debug"			: false//是否打开调式模式。true,false
 		, "LogFile"			: "F:\\log.txt"//日志文件路径。需要先打开调试模式。
 		, "InitDir"			: ""//初始化路径。示例：D:\\Soft
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
-		, "UrlCreate"		: "http://localhost:8080/HttpUploader7Oracle/db/f_create.jsp"
-		, "UrlPost"			: "http://ncmem.oss-cn-shenzhen.aliyuncs.com"//upyun:http://m0.api.upyun.com,qiniu:http://upload.qiniu.com,aliyun:http://ncmem.oss-cn-shenzhen.aliyuncs.com
-		, "UrlProcess"		: "http://localhost:8080/HttpUploader7Oracle/db/f_process.jsp"
-		, "UrlComplete"		: "http://localhost:8080/HttpUploader7Oracle/db/f_complete.jsp"
-		, "UrlList"			: "http://localhost:8080/HttpUploader7Oracle/db/f_list.jsp"
-		, "UrlDel"			: "http://localhost:8080/HttpUploader7Oracle/db/f_del.jsp"
-        //x86
-		, "ClsidDroper"		: "21EAADB3-0EE2-41F1-A4D7-4C54234C282D"
-		, "ClsidUploader"	: "BABD5A8C-EB79-47FB-92EE-6D8C0133BD8C"
-		, "ClsidPartition"	: "6E8B070D-1289-4989-8CDA-022522E01E8C"
-		, "CabPath"			: "http://www.ncmem.com/download/HttpUploader7/HttpUploader7.cab"
-		//x64
-		, "ClsidDroper64"	: "D439C5D0-E405-4997-B6FF-FC89B14876EC"
-		, "ClsidUploader64"	: "44ED205C-58DF-4EFE-B87B-04865237B02E"
-		, "ClsidPartition64": "035C0F00-F788-4823-99E8-08CEB9455EAA"
-		, "CabPath64"		: "http://www.ncmem.com/download/HttpUploader7/HttpUploader64.cab"
-		//Firefox
-		, "XpiType"		    : "application/npHttpUp7"
-		, "XpiPath"	        : "http://www.ncmem.com/download/HttpUploader7/HttpUploader7.xpi"
-		//Chrome
-		, "CrxName"			: "npHttpUp7"
-		, "CrxType"		    : "application/npHttpUp7"
-		, "CrxPath"	        : "http://www.ncmem.com/download/HttpUploader7/HttpUploader7.crx"
-		, "SetupPath"		: "http://localhost:4955/demoAccess/js/setup.htm"
-		, "ExePath"			: "http://www.ncmem.com/download/HttpUploader7/HttpUploader7.exe"
+        , "Cookie"			: ""//服务器cookie
+		//文件夹操作相关
+		, "UrlFdCreate"		: "http://localhost:8080/Uploader6.3Oracle/db/fd_create.jsp"
+		, "UrlFdComplete"	: "http://localhost:8080/Uploader6.3Oracle/db/fd_complete.jsp"
+		, "UrlFdDel"	    : "http://localhost:8080/Uploader6.3Oracle/db/fd_del.jsp"
+		//文件操作相关
+		, "UrlCreate"		: "http://localhost:8080/Uploader6.3Oracle/db/f_create.jsp"
+		, "UrlPost"			: "http://localhost:8080/Uploader6.3Oracle/db/f_post.jsp"
+		, "UrlComplete"		: "http://localhost:8080/Uploader6.3Oracle/db/f_complete.jsp"
+		, "UrlList"			: "http://localhost:8080/Uploader6.3Oracle/db/f_list.jsp"
+		, "UrlDel"			: "http://localhost:8080/Uploader6.3Oracle/db/f_del.jsp"
+	    //x86
+        , ie: {
+              drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
+            , part: { clsid: "BA0B719E-F4B7-464b-A664-6FC02126B652", name: "Xproer.HttpPartition6" }
+            , path: "http://www.ncmem.com/download/up6.2/up6.cab"
+        }
+	    //x64
+        , ie64: {
+              drop: { clsid: "7B9F1B50-A7B9-4665-A6D1-0406E643A856", name: "Xproer.HttpDroper6x64" }
+            , part: { clsid: "307DE0A1-5384-4CD0-8FA8-500F0FFEA388", name: "Xproer.HttpPartition6x64" }
+            , path: "http://www.ncmem.com/download/up6.2/up64.cab"
+        }
+        , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.xpi" }
+        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.crx" }
+        , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/up6.nat.crx" }
+        , exe: { path: "http://www.ncmem.com/download/up6.2/up6.exe" }
+		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
+        , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
 	};
 
     //biz event
 	this.event = {
-	    "md5Complete": function (obj, md5) { }
-        , "postComplete": function (obj) { }
+	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
+        , "fileComplete": function (obj/*文件上传完毕，参考：HttpUploader*/) { }
+        , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
 	};
 
-	this.ActiveX = {
-		"Uploader"		: "Xproer.HttpUploader7"
-		, "Partition"	: "Xproer.HttpPartition7"
-		//64bit
-		, "Uploader64"	: "Xproer.HttpUploader7x64"
-		, "Partition64"	: "Xproer.HttpPartition7x64"
-	};
-	
-	//附加参数
-	this.Fields = {
-		 "uname": "test"
-		,"upass": "test"
-		,"uid":0
-		,"fid":0
-	};
-	
-	//检查版本 Win32/Win64/Firefox/Chrome
-	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-
-	this.CheckVersion = function()
-	{
-		//Win64
-		if (window.navigator.platform == "Win64")
-		{
-		    this.Config["CabPath"] = this.Config["CabPath64"];
-
-		    this.Config["ClsidDroper"] = this.Config["ClsidDroper64"];
-		    this.Config["ClsidUploader"] = this.Config["ClsidUploader64"];
-		    this.Config["ClsidPartition"] = this.Config["ClsidPartition64"];
-
-		    this.ActiveX["Uploader"] = this.ActiveX["Uploader64"];
-		    this.ActiveX["Partition"] = this.ActiveX["Partition64"];
-		} //Firefox
-		else if (this.firefox)
-		{
-		    this.Config["CabPath"] = this.Config["XpiPath"];
-		    this.ActiveX["Uploader"] = this.ActiveX["UploaderFF"];
-		}
-		else if (this.chrome)
-		{
-		    this.Config["CabPath"] = this.Config["CrxPath"];
-		    this.Config["XpiType"] = this.Config["CrxType"];
-		}
-	};
-	this.CheckVersion();
-	
-	//http://www.ncmem.com/
+    //http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
 
 	this.FileFilter = new Array(); //文件过滤器
-	this.filesIdCount = 0; 	//上传项总数
-	this.filesMap = new Object(); //上传项列表
-	this.UploadQueue = new Array();		//上传队列
-	this.UnUploaderIdList = new Array(); //未上传项ID列表
-	this.UploadIdList = new Array(); //正在上传的ID列表
-	this.iePart = null;
-	this.ieUploader = null;
-	this.ffPart = null;
-	this.tmpFile = null;//jquery object
+	this.idCount = 1; 	//上传项总数，只累加
+	this.filesMap = new Object(); //本地文件列表映射表
+	this.parter = null;
+	this.fileItem = null;//jquery object
 	this.fileCur = null;//当前文件上传项
-	
-	//文件上传面板。
-	this.GetHtml = function()
+	this.btnSetup = null;
+	this.uiContainer = null;//显示上传信息的容器
+	//检查版本 Win32/Win64/Firefox/Chrome
+	var browserName = navigator.userAgent.toLowerCase();
+	this.ie = browserName.indexOf("msie") > 0;
+    //IE11检查
+	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.firefox = browserName.indexOf("firefox") > 0;
+	this.chrome = browserName.indexOf("chrome") > 0;
+	this.chrome45 = false;
+	this.nat_load = false;
+	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
+
+	this.open_files = function (json)
 	{
-		//加载拖拽控件
-		var acx = "";
-		//自动安装CAB
-		acx += '<div style="display:none">';
-		//文件上传控件
-		acx += '<object name="ieUper" classid="clsid:' + _this.Config["ClsidUploader"] + '"';
-		acx += ' codebase="' + _this.Config["CabPath"] + '" width="1" height="1" ></object>';
-		//文件夹选择控件
-		acx += '<object name="iePart" classid="clsid:' + _this.Config["ClsidPartition"] + '"';
-		acx += ' codebase="' + _this.Config["CabPath"] + '" width="1" height="1" ></object>';
-		acx += '</div>';
-	    //上传列表项模板
-		acx += '<div class="UploaderItem" name="fileItem" id="UploaderTemplate">\
-		            <div class="UploaderItemLeft">\
-		                <div class="FileInfo">\
-		                    <div name="fileName" class="FileName top-space">HttpUploader程序开发.pdf</div>\
-		                    <div name="fileSize" class="FileSize" child="1">100.23MB</div>\
-		                </div>\
-		                <div class="ProcessBorder top-space"><div name="process" class="Process"></div></div>\
-		                <div name="msg" class="PostInf top-space">已上传:15.3MB 速度:20KB/S 剩余时间:10:02:00</div>\
-		            </div>\
-		            <div class="UploaderItemRight">\
-		                <div class="BtnInfo"><span name="btnCancel" class="Btn">取消</span>&nbsp;<span name="btnDel" class="Btn">删除</span></div>\
-		                <div name="percent" class="ProcessNum">35%</div>\
-		            </div>\
-		        </div>';
-		return acx;
+	    for (var i = 0, l = json.files.length; i < l; ++i)
+	    {
+	        this.addFileLoc(json.files[i]);
+	    }
+	    //setTimeout(function () { _this.PostFirst(); },500);
+	};
+	this.open_folders = function (json)
+	{
+	    this.addFolderLoc(json);
+	    //setTimeout(function () { _this.PostFirst(); }, 500);
+	};
+	this.paste_files = function (json)
+	{
+	    for (var i = 0, l = json.files.length; i < l; ++i)
+	    {
+	        this.addFileLoc(json.files[i]);
+	    }
+	};
+	this.post_process = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.post_process(json);
+	};
+	this.post_error = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.post_error(json);
+	};
+	this.post_complete = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.post_complete(json);
+	};
+	this.md5_process = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.md5_process(json);
+	};
+	this.md5_complete = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.md5_complete(json);
+	};
+	this.md5_error = function (json)
+	{
+	    var p = this.filesMap[json.id];
+	    p.md5_error(json);
+	};
+	this.load_complete = function (json) { this.nat_load = true; if (this.btnSetup) this.btnSetup.hide(); }
+	this.recvMessage = function (str)
+	{
+	    var json = JSON.parse(str);
+	         if (json.name == "open_files") { _this.open_files(json); }
+	    else if (json.name == "open_folders") { _this.open_folders(json); }
+	    else if (json.name == "paste_files") { _this.paste_files(json); }
+	    else if (json.name == "post_process") { _this.post_process(json); }
+	    else if (json.name == "post_error") { _this.post_error(json); }
+	    else if (json.name == "post_complete") { _this.post_complete(json); }
+	    else if (json.name == "md5_process") { _this.md5_process(json); }
+	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
+	    else if (json.name == "md5_error") { _this.md5_error(json); }
+	    else if (json.name == "load_complete") { _this.load_complete(); }
 	};
 		
     //IE浏览器信息管理对象
-	this.BrowserIE = {
-	    "Check": function ()//检查插件是否已安装
+	this.browser = {
+	    entID: "Uploader6Event"
+		, check: function ()//检查插件是否已安装
+		{
+		    return null != this.GetVersion();
+		}
+        , checkFF: function ()
+        {
+            var mimetype = navigator.mimeTypes;
+            if (typeof mimetype == "object" && mimetype.length)
+            {
+                for (var i = 0; i < mimetype.length; i++)
+                {
+                    var enabled = mimetype[i].type == _this.Config.firefox.type;
+                    if (!enabled) enabled = mimetype[i].type == _this.Config.firefox.type.toLowerCase();
+                    if(enabled) return mimetype[i].enabledPlugin;
+                }
+            }
+            else
+            {
+                mimetype = [_this.Config.firefox.type];
+            }
+            if (mimetype)
+            {
+                return mimetype.enabledPlugin;
+            }
+            return false;
+        }
+        , checkChr: function () { }
+        , checkNat: function () { }
+        , NeedUpdate: function ()
+        {
+            return this.GetVersion() != _this.Config["Version"];
+        }
+		, GetVersion: function ()
+		{
+		    var v = null;
+		    try
+		    {
+		        v = _this.parter.Version;
+		        if (v == undefined) v = null;
+		    }
+		    catch (e) { }
+		    return v;
+		}
+		, Setup: function ()
+		{
+			//文件夹选择控件
+			acx += '<object id="objHttpPartition" classid="clsid:' + _this.Config.ie.part.clsid + '"';
+			acx += ' codebase="' + _this.Config.ie.path + '" width="1" height="1" ></object>';
+
+		    $("body").append(acx);
+		}
+        , init: function ()
+        {
+            if (this.check()) _this.parter.recvMessage = _this.recvMessage;
+            this.initNat();//
+            var param = { name: "init", config: _this.Config };
+            this.postMessage(param);
+        }
+        , initNat: function ()
+        {
+            if (!_this.chrome45) return;
+            this.exitEvent();
+            document.addEventListener('Uploader6EventCallBack', function (evt)
+            {
+                _this.recvMessage(JSON.stringify(evt.detail));
+            });
+        }
+        , exit: function ()
+        {
+            var par = { name: 'exit' };
+            var evt = document.createEvent("CustomEvent");
+            evt.initCustomEvent(this.entID, true, false, par);
+            document.dispatchEvent(evt);
+        }
+        , exitEvent: function ()
+        {
+            var obj = this;
+            $(window).bind("beforeunload", function () { obj.exit(); });
+        }
+        , addFile: function (json)
+        {
+            var param = { name: "add_file", config: _this.Config };
+            jQuery.extend(param, json);
+            this.postMessage(param);
+            }
+        , openFiles: function ()
+        {
+            var param = { name: "open_files", config: _this.Config };
+            this.postMessage(param);
+        }
+        , openFolders: function ()
+        {
+            var param = { name: "open_folders", config: _this.Config };
+            this.postMessage(param);
+        }
+        , pasteFiles: function ()
+        {
+            var param = { name: "paste_files", config: _this.Config };
+            this.postMessage(param);
+        }
+        , checkFile: function (f)
+        {
+            var param = { name: "check_file", config: _this.Config };
+            jQuery.extend(param, f);
+            this.postMessage(param);
+        }
+        , postFile: function (f)
+        {
+            var param = { name: "post_file", config: _this.Config };
+            jQuery.extend(param, f);
+            this.postMessage(param);
+        }
+        , stopFile: function (f)
+        {
+            var param = { name: "stop_file", id: f.id, config: _this.Config };
+            this.postMessage(param);
+        }
+        , postMessage: function (json)
+        {
+            if (this.check()) _this.parter.postMessage(JSON.stringify(json));
+        }
+        , postMessageNat: function (par)
+        {
+            var evt = document.createEvent("CustomEvent");
+            evt.initCustomEvent(this.entID, true, false, par);
+            document.dispatchEvent(evt);
+        }
+	};
+
+	this.CheckVersion = function ()
+	{
+	    //Win64
+	    if (window.navigator.platform == "Win64")
 	    {
-	        try
-	        {
-	            var com = new ActiveXObject(_this.ActiveX["Uploader"]);
-	            return true;
-	        }
-	        catch (e) { return false; }
+	        jQuery.extend(this.Config.ie, this.Config.ie64);
 	    }
-        , "NeedUpdate": function (){return this.GetVersion() != _this.Config["Version"];}
-		, "GetVersion": function (){return _this.iePart.Version;}
-        , "GetFileSize": function (path) { return _this.iePart.GetFileSize(path); }
-        , "GetFileLength": function (path){return _this.iePart.GetFileLength(path);}
-		, "GetSingleFile": function ()//获取单个文件
-		{
-		    var obj = _this.iePart;
-		    obj.FileFilter = _this.Config["FileFilter"];
-		    obj.AllowMultiSelect = _this.Config["AllowMultiSelect"];
-		    obj.InitDir = _this.Config["InitDir"];
-		    if (!obj.ShowDialog()) return null;
-
-		    var list = obj.GetSelectedFiles();
-		    if (list == null) return null;
-		    if (list.lbound(1) == null) return null;
-		    return list.getItem(list.lbound(1));
-		}
-		, "GetMacs": function ()
-		{
-		    var obj = _this.iePart;
-		    var list = obj.GetMacs();
-		    if (list == null) return null;
-		    if (list.lbound(1) == null) return null;
-		    var arr = new Array();
-
-		    for (var index = list.lbound(1) ; index <= list.ubound(1) ; index++)
-		    {
-		        arr.push(list.getItem(index));
-		    }
-		    return arr;
-		}
-        , "GetIP": function () { return _this.iePart.IP; }
-		, "Init": function () { }
+	    else if (this.firefox)
+	    {
+	        this.browser.check = this.browser.checkFF;
+	    }
+	    else if (this.chrome)
+	    {
+	        this.browser.check = this.browser.checkFF;
+	        jQuery.extend(this.Config.firefox, this.Config.chrome);
+	        //_this.Config["XpiPath"] = _this.Config["CrxPath"];
+	        //_this.Config["XpiType"] = _this.Config["CrxType"];
+	        //44+版本使用Native Message
+	        if (parseInt(this.chrVer[1]) >= 44)
+	        {
+	            _this.firefox = true;
+	            if (!this.browser.checkFF())//仍然支持npapi
+	            {
+	                this.browser.postMessage = this.browser.postMessageNat;
+	                _this.firefox = false;
+	                _this.chrome = false;
+	                _this.chrome45 = true;//
+	            }
+	        }
+	    }
 	};
-    //FireFox浏览器信息管理对象
-	this.BrowserFF = {
-		"Check": function()//检查插件是否已安装
-		{
-			var mimetype = navigator.mimeTypes[_this.Config["MimeType"]];
-			if (mimetype)
-			{
-				return mimetype.enabledPlugin;
-			}
-			return mimetype;
-		}
-        , "NeedUpdate": function (){return this.GetVersion() != _this.Config["Version"];}
-		, "GetVersion": function (){return _this.ffPart.Version;}
-        , "GetFileSize": function (path) { return _this.ffPart.GetFileSize(path); }
-        , "GetFileLength": function (path){return _this.ffPart.GetFileLength(path);}
-		, "Setup": function()//安装插件
-		{
-			var xpi = new Object();
-			xpi["Calendar"] = _this.Config["CabPathFirefox"];
-			InstallTrigger.install(xpi, function(name, result) { });
-		}
-		, "GetSingleFile": function()//获取单个文件
-		{
-		    var obj = _this.ffPart;
-			obj.FileFilter = _this.Config["FileFilter"];
-			obj.FilesLimit = _this.Config["FilesLimit"];
-			obj.AllowMultiSelect = _this.Config["AllowMultiSelect"];
-			obj.InitDir = _this.Config["InitDir"];
-
-			var files = obj.ShowDialog();
-			if (files)
-			{
-				return files[0];
-			}
-			return null;
-		}
-		, "GetMacs": function ()
-		{
-		    var obj = _this.ffPart;
-		    var list = obj.GetMacs();
-		    if (list == null) return null;
-		    if (list.lbound(1) == null) return null;
-		    var arr = new Array();
-
-		    for (var index = list.lbound(1) ; index <= list.ubound(1) ; index++)
-		    {
-		        arr.push(list.getItem(index));
-		    }
-		    return arr;
-		}
-        , "GetIP": function () { return _this.ffPart.IP; }
-		, "Init": function()//初始化控件
-		{
-		    var atl             = _this.ffPart;
-			atl.FileSizeLimit   = _this.Config["FileSizeLimit"];
-			atl.RangeSize       = _this.Config["RangeSize"];
-			atl.EncodeType      = _this.Config["EncodeType"];
-			atl.Licensed        = _this.Config["Company"];
-			atl.License         = _this.Config["License"];
-            atl.Cloud           = _this.Config["Cloud"];
-			atl.CloudBucket     = _this.Config["CloudBucket"];
-			atl.Authenticate    = _this.Config["Authenticate"];
-			atl.AuthName        = _this.Config["AuthName"];
-			atl.AuthPass        = _this.Config["AuthPass"];
-			atl.PostUrl         = _this.Config["UrlPost"];
-			atl.Debug           = _this.Config["Debug"];
-			atl.LogFile         = _this.Config["LogFile"];
-			atl.OnPost          = HttpUploader_Process;
-			atl.OnStateChanged  = HttpUploader_StateChanged;
-		}
-	};
-	//Chrome浏览器
-	this.BrowserChrome = {
-		"Check": function()//检查插件是否已安装
-		{
-			for (var i = 0, l = navigator.plugins.length; i < l; i++)
-			{
-				if (navigator.plugins[i].name == _this.Config["CrxName"])
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-        , "NeedUpdate": function () { return this.GetVersion() != _this.Config["Version"]; }
-		, "GetVersion": function () { return _this.ffPart.Version; }
-        , "GetFileSize": function (path) { return _this.ffPart.GetFileSize(path); }
-        , "GetFileLength": function (path) { return _this.ffPart.GetFileLength(path); }
-		, "Setup": function()//安装插件
-		{
-			document.write('<iframe style="display:none;" src="' + _this.Config["CabPathChrome"] + '"></iframe>');
-		}
-		, "GetSingleFile": function()//获取单个文件
-		{
-		    var obj = _this.ffPart;
-			obj.FileFilter = _this.Config["FileFilter"];
-			obj.FilesLimit = _this.Config["FilesLimit"];
-			obj.AllowMultiSelect = _this.Config["AllowMultiSelect"];
-			obj.InitDir = _this.Config["InitDir"];
-
-			var files = obj.ShowDialog();
-			if (files)
-			{
-				return files[0];
-			}
-			return null;
-		}
-		, "GetMacs": function ()
-		{
-		    var obj = _this.ffPart;
-		    var list = obj.GetMacs();
-		    if (list == null) return null;
-		    if (list.lbound(1) == null) return null;
-		    var arr = new Array();
-
-		    for (var index = list.lbound(1) ; index <= list.ubound(1) ; index++)
-		    {
-		        arr.push(list.getItem(index));
-		    }
-		    return arr;
-		}
-        , "GetIP": function () { return _this.ffPart.IP; }
-		, "Init": function()//初始化控件
-		{
-		    var atl             = _this.ffPart;
-			atl.FileSizeLimit   = _this.Config["FileSizeLimit"];
-			atl.RangeSize       = _this.Config["RangeSize"];
-			atl.EncodeType      = _this.Config["EncodeType"];
-			atl.Licensed        = _this.Config["Company"];
-			atl.License         = _this.Config["License"];
-            atl.Cloud           = _this.Config["Cloud"];
-			atl.CloudBucket     = _this.Config["CloudBucket"];
-            atl.Authenticate    = _this.Config["Authenticate"];
-            atl.AuthName        = _this.Config["AuthName"];
-            atl.AuthPass        = _this.Config["AuthPass"];
-			atl.PostUrl         = _this.Config["UrlPost"];
-			atl.Debug           = _this.Config["Debug"];
-			atl.LogFile         = _this.Config["LogFile"];
-			atl.OnPost          = HttpUploader_Process;
-			atl.OnStateChanged  = HttpUploader_StateChanged;
-		}
-	};
-	
-	//浏览器环境检查
-	this.Browser = this.BrowserIE;
-	//Firefox
-	if (this.firefox)
+	this.CheckVersion();
+	this.setup_tip = function ()
 	{
-	    this.Browser = this.BrowserFF;
-	    //if (!this.Browser.Check()) { this.Browser.Setup(); }
-	} //Chrome
-	else if (this.chrome)
-	{
-	    this.Browser = this.BrowserChrome;
-		//if (!this.Browser.Check()) { this.Browser.Setup(); }
-	}
+	    $(document.body).append('<a id="btnSetup" href="' + _this.Config.exe.path + '" target="_blank">请安装控件</a>');
+	    this.btnSetup = $("#btnSetup");
+	};
 
+    //安装检查
+	this.setup_check = function ()
+	{
+	    if (!_this.browser.check()) { this.setup_tip(); /*_this.browser.Setup();*/ }
+	};
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
 	this.SafeCheck = function()
 	{
@@ -399,226 +372,150 @@ function HttpUploaderMgr()
 		{
 			if (null != _this.fileCur)
 			{
-				event.returnValue = "您还有程序正在运行，确定关闭？";
+			    if (_this.fileCur.State == HttpUploaderState.Posting)
+			    {
+			        event.returnValue = "您还有程序正在运行，确定关闭？";
+			    }
 			}
 		});
 
 		$(window).bind("unload", function()
 		{ 
 		    if (null != _this.fileCur)
-			{
-		        _this.fileCur.Stop();
+		    {
+		        if (_this.fileCur.State == HttpUploaderState.Posting)
+		        {
+		            _this.fileCur.Stop();
+		        }
 			}
 		});
 	};
-
-	this.Load = function()
+    		
+	//文件上传面板。
+	this.GetHtml = function()
 	{
-	    var html = this.GetHtml();
-	    html += '<embed type="' + this.Config["XpiType"] + '" pluginspage="' + this.Config["CabPath"] + '" width="1" height="1"/>';
-	    var dom = $(document.body).append(html);
-	    this.tmpFile   = dom.find('div[name="fileItem"]');
-	    this.ffPart     = dom.find('embed').get(0);
-	    this.iePart     = dom.find('object[name="iePart"]').get(0);
-	    this.ieUploader = dom.find('object[name="ieUper"]').get(0);
-	    this.SafeCheck();
-	    this.Browser.Init(); //
+		//加载拖拽控件
+		var acx = "";
+		if(this.firefox||this.chrome) acx += '<embed name="parter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
+		//acx += '<embed name="ffPart" type="' + this.Config["XpiType"] + '" pluginspage="' + this.Config["XpiPath"] + '" width="1" height="1"/>';
+		//文件夹选择控件
+		acx += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
+		acx += ' codebase="' + this.Config.ie.path + '" width="1" height="1" ></object>';
+		//
+	    //上传列表项模板
+		acx += '<div class="file-item file-item-single" name="fileItem" >\
+                    <div class="img-box"><p><img src="js/file.png"/></p></div>\
+		            <div class="area-l">\
+						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
+						<div name="percent" class="percent">(35%)</div>\
+						<div name="fileSize" class="size" child="1">1000.23MB</div>\
+						<div class="process-border"><div name="process" class="process"></div></div>\
+						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
+					</div>\
+					<div class="area-r">\
+                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
+                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
+						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
+						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
+					</div>\
+		        </div>';
+		return acx;
+	};
+
+	this.loadAuto = function ()
+	{
+	    var html 		= this.GetHtml();
+	    var dom 		= $(document.body).append(html);
+	    this.initUI(dom);
 	};
 
 	//加截容器，上传面板，文件列表面板
-	this.LoadTo = function(oid)
+	this.loadTo = function (oid)
 	{
-	    var html = this.GetHtml();
-	    html += '<embed type="' + this.Config["XpiType"] + '" pluginspage="' + this.Config["CabPath"] + '" width="1" height="1"/>';
-		var dom         = $("#"+oid).html(html);
-		this.tmpFile    = dom.find('div[name="fileItem"]');
-		this.ffPart     = dom.find('embed').get(0);
-		this.iePart     = dom.find('object[name="iePart"]').get(0);
-		this.ieUploader = dom.find('object[name="ieUper"]').get(0);
-		this.SafeCheck();
-		this.Browser.Init(); //
+	    var html 		= this.GetHtml();
+		var dom 		= $("#"+oid).html(html);
+		this.initUI(dom);
 	};
-
-	/*
-	根据ID删除上传任务
-	参数:
-	fid 上传项ID。唯一标识
-	*/
-	this.Delete = function(fid)
+	
+	this.initUI = function (dom)
 	{
-		var obj = _this.filesMap[fid];
-		if (null == obj) return;
-
-		//删除div
-		obj.div.remove();
-		obj.spliter.remove();
-		obj.LocalFile = "";
-		obj.Dispose();
-	};
-
-	/*
-		设置文件过滤器
-		参数：
-			filter 文件类型字符串，使用逗号分隔(exe,jpg,gif)
-	*/
-	this.SetFileFilter = function(filter)
-	{
-		_this.FileFilter.length = 0;
-		_this.FileFilter = filter.split(",");
-	};
-
-	/*
-	判断文件类型是否需要过滤
-	根据文件后缀名称来判断。
-	*/
-	this.NeedFilter = function(fname)
-	{
-		if (_this.FileFilter.length == 0) return false;
-		var exArr = fname.split(".");
-		var len = exArr.length;
-		if (len > 0)
-		{
-			for (var i = 0, l = _this.FileFilter.length; i < l; ++i)
-			{
-				//忽略大小写
-				if (_this.FileFilter[i].toLowerCase() == exArr[len - 1].toLowerCase())
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+	    this.fileItem = dom.find('div[name="fileItem"]');
+	    this.parter = dom.find('object[name="parter"]').get(0);
+	    this.Droper = dom.find('object[name="droper"]').get(0);
+	    if (this.firefox||this.chrome) this.parter = dom.find('embed[name="parter"]').get(0);
+	    this.SafeCheck();
+		this.setup_check();
+		this.browser.init(); //
 	};
 
     //oid,显示上传项的层ID
-	this.postAuto = function (dom_id)
+	this.postAuto = function (oid)
 	{
-	    var path = this.Browser.GetSingleFile();
-	    if (null == path) return;
-
-	    if (this.fileCur != null) return;
-	    var fileName = path.substr(path.lastIndexOf("\\") + 1);
-	    var fid = this.filesIdCount;
-
-	    var upFile = new HttpUploader(fid, path, this);
-	    this.filesMap[fid] = upFile;
-	    var ui = this.tmpFile.clone();
-	    ui.css("display", "block").attr("id", "item" + fid);
-	    $("#" + dom_id).append(ui);
-
-	    var ui_name     = ui.find("div[name='fileName']");
-	    var ui_size     = ui.find("div[name='fileSize']");
-	    var ui_process  = ui.find("div[name='process']");
-	    var ui_msg      = ui.find("div[name='msg']");
-	    var btnDel      = ui.find("span[name='btnDel']");
-	    var btnCancel   = ui.find("span[name='btnCancel']");
-	    var uiPercent   = ui.find("div[name='percent']");
-	    var ui_eles = { process: ui_process,percent:uiPercent, msg: ui_msg, btn: {cancel:btnCancel,del:btnDel},panel:ui};
-
-	    ui_name.text(fileName).attr("title", fileName);
-	    ui_size.text(upFile.FileSize);
-	    ui_msg.text("");
-	    uiPercent.text("0%");
-
-	    upFile.ui = ui_eles;
-	    btnCancel.attr("fid", fid).click(function ()
-            {
-                switch (btnCancel.text())
-                {
-                    case "暂停":
-                    case "停止":
-                        upFile.Stop();
-                        break;
-                    case "取消":
-                        {
-                            upFile.Cancel();
-                        }
-                        break;
-                    case "续传":
-                        upFile.Upload();
-                        break;
-                    case "重试":
-                        upFile.Post();
-                        break;
-                }
-            }); //模板控制按钮事件
-	    btnDel.click(function () { upFile.Cancel(); });
-	    upFile.Post(); //开始上传
-	    this.fileCur = upFile;
+	    if (this.fileCur != null) return;//有上传项
+	    this.uiContainer = $("#" + oid);
+	    this.browser.openFiles();
 	};
 	
 	//上传文件
-	this.postLoc = function(filePath, oid)
+	this.postLoc = function (path_loc, oid)
 	{
-		if (_this.filesIdCount > 0) return;
-		var fileName = filePath.substr(filePath.lastIndexOf("\\") + 1);
-		var fid = _this.filesIdCount++;
+	    this.uiContainer = $("#" + oid);
+	    this.browser.addFile({ pathLoc: path_loc });
+	};
+    
+	this.addFileLoc = function(fileLoc)
+	{
+		var idLoc = this.idCount++;
+		var nameLoc = fileLoc.nameLoc;
 
-		var ui = _this.tmpFile.cloneNode(true);
-		ui.css("display", "block").attr("id", "item" + fid);
-		var ui_name = ui.find("div[name='fileName']");
-		var ui_size	= ui.find("div[name='fileSize']");
-		var ui_process	= ui.find("div[name='process']");
-		var ui_msg		= ui.find("div[name='msg']");
-		var btnDel		= ui.find("span[name='btnDel']");
-		var btnCancel	= ui.find("span[name='btnCancel']");
-		var divPercent	= ui.find("div[name='percent']");
-		var ui_eles = { process: ui_process, percent: uiPercent, msg: ui_msg, btn: { cancel: btnCancel, del: btnDel }, panel: ui };
+		var ui = _this.fileItem.clone();//文件信息
+		_this.uiContainer.append(ui);//添加文件信息
+		ui.css("display", "block");
 
-		var upFile = new HttpUploader(fid, filePath, _this);
-		this.filesMap[fid] = upFile;
-		ui_name.text(fileName).attr("title", fileName);
-		ui_size.text(upFile.FileSize);
-		ui_msg.text("");
-		divPercent.text("0%");
-
+		var uiName      = ui.find("div[name='fileName']");
+		var uiSize      = ui.find("div[name='fileSize']")
+		var uiProcess 	= ui.find("div[name='process']");
+		var uiMsg 		= ui.find("div[name='msg']");
+		var btnCancel 	= ui.find("a[name='cancel']");
+		var btnPost 	= ui.find("a[name='post']");
+		var btnStop 	= ui.find("a[name='stop']");
+		var btnDel 		= ui.find("a[name='del']");
+		var uiPercent	= ui.find("div[name='percent']");
+		
+		var upFile = new FileUploader(fileLoc, _this);
+		this.filesMap[idLoc] = upFile;//添加到映射表
+		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui};
 		upFile.ui = ui_eles;
-		btnDel.attr("fid", fid).click(function ()
-	        {
-	            switch (btnDel.text())
-	            {
-	                case "暂停":
-	                case "停止":
-	                    upFile.Stop();
-	                    break;
-	                case "取消":
-	                    {
-	                        upFile.Cancel();
-	                    }
-	                    break;
-	                case "续传":
-	                    upFile.Upload();
-	                    break;
-	                case "重试":
-	                    upFile.Post();
-	                    break;
-	            }
-	        }); //模板控制按钮事件
-		btnCancel.click(function (){upFile.Cancel();});
-		upFile.Post(); //开始上传
+		upFile.idLoc = idLoc;
 
-		$("#" + oid).append(jqItem);
+		uiName.text(nameLoc).attr("title", nameLoc);
+		uiSize.text(fileLoc.sizeLoc);
+		uiMsg.text("");
+		uiPercent.text("(0%)");
+		btnCancel.click(function(){upFile.remove();});
+		btnPost.click(function ()
+		{
+		    btnPost.hide();
+		    btnDel.hide();
+		    btnCancel.hide();
+		    btnStop.show();
+		    upFile.post();
+		});
+		btnStop.click(function ()
+		{
+		    upFile.stop();
+		    btnPost.show();
+		    btnDel.show();
+		    btnCancel.hide();
+		    btnStop.hide();
+		});
+		btnDel.click(function(){upFile.remove();});
+		
+		upFile.post(); //准备
+		this.fileCur = upFile;
+		return upFile;
 	};
 }
-
-var HttpUploaderErrorCode = {
-	"0": "连接服务器错误"
-	, "1": "发送数据错误"
-	, "2": "接收数据错误"
-	, "3": "未设置本地文件"
-	, "4": "本地文件不存在"
-	, "5": "打开本地文件错误"
-	, "6": "不能读取本地文件"
-	, "7": "公司未授权"
-	, "8": "未设置IP"
-	, "9": "域名未授权"
-	, "10": "文件大小超过限制"//默认为2G
-	//md5
-	, "200": "无打打开文件"
-	, "201": "文件大小为0"
-    //biz
-    , "300": "服务器md5验证错误,这个错误一般由f_create.aspx页面引起\n请检查：\n1.数据库是否已经创建\n2.数据库连接信息是否配置正确(在DbHelper.cs设置)\n3.UrlCreate路径配置是否正确\n4.请检查f_create.aspx.cs中业务逻辑是否正确"
-};
 
 var HttpUploaderState = {
 	Ready: 0,
@@ -632,421 +529,276 @@ var HttpUploaderState = {
 	Waiting: 8
 	,MD5Working:9
 };
-
 //文件上传对象
-function HttpUploader(fileID, filePath, mgr)
+function FileUploader(fileLoc, mgr)
 {
     var _this = this;
-    this.ui = { process: null, percent: null, msg: null, btn: {cancel:null,del:null},panel:null};
-	this.ie = mgr.ie;
-	this.firefox = mgr.firefox;
-	this.chrome = mgr.chrome;
-	this.ffPart = mgr.ffPart;
-	this.browser = mgr.Browser;
-	this.ieUploader = mgr.ieUploader;
-	this.Manager = mgr; //上传管理器指针
-	this.event = mgr.event;
-	this.Config = mgr.Config;
-	this.Fields = mgr.Fields;
-	this.ActiveX = mgr.ActiveX;
-	this.State = HttpUploaderState.None;
-	this.MD5 = "";
-	this.pathLoc = filePath;
-	this.pathSvr = "";
-	this.lenSvr = 0;//
-	this.FileName = filePath.substr(filePath.lastIndexOf("\\") + 1);
-	this.LocalFile = filePath;
-    //this.FileID = this.ATL.FileID;
-	this.FileID = fileID;
-	this.idLoc = fileID;
-	this.idSvr = 0;
-	this.FileSize = this.browser.GetFileSize(filePath); //格式化后的文件大小 50MB
-	this.FileLength = this.browser.GetFileLength(filePath);//以字节为单位的字符串
-	this.PathLocal = encodeURIComponent(filePath); //URL编码后的本地路径
-	this.PathRelat = ""; //文件在服务器中的相对地址。示例：http://www.ncmem.con/upload/201204/03/QQ2012.exe
-	this.fid = 0; //与服务器数据库对应的fid
-	this.uid = this.Fields["uid"];
-	this.percentSvr = "0%";
-	this.fileSvr = null;//json obj
-	var ref = this;
-	
-	//初始化控件
-	this.ATL = {
-		"Create": function()
-		{
-		    this.Atl                = _this.ieUploader;
-		    this.Atl.Debug          = _this.Config["Debug"];
-		    this.Atl.LogFile        = _this.Config["LogFile"];
-		    this.Atl.Authenticate   = _this.Config["Authenticate"];
-		    this.Atl.AuthName       = _this.Config["AuthName"];
-		    this.Atl.AuthPass       = _this.Config["AuthPass"];
-		    this.Atl.LocalFile      = _this.pathLoc;
-		    this.Atl.Object         = _this;
-		    this.Atl.EncodeType     = _this.Config["EncodeType"];
-		    this.Atl.PostedLength   = _this.lenSvr;
-		    this.Atl.FileSizeLimit  = _this.Config["FileSizeLimit"];
-		    this.Atl.RangeSize      = _this.Config["RangeSize"];
-		    this.Atl.Company        = _this.Config["Company"];
-		    this.Atl.License        = _this.Config["License"];
-		    this.Atl.Cloud          = _this.Config["Cloud"];
-		    this.Atl.CloudBucket    = _this.Config["CloudBucket"];
-		    this.Atl.PostUrl        = _this.Config["UrlPost"];
-            this.Atl.MD5            = _this.MD5;
-            this.Atl.Cookie         = document.cookie;
-		    this.Atl.OnPost         = HttpUploader_Process;
-		    this.Atl.OnStateChanged = HttpUploader_StateChanged;
-		}
-		, "SetMD5": function(md5) { this.Atl.MD5 = md5; }
-		//get
-		, "GetResponse": function() { return this.Atl.Response; }
-		, "GetMD5": function() { return this.Atl.MD5; }
-		, "GetMd5Percent": function() { return this.Atl.Md5Percent; }
-		, "GetFileLenSvr": function () { return this.Atl.PostedLength; }
-        , "SetFileLenSvr": function (len) { this.Atl.PostedLength = len;}
-		, "GetErrorCode": function() { return this.Atl.ErrorCode; }
-		//methods
-		, "CheckFile": function() { this.Atl.CheckFile(); }
-		, "Post": function ()
-		{
-		    this.SetFileLenSvr(_this.lenSvr);
-		    this.Atl.Post();
-		}
-		, "Stop": function() { this.Atl.Stop(); }
-		, "ClearFields": function() { this.Atl.ClearFields(); }
-		, "AddField": function(fn, fv) { this.Atl.AddField(fn, fv); }
-		, "Dispose": function() { delete this.Atl; }
-		, "IsPosting": function() { return this.Atl.IsPosting(); }
-		//property
-		, "Atl": _this.ieUploader
-	};
-	//Firefox 插件
-	this.ATLFF = {
-	    "Create": function ()
-	    {
-	        if (0 == this.id)
-	        {
-	            this.id = this.Atl.AddFile(_this.pathLoc);
-	        }
-	        this.Atl.SetObject(this.id, _this);
-	        this.Atl.SetPostedLength(this.id, _this.lenSvr);
-	        this.SetMD5(_this.MD5);
-	    }
-		, "SetLocalFile": function(filePath) { this.id = this.Atl.AddFile(filePath); }
-		, "SetObject": function(obj) { this.Atl.SetObject(this.id, obj); }
-		, "SetPostedLength": function (len) { this.Atl.SetPostedLength(this.id, len); }
-		, "SetFileLenSvr": function (len) { this.Atl.SetPostedLength(this.id, len); }
-		, "SetMD5": function(md5) { this.Atl.SetMD5(this.id, md5); }
-		//get
-		, "GetResponse": function() { return this.Atl.GetResponse(this.id); }
-		, "GetMD5": function() { return this.Atl.GetMD5(this.id); }
-		, "GetMd5Percent": function() { return this.Atl.GetMd5Percent(this.id); }
-		, "GetFileLenSvr": function () { return this.Atl.GetPostedLength(this.id); }
-		, "GetErrorCode": function() { return this.Atl.GetErrorCode(this.id); }
-		//methods
-		, "CheckFile": function() { this.Atl.CheckFile(this.id); }
-		, "Post": function ()
-		{
-		    this.SetFileLenSvr(_this.lenSvr);
-		    this.Atl.Post(this.id);
-		}
-		, "Stop": function() { this.Atl.Stop(this.id); }
-		, "ClearFields": function() { this.Atl.ClearFields(this.id); }
-		, "AddField": function(fn, fv) { this.Atl.AddField(this.id, fn, fv); }
-		, "Dispose": function() { this.Atl.Remove(this.id); }
-		, "IsPosting": function() { return this.Atl.IsPosting(this.id); }
-		//property
-		, "Atl": _this.ffPart
-		, "id": 0//由控件分配的标识符，全局唯一。
-	};
-	//是Firefox或Chrome浏览器
-	if (this.firefox||this.chrome){this.ATL = this.ATLFF;}
-	this.ATL.Create();
-	
-	//重置附加信息
-	this.ResetFields = function()
-	{
-		//添加附加信息
-		this.ATL.ClearFields(); //清空附加字段
-//		$.each(upRef.Fields, function(name, val)
-//		{
-//			upRef.ATL.AddField(name, val);
-//		});
-		for (var field in this.Fields)
-		{
-			this.ATL.AddField(field, this.Fields[field]);
-		}
-		this.ATL.AddField("fid", this.fid);
-		this.ATL.AddField("uid", this.uid);
-		this.ATL.AddField("pathSvr", this.pathSvr);//add(2015-03-19):
-	};
-	
-	//准备
-	this.Ready = function()
-	{
-		//this.pButton.style.display = "none";
-		//this.pMsg.text("正在上传队列中等待...");
-		this.State = HttpUploaderState.Ready;
-	};
+    //fileLoc:{nameLoc,ext,lenLoc,sizeLoc,pathLoc,md5,lenSvr},控件传递的值
+    this.idLoc = 0;
+    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null};
+    this.browser = mgr.browser;
+    this.Manager = mgr; //上传管理器指针
+    this.event = mgr.event;
+    this.Config = mgr.Config;
+    this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
+    this.State = HttpUploaderState.None;
+    this.uid = this.fields.uid;
+    this.fileSvr = {
+        idSvr: 0
+        , pid: 0
+        , pidRoot: 0
+        , f_fdTask: false
+        , f_fdID: 0
+        , f_fdChild: false
+        , uid: 0
+        , nameLoc: ""
+        , nameSvr: ""
+        , pathLoc: ""
+        , pathSvr: ""
+        , pathRel: ""
+        , md5: ""
+        , lenLoc: "0"
+        , sizeLoc: ""
+        , FilePos: "0"
+        , lenSvr: "0"
+        , perSvr: "0%"
+        , complete: false
+        , deleted: false
+    };//json obj，服务器文件信息
+    this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
 
-	this.Post = function()
-	{
-		if (this.MD5.length > 0)
-		{
-			this.Upload();
-		}
-		else
-		{
-			//alert(this.ATL.FileID);
-			this.CheckFile();
-		}
-	};
-	
-	//上传
-	this.Upload = function()
-	{
-		//正在上传
-		if (this.ATL.IsPosting())
-		{
-		}
-		else
-		{
-			this.ui.btn.cancel.show();
-			this.ui.btn.cancel.text("停止");
-			this.ui.msg.innerText = "正在连接服务器....";
-			this.State = HttpUploaderState.Posting;
+    //准备
+    this.Ready = function ()
+    {
+        this.ui.msg.text("正在上传队列中等待...");
+        this.State = HttpUploaderState.Ready;
+    };
 
-			this.ATL.Post();
-		}
-	};
-	
-	//检查文件
-	this.CheckFile = function()
-	{
-		this.State = HttpUploaderState.MD5Working;
-		this.ATL.CheckFile();
-	};
+    this.svr_error = function ()
+    {
+        alert("服务器返回信息为空，请检查服务器配置");
+        this.ui.msg.text("向服务器发送MD5信息错误");
+        //文件夹项
+        if (this.root)
+        {
+            this.root.item_md5_error(obj);
+        } //文件项
+        else
+        {
+            this.ui.btn.stop.hide();
+            this.ui.btn.post.show();
+        }
+    };
+    this.svr_create = function (sv)
+    {
+        if (sv.value == null)
+        {
+            this.svr_error(); return;
+        }
 
-	this.UploadPercent = function ()
-	{
-	    if (this.percentSvr == "0%") return;
-	    $.ajax({
-	        type: "GET"
+        var str = decodeURIComponent(sv.value);//
+        this.fileSvr = JSON.parse(str);//
+        //服务器已存在相同文件，且已上传完成
+        if (this.fileSvr.complete)
+        {
+            this.post_complete_quick();
+        } //服务器文件没有上传完成
+        else
+        {
+            this.ui.process.css("width", this.fileSvr.perSvr);
+            this.ui.percent.text("("+this.fileSvr.perSvr+")");
+            this.post_file();
+        }
+    };
+    this.post_process = function (json)
+    {
+        this.fileSvr.lenSvr = json.lenSvr;//保存上传进度
+        this.fileSvr.perSvr = json.percent;
+        this.ui.percent.text("("+json.percent+")");
+        this.ui.process.css("width", json.percent);
+        var str = json.lenPost + " " + json.speed + " " + json.time;
+        this.ui.msg.text(str);
+    };
+    this.post_complete = function (json)
+    {
+        this.fileSvr.perSvr = "100%";
+        this.fileSvr.complete = true;
+        this.ui.btn.stop.hide();
+        this.ui.process.css("width", "100%");
+        this.ui.percent.text("(100%)");
+        this.ui.msg.text("上传完成");
+        this.State = HttpUploaderState.Complete;
+
+        var param = { md5: this.fileSvr.md5, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
+
+        $.ajax({
+            type: "GET"
 			, dataType: 'jsonp'
 			, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-			, url: _this.Config["UrlProcess"]
-			, data: { uid: _this.Fields["uid"], fid: _this.fid, percent: _this.percentSvr, lenSvr: _this.FileLengthSvr, time: new Date().getTime() }
-			, success: function (msg) { }
-			, error: function () { alert("更新文件进度错误！" + req.responseText); }
+			, url: _this.Config["UrlComplete"]
+			, data: param
+			, success: function (msg)
+			{
+			    _this.event.fileComplete(_this);//触发事件
+			}
+			, error: function () { alert("文件-向服务器发送Complete信息错误！" + req.responseText); }
 			, complete: function (req, sta) { req = null; }
-	    });
-	};
-	
-	//停止传输，一般在用户点击停止按钮时调用
-	this.Stop = function()
-	{
-		if (HttpUploaderState.Ready == this.State)
-		{
-			this.ui.btn.cancel.text("续传");
-			this.ui.msg.text("传输已停止....");
-			this.State = HttpUploaderState.Stop;
-			return;
-		}
-		
-		this.ui.btn.cancel.text("续传");
-		this.ui.btn.cancel.show();
-		this.ui.msg.text("传输已停止....");
-		this.ATL.Stop();
-		this.State = HttpUploaderState.Stop;
-		this.UploadPercent();//更新进度
-	};
-	
-	//取消，一般在上传过程中执行
-	this.Cancel = function()
-	{
-		this.Stop();
-		this.ui.panel.remove();
-		this.Manager.fileCur = null;//
-	};
+        });
+    };
+    this.post_complete_quick = function ()
+    {
+        this.ui.btn.stop.hide();
+        this.ui.process.css("width", "100%");
+        this.ui.percent.text("(100%)");
+        this.ui.msg.text("服务器存在相同文件，快速上传成功。");
+        this.State = HttpUploaderState.Complete;
+        this.event.fileComplete(this);//触发事件
+    };
+    this.post_error = function (json)
+    {
+        if (this.root)
+        {
+            this.root.post_error(json);
+            return;
+        }
 
-	//释放内存
-	this.Dispose = function()
-	{
-		this.ATL.Dispose();
-	};
-	
-	//快速上传完成，
-	this.QuickComplete = function()
-	{
-	    this.event.postComplete(this);//biz event
-		this.ui.btn.cancel.hide();
-		this.ui.btn.del.hide();
-		this.ui.process.css("width","100%");
-		this.ui.percent.text("100%");
-		this.ui.msg.text("服务器存在相同文件，快速上传成功。");
-		this.State = HttpUploaderState.Complete;
-		this.Dispose();
-		obj.Manager.fileCur = null;
-	};
-	this.svr_error = function ()
-	{
-	    this.ui.msg.text("服务器MD5验证错误").click(function () { alert(HttpUploaderErrorCode["300"]); }).css("cursor", "pointer");
-	    this.ui.btn.cancel.text("续传");
-	};
-	this.svr_create = function (sv)
-	{
-	    if (sv.value == null)
-	    {
-	        this.svr_error(); return;
-	    }
+        debugMsg("post_error");
+        debugMsg(json.value);
+        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        //文件大小超过限制,文件大小为0
+        if ("4" == json.value || "5" == json.value)
+        {
+            this.ui.btn.cancel.show();
+        }
+        else
+        {
+            this.ui.btn.post.show();
+        }
+        this.ui.btn.stop.hide();
 
-	    var str = decodeURIComponent(sv.value);//
-	    var json = JSON.parse(str);//
-	    this.fileSvr = json;
-	    this.fid = json.idSvr;
-	    this.idSvr = json.idSvr;
-	    this.pathSvr = json.pathSvr;
-	    //obj.ResetFields();
-	    //服务器已存在相同文件，且已上传完成
-	    if (json.complete)
-	    {
-	        this.QuickComplete();
-	    } //服务器文件没有上传完成
-	    else
-	    {
-	        this.FileLengthSvr = json.lenSvr;
-	        //是文件
-	        if (null == this.root)
-	        {
-	            this.ui.process.css("width", json.perSvr);
-	            this.ui.percent.text(json.perSvr);
-	        }
-	        this.Upload();
-	    }
-	};
-}
+        this.State = HttpUploaderState.Error;
+    };
+    this.md5_process = function (json)
+    {
+        if (this.root)
+        {
+            this.root.md5_process(json);
+            return;
+        }
 
-//上传错误
-function HttpUploader_Error(obj)
-{
-	obj.ui.msg.text(HttpUploaderErrorCode[obj.ATL.GetErrorCode()]);
-	//文件大小超过限制,文件大小为0
-	if (10 == obj.ATL.GetErrorCode()
-		|| 201 == obj.ATL.GetErrorCode())
-	{
-		obj.ui.btn.cancel.text("取消");
-	}
-	else
-	{
-		obj.ui.btn.cancel.text("续传");
-	}
-	obj.State = HttpUploaderState.Error;
-	obj.Manager.fileCur = null;
-}
+        var msg = "正在扫描本地文件，已完成：" + json.percent;
+        this.ui.msg.text(msg);
+    };
+    this.md5_complete = function (json)
+    {
+        this.fileSvr.md5 = json.md5;
+        this.event.md5Complete(this, json.md5);//biz event
+        this.ui.msg.text("MD5计算完毕，开始连接服务器...");
 
-//上传完成，向服务器传送信息
-function HttpUploader_Complete(obj)
-{
-    obj.event.postComplete(obj);//biz event
-	obj.ui.btn.cancel.hide();
-	//obj.ui.btn.del.hide();
-	obj.ui.process.css("width","100%").attr("title", "上传完成");
-	obj.ui.percent.text("100%");
-	obj.ui.msg.text("上传完成");
-	obj.State = HttpUploaderState.Complete;
-	obj.Manager.fileCur = null;
+        var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
+        var loc_len = this.fileSvr.lenLoc;
+        var loc_size = this.fileSvr.sizeLoc;
+        var param = { md5: json.md5, uid: this.uid, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() };
 
-	$.ajax({
-	    type: "GET"
-		, dataType: 'jsonp'
-		, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-		, url: obj.Config["UrlComplete"]
-		, data: { md5: obj.MD5, uid: obj.Fields["uid"], fid: obj.fid, time: new Date().getTime() }
-		, success:function(msg){}
-        , error: function() { alert("向服务器发送Complete信息错误！"); }
-        , complete: function(req, sta) { req = null; }
-	});
-}
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlCreate"]
+            , data: param
+            , success: function (sv)
+            {
+                _this.svr_create(sv);
+            }
+            , error: function (req, txt, err)
+            {
+                alert("向服务器发送MD5信息错误！" + req.responseText);
+                _this.ui.msg.text("向服务器发送MD5信息错误");
+                _this.ui.btn.stop.hide();
+                _this.ui.btn.post.show();
+            }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
+    this.md5_error = function (json)
+    {
+        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        //文件大小超过限制,文件大小为0
+        if ("4" == json.value
+			|| "5" == json.value)
+        {
+            this.ui.btn.cancel.show();
+            this.ui.btn.stop.hide();
+        }
+        else
+        {
+            this.ui.btn.post.show();
+            this.ui.btn.stop.hide();
+        }
+        this.State = HttpUploaderState.Error;
 
-//传输进度。频率为每秒调用一次
-function HttpUploader_Process(obj, speed, postedLength, percent, times)
-{
-    obj.lenSvr = obj.ATL.GetFileLenSvr();
-	obj.ui.percent.text(percent);
-	obj.ui.process.css("width",percent).attr("title", str);
-	var str = "已上传:" + postedLength + " 速度:" + speed + "/S 剩余时间:" + times;
-	obj.ui.msg.text(str);
-}
+        this.post_next();
+    };
+    this.post = function ()
+    {
+        if (this.fileSvr.md5.length > 0)
+        {
+            this.post_file();
+        }
+        else
+        {
+            this.check_file();
+        }
+    };
+    this.post_file = function ()
+    {
+        this.ui.btn.stop.show();
+        this.ui.btn.cancel.hide();
+        this.State = HttpUploaderState.Posting;//
+        var path_loc = this.fileSvr.pathLoc;
+        this.fields["pathSvr"] = encodeURIComponent(this.fileSvr.pathSvr);
+        this.fields["lenLoc"] = this.fileSvr.lenLoc;
+        this.fields["idSvr"] = this.fileSvr.idSvr;
+        this.fields["md5"] = this.fileSvr.md5;
+        this.browser.postFile({ id: this.idLoc, pathLoc: path_loc, lenSvr: this.fileSvr.lenSvr, folder: false, fields: this.fields });
+    };
+    this.check_file = function ()
+    {
+        this.ui.btn.stop.show();
+        this.ui.btn.cancel.hide();
+        this.State = HttpUploaderState.MD5Working;
+        this.browser.checkFile({ id: this.idLoc, pathLoc: this.fileSvr.pathLoc });
+    };
+    this.stop = function ()
+    {
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
+        this.ui.msg.text("传输已停止....");
 
-//服务器连接成功
-function HttpUploader_Connected(obj)
-{
-	obj.ui.msg.text("服务器连接成功");
-	obj.ui.process.attr("title", "服务器连接成功");
-}
+        if (HttpUploaderState.Ready == this.State)
+        {
+        }
+        this.State = HttpUploaderState.Stop;
 
-//MD5计算中
-function HttpUploader_MD5_Working(obj)
-{
-	var msg = "正在扫描本地文件，已完成：" + obj.ATL.GetMd5Percent() + "%";
-	obj.ui.msg.text(msg);
-	obj.ui.process.attr("title",msg);
-}
+        this.browser.stopFile({ id: this.idLoc });
+    };
+    //手动停止，一般在StopAll中调用
+    this.stop_manual = function ()
+    {
+        if (HttpUploaderState.Posting == this.State)
+        {
+            this.ui.btn.stop.hide();
+            this.ui.btn.post.show();
+            this.ui.btn.del.show();
+            this.ui.msg.text("传输已停止....");
+            this.browser.stopFile({ id: this.idLoc });
+            this.State = HttpUploaderState.Stop;
+        }
+    };
 
-//MD5计算完毕
-function HttpUploader_MD5_Complete(obj)
-{
-    obj.MD5 = obj.ATL.GetMD5();
-    obj.event.md5Complete(obj, obj.MD5);//biz event
-	//在此处增加服务器验证代码。
-	obj.ui.msg.text("MD5计算完毕，开始连接服务器...");
-
-	$.ajax({
-	    type: "GET"
-		, dataType: 'jsonp'
-		, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-		, url: obj.Config["UrlCreate"]
-		, data: { md5: obj.MD5, uid: obj.Fields["uid"], fileLength: obj.FileLength, fileSize: obj.FileSize, pathLocal: obj.PathLocal, time: new Date().getTime() }
-		, success: function(msg){obj.svr_create(msg);}
-        , error: function() { alert("向服务器发送MD5信息错误！"); }
-        , complete: function(req, sta) { req = null; }
-
-	});
-}
-
-/*
-	HUS_Leisure			=0	//空闲
-	,HUS_Uploading		=1	//上传中 
-	,HUS_Stop  			=2	//停止 
-	,HUS_UploadComplete	=3	//传输完毕 
-	,HUS_Error 			=4	//错误 
-	,HUS_Connected 		=5	//服务器已连接
-	,HUS_Md5Working		=6	//MD5计算中
-	,HUS_Md5Complete	=7	//MD5计算完毕
-*/
-function HttpUploader_StateChanged(obj,state)
-{
-	switch(state)
-	{
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			HttpUploader_Complete(obj);
-			break;
-		case 4:
-			HttpUploader_Error(obj);
-			break;
-		case 5:
-			HttpUploader_Connected(obj);
-			break;
-		case 6:
-			HttpUploader_MD5_Working(obj);
-			break;
-		case 7:
-			HttpUploader_MD5_Complete(obj);
-			break;
-	}
+    //删除，一般在用户点击"删除"按钮时调用
+    this.remove = function ()
+    {
+        this.ui.div.remove();
+    };
 }

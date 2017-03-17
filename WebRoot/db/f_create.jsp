@@ -1,9 +1,9 @@
-<%@ page language="java" import="up6.*" pageEncoding="UTF-8"%><%@
+<%@ page language="java" import="up7.*" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@	
 	page import="net.sf.json.*" %><%@
-	page import="up6.*" %><%@
-	page import="up6.model.*" %><%@
-	page import="up6.biz.*" %><%@	
+	page import="up7.*" %><%@
+	page import="up7.model.*" %><%@
+	page import="up7.biz.*" %><%@	
 	page import="org.apache.commons.lang.StringUtils" %><%@
 	page import="java.net.URLDecoder" %><%@
 	page import="java.net.URLEncoder" %><%/*
@@ -16,7 +16,6 @@
 		2016-04-09 完善逻辑。
 */
 
-String md5 			= request.getParameter("md5");
 String uid 			= request.getParameter("uid");
 String lenLoc 		= request.getParameter("lenLoc");//数字化的文件大小。12021
 String sizeLoc 		= request.getParameter("sizeLoc");//格式化的文件大小。10MB
@@ -26,11 +25,10 @@ pathLoc			= pathLoc.replace("+","%20");
 pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 
 //参数为空
-if (	StringUtils.isBlank(md5)
-	&& StringUtils.isBlank(uid)
+if (	StringUtils.isBlank(uid)
 	&& StringUtils.isBlank(sizeLoc))
 {
-	out.write(callback + "({\"value\":null})");
+	out.write(callback + "({\"value\":null,\"inf\":\"参数为空，请检查uid,sizeLoc参数。\"})");
 	return;
 }
 
@@ -42,37 +40,28 @@ fileSvr.pathLoc = pathLoc;
 fileSvr.lenLoc = Long.parseLong(lenLoc);
 fileSvr.sizeLoc = sizeLoc;
 fileSvr.deleted = false;
-fileSvr.md5 = md5;
-fileSvr.nameSvr = md5 + "." + PathTool.getExtention(fileSvr.nameLoc);
+fileSvr.nameSvr = fileSvr.nameLoc;
 
-//所有单个文件均以md5方式存储
-PathMd5Builder pb = new PathMd5Builder();
+//所有单个文件均以guid方式存储
+PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
 
-	DBFile db = new DBFile();
-	xdb_files fileExist = new xdb_files();
-	
-	boolean exist = db.exist_file(md5,fileExist);
-	//数据库已存在相同文件，且有上传进度，则直接使用此信息
-	if(exist && fileExist.lenSvr > 1)
-	{
-		fileSvr.pathSvr 		= fileExist.pathSvr;
-		fileSvr.perSvr 			= fileExist.perSvr;
-		fileSvr.lenSvr 			= fileExist.lenSvr;
-		fileSvr.complete		= fileExist.complete;
-		fileSvr.idSvr 			= db.Add(fileSvr);
-	}//此文件不存在
-	else
-	{
-		fileSvr.idSvr = db.Add(fileSvr);
-		
-		FileResumerPart fr = new FileResumerPart();
-		fr.CreateFile(fileSvr.pathSvr);		
-	}
+DBFile db = new DBFile();	
+fileSvr.idSvr = db.Add(fileSvr);
 
-JSONObject obj = JSONObject.fromObject(fileSvr);
-String json = obj.toString();
-json = URLEncoder.encode(json,"UTF-8");//编码，防止中文乱码
-json = json.replace("+","%20");
-json = callback + "({\"value\":\"" + json + "\"})";//返回jsonp格式数据。
-out.write(json);%>
+//创建文件
+FileBlockWriter fr = new FileBlockWriter();
+Boolean ret = fr.make(fileSvr.pathSvr,fileSvr.lenLoc);		
+if(!ret)
+{
+	out.write(callback + "({\"value\":null,\"err\":true,\"inf\":\"创建文件错误，请检查存储路径是否正确，磁盘空间是否不足。\"})");
+}
+else
+{
+	JSONObject obj = JSONObject.fromObject(fileSvr);
+	String json = obj.toString();
+	json = URLEncoder.encode(json,"UTF-8");//编码，防止中文乱码
+	json = json.replace("+","%20");
+	json = callback + "({\"value\":\"" + json + "\"})";//返回jsonp格式数据。
+	out.write(json);
+}%>

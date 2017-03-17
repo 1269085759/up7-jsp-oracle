@@ -25,7 +25,7 @@ begin
 
   /*批量分配文件夹ID*/
   while i < fd_count loop  
-    insert into up6_folders(fd_id,fd_pid) values(SEQ_fd_id.nextval,0);    
+    insert into up7_folders(fd_id,fd_pid) values(SEQ_fd_id.nextval,0);    
     select SEQ_fd_id.currval into id_cur from dual;
     i := i + 1;
     fd_ids(i) := id_cur;
@@ -34,7 +34,7 @@ begin
   /*批量分配文件ID*/
   i := 0;
   while i < f_count loop  
-    insert into up6_files(f_idSvr,f_pid) values(SEQ_f_idSvr.nextval,0);    
+    insert into up7_files(f_idSvr,f_pid) values(SEQ_f_idSvr.nextval,0);    
     select SEQ_f_idSvr.currval into id_cur from dual;
     i := i+1;    
     f_ids(i) := id_cur;

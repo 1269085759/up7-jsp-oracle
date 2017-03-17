@@ -1,7 +1,7 @@
-<%@ page language="java" import="up6.DBFile" pageEncoding="UTF-8"%><%@
+<%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="up6.FileResumerPart" %><%@
-	page import="up6.XDebug" %><%@
+	page import="up7.FileBlockWriter" %><%@
+	page import="up7.XDebug" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
 	page import="org.apache.commons.fileupload.FileItemFactory" %><%@
 	page import="org.apache.commons.fileupload.FileUploadException" %><%@
@@ -36,7 +36,6 @@
 
 String uid 			= "";// 		= request.getParameter("uid");
 String idSvr 		= "";// 		= request.getParameter("fid");
-String md5 			= "";// 			= request.getParameter("md5");
 String perSvr 		= "";// 	= request.getParameter("FileSize");
 String lenSvr		= "";
 String lenLoc		= "";
@@ -78,7 +77,6 @@ while (fileItr.hasNext())
 		String fv = rangeFile.getString(); 
 		if(fn.equals("uid")) uid = fv;
 		if(fn.equals("idSvr")) idSvr = fv;
-		if(fn.equals("md5")) md5 = fv;
 		if(fn.equals("lenSvr")) lenSvr = fv;
 		if(fn.equals("lenLoc")) lenLoc = fv;
 		if(fn.equals("perSvr")) perSvr = fv;
@@ -99,13 +97,11 @@ while (fileItr.hasNext())
 if(	 StringUtils.isBlank( lenSvr )
 	|| StringUtils.isBlank( uid )
 	|| StringUtils.isBlank( idSvr )
-	|| StringUtils.isBlank( md5 )
 	|| StringUtils.isBlank( f_pos ) 
 	|| StringUtils.isBlank(pathSvr))
 {
 	XDebug.Output("uid", uid);
 	XDebug.Output("idSvr", idSvr);
-	XDebug.Output("md5", md5);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("param is null");
 	return;
@@ -128,9 +124,8 @@ if(	 StringUtils.isBlank( lenSvr )
 	boolean cmp = StringUtils.equals(complete,"true");
 	
 	//保存文件块数据
-	FileResumerPart res = new FileResumerPart();
-	res.m_RangePos = Long.parseLong(f_pos);
-	res.SaveFileRange(rangeFile, pathSvr);
+	FileBlockWriter res = new FileBlockWriter();
+	res.write(pathSvr,Long.parseLong(f_pos),rangeFile);
 	
 	//更新文件进度信息
 	DBFile db = new DBFile();
@@ -138,13 +133,18 @@ if(	 StringUtils.isBlank( lenSvr )
 	if(fd) fd = !StringUtils.isBlank(fd_lenSvr);
 	if(fd) fd = Integer.parseInt(fd_idSvr)>0;
 	if(fd) fd = Long.parseLong(fd_lenSvr)>0;
-	if(fd)
+	
+	//第一块数据
+	if(Long.parseLong(f_pos) == 0 )
 	{
-		db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
-	}
-	else
-	{
-		db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,cmp);		
+		if(fd)
+		{
+			db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
+		}
+		else
+		{
+			db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,cmp);		
+		}
 	}
 			
 	out.write("ok");
