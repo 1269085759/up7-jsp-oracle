@@ -70,7 +70,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,106,50757"
+		, "Version"			: "2,7,106,50867"
 		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
@@ -506,7 +506,18 @@ function HttpUploaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.md5_error(json);
 	};
-	this.load_complete = function (json) { this.nat_load = true; this.btnSetup.hide(); };
+    this.load_complete = function (json)
+    {
+        this.btnSetup.hide();
+        var needUpdate = true;
+        if (typeof (json.version) != "undefined") {
+            if (json.version == this.Config.Version) {
+                needUpdate = false;
+            }
+        }
+        if (needUpdate) this.update_notice();
+        else { this.btnSetup.hide(); }
+    };
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -520,7 +531,13 @@ function HttpUploaderMgr()
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
-	    else if (json.name == "load_complete") { _this.load_complete();}
+	    else if (json.name == "load_complete") { _this.load_complete(json);}
+        else if (json.name == "extension_complete") { 
+            setTimeout(function () {
+                var param = { name: "init", config: _this.Config };
+                _this.browser.postMessage(param);
+            }, 1000);
+        }
 	};
 
 	//IE浏览器信息管理对象
@@ -552,23 +569,10 @@ function HttpUploaderMgr()
             }
             return false;
         }
-        , checkChr: function () { }
-        , checkNat: function () { }
         , NeedUpdate: function ()
         {
             return this.GetVersion() != _this.Config["Version"];
         }
-		, GetVersion: function ()
-		{
-		    var v = null;
-		    try
-		    {
-		        v = _this.parter.Version;
-		        if (v == undefined) v = null;
-		    }
-		    catch (e) { }
-		    return v;
-		}
 		, Setup: function ()
 		{
 			//文件夹选择控件
@@ -663,7 +667,11 @@ function HttpUploaderMgr()
         }
         , postMessage:function(json)
         {
-            if(this.check()) _this.parter.postMessage(JSON.stringify(json));
+            try
+            {
+                _this.parter.postMessage(JSON.stringify(json));
+            }
+            catch (e) { console.log("调用postMessage失败，请检查控件是否安装成功"); }
         }
         , postMessageNat: function (par)
         {
@@ -706,12 +714,12 @@ function HttpUploaderMgr()
 	};
 	this.checkBrowser();
 
-	//安装检查
-	this.setup_check = function ()
-	{
-	    if (!_this.browser.check()) { this.btnSetup.show(); }
-	    else { this.btnSetup.hide(); }
-	};
+    //升级通知
+    this.update_notice = function () {
+        this.btnSetup.text("升级控件");
+        this.btnSetup.css("color", "red");
+        this.btnSetup.show();
+    };
 
 	//安装控件
 	this.Install = function ()
@@ -801,7 +809,6 @@ function HttpUploaderMgr()
 	    this.FileListMgr.filesUI.height(post_panel.height() - 28);
 
 	    this.InitContainer();
-	    this.setup_check();
 	    this.browser.init();
 	};
 	

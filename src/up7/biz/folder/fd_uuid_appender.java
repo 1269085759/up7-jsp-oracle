@@ -18,6 +18,15 @@ public class fd_uuid_appender extends fd_appender
 	{
 		this.pb = new PathGuidBuilder();
 	}
+	
+	public void make_folders()
+	{
+		for(int i = 0 , l = this.m_root.folders.size();i<l;++i)
+		{
+			fd_child fd = this.m_root.folders.get(i);
+			PathTool.createDirectory(fd.pathSvr);
+		}
+	}
 
     public void save() throws IOException, SQLException
     {
