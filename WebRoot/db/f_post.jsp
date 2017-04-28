@@ -1,6 +1,7 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.FileBlockWriter" %><%@
+	page import="up7.FolderCache" %><%@
 	page import="up7.XDebug" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
 	page import="org.apache.commons.fileupload.FileItemFactory" %><%@
@@ -9,7 +10,8 @@
 	page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %><%@
 	page import="org.apache.commons.lang.StringUtils" %><%@
 	page import="java.net.URLDecoder"%><%@ 
-	page import="java.util.Iterator"%><%@ 
+	page import="java.util.Iterator"%><%@
+	page import="redis.clients.jedis.Jedis"%><%@ 
 	page import="java.util.List"%><%
 /*
 	此页面负责将文件块数据写入文件中。
@@ -139,7 +141,9 @@ if(	 StringUtils.isBlank( lenSvr )
 	{
 		if(fd)
 		{
-			db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
+			FolderCache fc = new FolderCache();
+			fc.process(uid,idSvr,f_pos,lenSvr,perSvr,fd_idSvr,fd_lenSvr,fd_perSvr,complete);
+			//db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
 		}
 		else
 		{
