@@ -31,9 +31,6 @@ if (	StringUtils.isBlank(lenLoc)
 	return;
 }
 
-//文件夹进度
-//DBFile db = new DBFile();
-//db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),0,Long.parseLong(lenSvr),perSvr,false);
 //更新redis进度
 up7.biz.redis.file rf = new up7.biz.redis.file();
 rf.process(idSign,perSvr,lenSvr);

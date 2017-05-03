@@ -7,6 +7,8 @@
 		2014-07-21 创建
 */
 DBFile.Clear();
+out.write("数据库清除成功<br/>");
 tasks t = new tasks();
 t.clear();
+out.write("redis缓存清除成功<br/>");
 %>

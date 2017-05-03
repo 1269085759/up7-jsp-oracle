@@ -30,7 +30,7 @@ public class tasks {
 	public void clear()
 	{
 		Jedis j = JedisTool.con();
-		j.del(this.key);
+		j.flushDB();//		
 	}
 	
 	public List<fd_file_redis> all()

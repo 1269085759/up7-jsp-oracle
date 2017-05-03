@@ -38,7 +38,7 @@
 //String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 String uid 			= "";// 		= request.getParameter("uid");
-String idSvr 		= "";// 		= request.getParameter("fid");
+String idSign 		= "";// 		= request.getParameter("fid");
 String perSvr 		= "";// 	= request.getParameter("FileSize");
 String lenSvr		= "";
 String lenLoc		= "";
@@ -79,7 +79,7 @@ while (fileItr.hasNext())
 		String fn = rangeFile.getFieldName();
 		String fv = rangeFile.getString(); 
 		if(fn.equals("uid")) uid = fv;
-		if(fn.equals("idSvr")) idSvr = fv;
+		if(fn.equals("idSign")) idSign = fv;
 		if(fn.equals("lenSvr")) lenSvr = fv;
 		if(fn.equals("lenLoc")) lenLoc = fv;
 		if(fn.equals("perSvr")) perSvr = fv;
@@ -99,12 +99,12 @@ while (fileItr.hasNext())
 //参数为空 
 if(	 StringUtils.isBlank( lenSvr )
 	|| StringUtils.isBlank( uid )
-	|| StringUtils.isBlank( idSvr )
+	|| StringUtils.isBlank( idSign )
 	|| StringUtils.isBlank( f_pos ) 
 	|| StringUtils.isBlank(pathSvr))
 {
 	XDebug.Output("uid", uid);
-	XDebug.Output("idSvr", idSvr);
+	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("param is null");
 	return;
@@ -117,7 +117,7 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("lenSvr", lenSvr);
 	XDebug.Output("lenLoc", lenLoc);
 	XDebug.Output("uid", uid);
-	XDebug.Output("idSvr", idSvr);
+	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("complete", complete);
 	XDebug.Output("pathSvr",pathSvr);
@@ -143,12 +143,13 @@ if(	 StringUtils.isBlank( lenSvr )
 		if(fd)
 		{			
 			FolderCache fc = new FolderCache();
-			fc.process(uid,idSvr,f_pos,lenSvr,perSvr,fd_idSvr,fd_lenSvr,fd_perSvr,complete);
+			//fc.process(uid,idSvr,f_pos,lenSvr,perSvr,fd_idSvr,fd_lenSvr,fd_perSvr,complete);
 			//db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
 		}
 		else
 		{
-			db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,cmp);		
+			up7.biz.redis.file rf = new up7.biz.redis.file();
+			rf.process(idSign,perSvr,lenSvr);
 		}
 	}
 			
