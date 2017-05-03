@@ -40,6 +40,7 @@
 		2014-08-05 修复BUG，上传文件夹如果没有子文件夹时报错的问题。
 		2015-07-30 将子文件命名方式改为 md5 方式，不再使用原文件名称存储，防止冲突。
 		2016-04-09 完善存储逻辑。
+		2017-05-03 仅将文件夹信息保存在redis中。
 
 	JSON格式化工具：http://tool.oschina.net/codeformat/json
 	POST数据过大导致接收到的参数为空解决方法：http://sishuok.com/forum/posts/list/2048.html
@@ -47,20 +48,25 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String folderStr = request.getParameter("folder");
-folderStr = folderStr.replace("+","%20");
-folderStr = URLDecoder.decode(folderStr,"UTF-8");//utf-8解码
+String nameLoc = request.getParameter("nameLoc");
+String idSign = request.getParameter("idSign");
+String pathLoc = request.getParameter("pathLoc");
+String sizeLoc = request.getParameter("sizeLoc");
+String lenLoc = request.getParameter("lenLoc");
+String uid = request.getParameter("uid");
 
+xdb_files f = new xdb_files();
+f.nameLoc = nameLoc;
+f.idSign = idSign;
+f.pathLoc = pathLoc;
+f.sizeLoc = sizeLoc;
+f.lenLoc = Long.parseLong(lenLoc);
+//生成路径
+PathGuidBuilder pb = new PathGuidBuilder();
+f.pathSvr = pb.genFolder(0, nameLoc);
+PathTool.createDirectory(f.pathSvr);	
+        
+up7.biz.redis.file fd = new up7.biz.redis.file();
+fd.create(f);
 
-//参数为空
-if ( StringUtils.isBlank(folderStr) )
-{
-	out.write("param is null\n");
-	return;
-}
-
-fd_redis fd = new fd_redis();
-fd.data = folderStr;
-fd.save();//保存到redis
-
-out.write(fd.toJson());%>
+out.write("1");%>

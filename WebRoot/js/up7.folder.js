@@ -30,10 +30,9 @@ function FolderUploader(idLoc, fdLoc, mgr)
         this.ui.msg.text("正在上传队列中等待...");
         this.State = HttpUploaderState.Ready;
     };
-    this.svr_create = function (fdSvr)
+    this.svr_create = function ()
     {
-		jQuery.extend(this.folderSvr,fdSvr);
-        if (fdSvr.complete)
+        if (this.folderSvr.lenLoc==0)
         {
             this.all_complete();
             return;
@@ -87,18 +86,17 @@ function FolderUploader(idLoc, fdLoc, mgr)
             if (!this.check_opened()) return;
             //在此处增加服务器验证代码。
             this.ui.msg.text("初始化...");
-            var f_data = jQuery.extend({}, this.fields, { folder: encodeURIComponent(JSON.stringify(this.folderSvr)), time: new Date().getTime() });
+            var f_data = jQuery.extend({}, this.fields, { nameLoc: this.folderSvr.nameLoc, idSign: this.folderSvr.idSign, lenLoc: this.folderSvr.lenLoc, sizeLoc: this.folderSvr.sizeLoc, uid: this.folderSvr.uid, time: new Date().getTime() });
 
             $.ajax({
-                type: "POST"
-                //, dataType: 'jsonp'
-                //, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                type: "GET"
+                , dataType: 'jsonp'
+                , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
                 , url: this.Config["UrlFdCreate"]
                 , data: f_data
                 , success: function (msg)
                 {
-                    var json = JSON.parse(decodeURIComponent(msg));
-                    _this.svr_create(json);
+                    _this.svr_create();
                 }
                 , error: function (req, txt, err)
                 {
