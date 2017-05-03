@@ -18,6 +18,7 @@ function FileUploader(fileLoc, mgr)
     this.fileSvr = {
           idSvr: 0
         , idLoc:0
+        , idSign:""
         , pid: 0
         , pidRoot: 0
         , f_fdTask: false
@@ -120,7 +121,7 @@ function FileUploader(fileLoc, mgr)
     //在停止和出错时调用
     this.svr_update = function ()
     {
-        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSvr:this.fileSvr.idSvr,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSign:this.fileSvr.idSign,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr, time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -160,7 +161,7 @@ function FileUploader(fileLoc, mgr)
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.idLoc);
 
-        var param = { sign: this.fileSvr.sign, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
+        var param = { idSign: this.fileSvr.idSign, uid: this.uid, time: new Date().getTime() };
 
         $.ajax({
             type: "GET"
@@ -322,6 +323,7 @@ function FileUploader(fileLoc, mgr)
         this.fields["idSvr"] = this.fileSvr.idSvr;
         this.fields["md5"] = this.fileSvr.md5;
         this.fields["sign"] = this.fileSvr.sign;
+        this.fields["idSign"] = this.fileSvr.idSign;
         this.browser.postFile( jQuery.extend({},this.fileSvr,{id:this.idLoc,fields: this.fields }) );
     };
     this.check_file = function ()

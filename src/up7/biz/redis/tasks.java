@@ -1,7 +1,5 @@
 package up7.biz.redis;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,12 @@ public class tasks {
 	{
 		Jedis j = JedisTool.con();
 		j.lrem(this.key, 1, sign);
+	}
+	
+	public void clear()
+	{
+		Jedis j = JedisTool.con();
+		j.del(this.key);
 	}
 	
 	public List<fd_file_redis> all()

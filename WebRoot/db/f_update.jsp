@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 String uid 		= request.getParameter("uid");
 String sign 	= request.getParameter("sign");
-String idSvr 	= request.getParameter("idSvr");
+String idSign 	= request.getParameter("idSign");
 String perSvr 	= request.getParameter("perSvr");
 String lenSvr 	= request.getParameter("lenSvr");
 String lenLoc 	= request.getParameter("lenLoc");
@@ -21,19 +21,22 @@ String lenLoc 	= request.getParameter("lenLoc");
 //参数为空
 if (	StringUtils.isBlank(lenLoc)
 	|| StringUtils.isBlank(uid)
-	|| StringUtils.isBlank(idSvr)
+	|| StringUtils.isBlank(idSign)
 	)
 {
 	XDebug.Output("lenLoc", lenLoc);
 	XDebug.Output("uid", uid);
-	XDebug.Output("idSvr", idSvr);
+	XDebug.Output("idSvr", idSign);
 	out.write("param is null\n");
 	return;
 }
 
 //文件夹进度
-DBFile db = new DBFile();
-db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),0,Long.parseLong(lenSvr),perSvr,false);
+//DBFile db = new DBFile();
+//db.f_process(Integer.parseInt(uid),Integer.parseInt(idSvr),0,Long.parseLong(lenSvr),perSvr,false);
+//更新redis进度
+up7.biz.redis.file rf = new up7.biz.redis.file();
+rf.process(idSign,perSvr,lenSvr);
 %>
 
 

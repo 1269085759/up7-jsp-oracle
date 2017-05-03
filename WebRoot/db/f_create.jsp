@@ -3,7 +3,8 @@
 	page import="net.sf.json.*" %><%@
 	page import="up7.*" %><%@
 	page import="up7.model.*" %><%@
-	page import="up7.biz.*" %><%@	
+	page import="up7.biz.*" %><%@
+	page import="up7.biz.redis.*" %><%@	
 	page import="org.apache.commons.lang.StringUtils" %><%@
 	page import="java.net.URLDecoder" %><%@
 	page import="java.net.URLEncoder" %><%/*
@@ -21,6 +22,7 @@ String lenLoc 		= request.getParameter("lenLoc");//数字化的文件大小。12
 String sizeLoc 		= request.getParameter("sizeLoc");//格式化的文件大小。10MB
 String callback     = request.getParameter("callback");
 String pathLoc		= request.getParameter("pathLoc");
+String idSign		= request.getParameter("idSign");
 pathLoc			= pathLoc.replace("+","%20");
 pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 
@@ -33,6 +35,7 @@ if (	StringUtils.isBlank(uid)
 }
 
 xdb_files fileSvr= new xdb_files();
+fileSvr.idSign = idSign;
 fileSvr.f_fdChild = false;
 fileSvr.uid = Integer.parseInt(uid);
 fileSvr.nameLoc = PathTool.getName(pathLoc);
@@ -46,8 +49,13 @@ fileSvr.nameSvr = fileSvr.nameLoc;
 PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
 
-DBFile db = new DBFile();	
-fileSvr.idSvr = db.Add(fileSvr);
+//添加到数据库
+DBFile db = new DBFile();
+db.Add(fileSvr);
+
+//添加到redis
+file rf = new file();
+rf.create(fileSvr);
 
 //创建文件
 FileBlockWriter fr = new FileBlockWriter();

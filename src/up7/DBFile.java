@@ -363,11 +363,11 @@ public class DBFile {
 	/// 文件名称，本地路径，远程路径，相对路径都使用原始字符串。
 	/// d:\soft\QQ2012.exe
 	/// </summary>
-	public int Add(xdb_files model)
+	public void Add(xdb_files model)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("insert into up7_files(");
-		sb.append(" f_idSvr");
+		sb.append(" f_idSign");
 		sb.append(",f_sizeLoc");
 		sb.append(",f_pos");
 		sb.append(",f_lenSvr");
@@ -385,9 +385,9 @@ public class DBFile {
 		sb.append(",f_lenLoc");
 		sb.append(",f_sign");
 		
-		sb.append(") values (");
-		
-		sb.append("SEQ_f_idSvr.NEXTVAL");
+		sb.append(") values (");		
+
+		sb.append(" ?");//sb.append("@f_idSign");
 		sb.append(",?");//sb.append("@f_sizeLoc");
 		sb.append(",?");//sb.append(",@f_pos");
 		sb.append(",?");//sb.append(",@f_lenSvr");
@@ -407,31 +407,32 @@ public class DBFile {
 		sb.append(") ");
 
 		DbHelper db = new DbHelper();
-		PreparedStatement cmd = db.GetCommand(sb.toString(),"f_idSvr");
+		PreparedStatement cmd = db.GetCommand(sb.toString());
 		
 		try {
-			cmd.setString(1, model.sizeLoc);
-			cmd.setLong(2, model.FilePos);
-			cmd.setLong(3, model.lenSvr);
-			cmd.setString(4, model.perSvr);
-			cmd.setBoolean(5, model.complete);
+			cmd.setString(1, model.idSign);
+			cmd.setString(2, model.sizeLoc);
+			cmd.setLong(3, model.FilePos);
+			cmd.setLong(4, model.lenSvr);
+			cmd.setString(5, model.perSvr);
+			cmd.setBoolean(6, model.complete);
 			//cmd.setDate(6, (java.sql.Date) model.PostedTime);
-			cmd.setBoolean(6, false);
-			cmd.setBoolean(7, model.f_fdChild);
-			cmd.setInt(8, model.uid);
-			cmd.setString(9, model.nameLoc);
-			cmd.setString(10, model.nameSvr);
-			cmd.setString(11, model.pathLoc);
-			cmd.setString(12, model.pathSvr);
-			cmd.setString(13, model.pathRel);
-			cmd.setString(14, model.md5);
-			cmd.setLong(15, model.lenLoc);
-			cmd.setString(16, model.sign);
-		} catch (SQLException e) {e.printStackTrace();}
+			cmd.setBoolean(7, false);
+			cmd.setBoolean(8, model.f_fdChild);
+			cmd.setInt(9, model.uid);
+			cmd.setString(10, model.nameLoc);
+			cmd.setString(11, model.nameSvr);
+			cmd.setString(12, model.pathLoc);
+			cmd.setString(13, model.pathSvr);
+			cmd.setString(14, model.pathRel);
+			cmd.setString(15, model.md5);
+			cmd.setLong(16, model.lenLoc);
+			cmd.setString(17, model.sign);
+		} catch (SQLException e) {
+			System.out.println("添加文件信息错误，数据库错误");
+			e.printStackTrace();}
 
-		int fid = (int)db.ExecuteGenKey(cmd);
-
-		return fid;
+		db.ExecuteNonQuery(cmd);
 	}
 
 	/// <summary>
@@ -779,6 +780,25 @@ public class DBFile {
 		try
 		{
 			cmd.setInt(1, idSvr);
+			cmd.setInt(2, uid);
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		db.ExecuteNonQuery(cmd);//在部分环境中测试发现执行后没有效果。f_complete仍然为0
+	}
+
+	/// <summary>
+	/// 上传完成。将所有相同MD5文件进度都设为100%
+	/// </summary>
+	public void complete(int uid,String idSign)
+	{
+		String sql = "update up7_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_idSign=? and f_uid=?";
+		DbHelper db = new DbHelper();
+		PreparedStatement cmd = db.GetCommand(sql);
+		
+		try
+		{
+			cmd.setString(1,idSign);
 			cmd.setInt(2, uid);
 		} catch(SQLException e){
 			e.printStackTrace();

@@ -23,6 +23,11 @@ public class xdb_files {
 
 	//数据表唯一ID
 	public int idSvr=0;
+	//全局GUID
+	public String idSign="";
+	public String getIdSign(){return idSign;}
+	public void setIdSign(String v){this.idSign = v;}
+	
 	//文件夹ID
 	public int pid=0;
     public int getIdSvr() {
