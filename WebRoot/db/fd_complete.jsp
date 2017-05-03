@@ -22,7 +22,6 @@ if ( !StringUtils.isBlank(sign) )
 	fd_redis fd = new fd_redis();
 	fd.read(sign);
 	fd.saveToDb();//保存到数据库
-	//DBFile.fd_complete(id_file,id_fd,uid);
 	ret = 1;
 }
 out.write(cbk + "(" + ret + ")");

@@ -10,7 +10,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
     this.idLoc = idLoc;
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
-    this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", pidLoc: 0, pidSvr: 0, idLoc: 0, idSvr: 0, idFile:0,uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
+    this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", idSign: 0, uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
     jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
     this.folderSvr.idLoc = idLoc;
     this.manager = mgr;
@@ -223,7 +223,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
 			, dataType: 'jsonp'
 			, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 			, url: this.Config["UrlFdComplete"]
-			, data: { uid: this.fields["uid"], id_folder: this.folderSvr.fdID,id_file:this.folderSvr.idFile, time: new Date().getTime() }
+			, data: { uid: this.fields["uid"], idSign: this.folderSvr.idSign,time: new Date().getTime() }
 			, success: function (msg)
 			{
 			    //添加到文件列表
