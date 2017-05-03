@@ -5,6 +5,7 @@ public class fd_file
 {
     public int idLoc = 0;
     public int idSvr = 0;//与up6_files.f_id对应
+    public String idSign="";//guid,控件生成，与数据库保持一致。数据库将统一使用此标识。
     public String nameLoc = "";
     public String nameSvr = "";
     public String pathLoc = "";
@@ -13,7 +14,9 @@ public class fd_file
     public String md5 = "";
     public int pidLoc = 0;
     public int pidSvr = 0;
+    public String pidSign="";//父级目录guid
     public int pidRoot = 0;//
+    public String rootSign="";//根级目录sign
     public int fdID = 0;//与up6_folders.fd_id对应，提供给文件夹使用。
     public Boolean fdChild=false;//是否是一个子文件
     public long lenLoc = 0;

@@ -59,12 +59,8 @@ if ( StringUtils.isBlank(folderStr) )
 	return;
 }
 
-fd_appender adder = new fd_appender();
-Gson g = new Gson();
-adder.m_root = g.fromJson(folderStr,fd_root.class);
-adder.save();//保存到数据库
+fd_redis fd = new fd_redis();
+fd.data = folderStr;
+fd.save();//保存到redis
 
-String json = g.toJson(adder.m_root);
-json = URLEncoder.encode(json,"utf-8");
-json = json.replace("+","%20");
-out.write(json);%>
+out.write(fd.toJson());%>

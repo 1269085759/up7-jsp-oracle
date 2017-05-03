@@ -1,6 +1,7 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.FileBlockWriter" %><%@
+	page import="up7.biz.folder.*" %><%@
 	page import="up7.FolderCache" %><%@
 	page import="up7.XDebug" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
@@ -140,7 +141,7 @@ if(	 StringUtils.isBlank( lenSvr )
 	if(Long.parseLong(f_pos) == 0 )
 	{
 		if(fd)
-		{
+		{			
 			FolderCache fc = new FolderCache();
 			fc.process(uid,idSvr,f_pos,lenSvr,perSvr,fd_idSvr,fd_lenSvr,fd_perSvr,complete);
 			//db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);

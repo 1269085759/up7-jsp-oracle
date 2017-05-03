@@ -1,6 +1,7 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.DBFolder" %><%@
+	page import="up7.biz.folder.*" %><%@
 	page import="org.apache.commons.lang.StringUtils" %><%
 /*
 	此页面主要更新文件夹数据表。已上传字段
@@ -10,17 +11,18 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String id_file	= request.getParameter("id_file");
-String id_fd	= request.getParameter("id_folder");
+String sign = request.getParameter("idSign");
 String uid	= request.getParameter("uid");
 String cbk 	= request.getParameter("callback");//jsonp
 int ret = 0;
 
 //参数为空
-if (	!StringUtils.isBlank(uid)
-	||	!StringUtils.isBlank(id_fd))
+if ( !StringUtils.isBlank(sign) )
 {
-	DBFile.fd_complete(id_file,id_fd,uid);
+	fd_redis fd = new fd_redis();
+	fd.read(sign);
+	fd.saveToDb();//保存到数据库
+	//DBFile.fd_complete(id_file,id_fd,uid);
 	ret = 1;
 }
 out.write(cbk + "(" + ret + ")");

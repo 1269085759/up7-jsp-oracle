@@ -1,5 +1,6 @@
 package up7.biz.folder;
 
+//子文件夹
 public class fd_child extends fd_file{
 
     public fd_child() { this.fdTask = true; }
