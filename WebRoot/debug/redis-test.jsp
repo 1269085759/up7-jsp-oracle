@@ -27,7 +27,6 @@
 Jedis j = new Jedis("localhost");
 System.out.println("Connection to server sucessfully");
 //查看服务是否运行
-      j.lpush("tutorial-list", "Redis");
 System.out.println("Server is running: "+j.ping());
 
 %>

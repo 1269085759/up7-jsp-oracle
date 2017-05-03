@@ -1,7 +1,7 @@
---drop table up7_folders
+drop table up7_folders
 CREATE TABLE up7_folders
 (
-	   fd_sign				char(32) NOT NULL   		/*文件夹uuid*/
+	   fd_sign				char(36) NOT NULL   		/*文件夹uuid*/
 	  ,fd_name  			varchar2(50) DEFAULT ''   	/*文件夹名称*/
 	  ,fd_pidSign			char(32) DEFAULT ''   	 	/*父级uuid */
 	  ,fd_uid  				number DEFAULT 0   	 		/*用户ID*/
@@ -21,15 +21,4 @@ CREATE TABLE up7_folders
 );
 
 --创建主键
-ALTER TABLE up7_folders ADD CONSTRAINT PK_up7_folders PRIMARY KEY(fd_id);
-
---创建自动编号列
---DROP SEQUENCE SEQ_fd_id
-CREATE SEQUENCE SEQ_fd_id 
-       MINVALUE 1
-       START WITH 1
-       NOMAXVALUE
-       INCREMENT BY 1
-       NOCYCLE
-       CACHE 30
-;
+ALTER TABLE up7_folders ADD CONSTRAINT PK_up7_folders PRIMARY KEY(fd_sign);
