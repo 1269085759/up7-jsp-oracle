@@ -93,6 +93,8 @@ public class fd_redis
 		this.saveRoot(j);
 		this.saveFiles(j);
 		this.saveFolders(j);
+		
+		//保存到队列
 	}
 	
 	//从redis中读取数据

@@ -27,7 +27,7 @@ public class un_file extends fd_root
         this.complete = r.getBoolean("f_complete");
         this.md5 = r.getString("f_md5");
         this.sign = r.getString("f_sign");
-    }
+    }    
     
     public void copy(un_file f)
     {

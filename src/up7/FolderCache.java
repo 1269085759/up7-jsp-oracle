@@ -1,10 +1,6 @@
 package up7;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import redis.clients.jedis.Jedis;
-import up7.biz.folder.fd_file_redis;
 
 /**
  * @author Administrator

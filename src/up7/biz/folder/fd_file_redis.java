@@ -1,8 +1,5 @@
 package up7.biz.folder;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import redis.clients.jedis.Jedis;
 
 public class fd_file_redis extends fd_file
