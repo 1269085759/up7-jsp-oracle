@@ -99,11 +99,9 @@ while (fileItr.hasNext())
 }
 
 //参数为空 
-if(	 StringUtils.isBlank( lenSvr )
-	|| StringUtils.isBlank( uid )
+if(	 StringUtils.isBlank( uid )
 	|| StringUtils.isBlank( idSign )
-	|| StringUtils.isBlank( f_pos ) 
-	|| StringUtils.isBlank(pathSvr))
+	|| StringUtils.isBlank( f_pos ))
 {
 	XDebug.Output("uid", uid);
 	XDebug.Output("idSign", idSign);
