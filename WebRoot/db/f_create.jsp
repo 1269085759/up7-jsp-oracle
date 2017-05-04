@@ -57,19 +57,10 @@ db.Add(fileSvr);
 up7.biz.redis.file rf = new up7.biz.redis.file();
 rf.create(fileSvr);
 
-//创建文件
-FileBlockWriter fr = new FileBlockWriter();
-Boolean ret = fr.make(fileSvr.pathSvr,fileSvr.lenLoc);		
-if(!ret)
-{
-	out.write(callback + "({\"value\":null,\"err\":true,\"inf\":\"创建文件错误，请检查存储路径是否正确，磁盘空间是否不足。\"})");
-}
-else
-{
-	JSONObject obj = JSONObject.fromObject(fileSvr);
-	String json = obj.toString();
-	json = URLEncoder.encode(json,"UTF-8");//编码，防止中文乱码
-	json = json.replace("+","%20");
-	json = callback + "({\"value\":\"" + json + "\"})";//返回jsonp格式数据。
-	out.write(json);
-}%>
+JSONObject obj = JSONObject.fromObject(fileSvr);
+String json = obj.toString();
+json = URLEncoder.encode(json,"UTF-8");//编码，防止中文乱码
+json = json.replace("+","%20");
+json = callback + "({\"value\":\"" + json + "\"})";//返回jsonp格式数据。
+out.write(json);
+%>
