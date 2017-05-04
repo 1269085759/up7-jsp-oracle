@@ -4,6 +4,7 @@
 	page import="up7.biz.folder.*" %><%@
 	page import="up7.FolderCache" %><%@
 	page import="up7.XDebug" %><%@
+	page import="up7.*" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
 	page import="org.apache.commons.fileupload.FileItemFactory" %><%@
 	page import="org.apache.commons.fileupload.FileUploadException" %><%@
@@ -146,13 +147,15 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_child.lenLoc = Long.parseLong( lenLoc );
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
+		
+		Jedis j = JedisTool.con();
 		up7.biz.redis.file child = new up7.biz.redis.file();
-		child.create(f_child);
+		child.create(j,f_child);
 		
 		//添加到文件夹
 		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis();
 		root.idSign = fd_idSign;
-		root.add(idSign);
+		root.add(j,idSign);
 		
 		//保存块
 		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);

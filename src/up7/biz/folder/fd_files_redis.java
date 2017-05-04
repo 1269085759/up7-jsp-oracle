@@ -30,13 +30,10 @@ public class fd_files_redis
 		return key;
 	}
 	
-	public void add(String fSign)
-	{
-		Jedis j = JedisTool.con();
-		if( !j.sismember(this.getKey(), fSign))
-		{
-			j.sadd(this.getKey(), fSign);
-		}		
+	public void add(Jedis j,String fSign)
+	{		
+		j.sadd(this.getKey(), fSign);	
+		System.out.println("文件数：".concat(Long.toString( j.scard(this.getKey()) ) ) );
 	}
 	
 	public void add(Jedis j,List<fd_file_redis> fs)

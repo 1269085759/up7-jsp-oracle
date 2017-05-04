@@ -25,8 +25,23 @@ public class file {
 	}
 	
 	public void create(xdb_files f)
-	{		
+	{	
 		Jedis j = JedisTool.con();
+		if(j.exists(f.idSign)) return;
+		
+		j.hset(f.idSign, "pathLoc", f.pathLoc);
+		j.hset(f.idSign, "pathSvr", f.pathSvr);
+		j.hset(f.idSign, "nameLoc", f.nameLoc);
+		j.hset(f.idSign, "nameSvr", f.nameSvr);
+		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
+		j.hset(f.idSign, "lenSvr", "0" );
+		j.hset(f.idSign, "sizeLoc",f.sizeLoc);
+		j.hset(f.idSign, "filesCount", Integer.toString(f.filesCount) );
+		j.hset(f.idSign, "foldersCount", "0" );
+	}
+	
+	public void create(Jedis j,xdb_files f)
+	{	
 		if(j.exists(f.idSign)) return;
 		
 		j.hset(f.idSign, "pathLoc", f.pathLoc);

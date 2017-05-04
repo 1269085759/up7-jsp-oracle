@@ -97,23 +97,22 @@ public class FileDbWriter
 	        cmd.setString(1, f.pidSign);//f_pidSign
 	        cmd.setString(2, f.rootSign);//f_rootSign
 	        cmd.setBoolean(3, f.fdTask);//f_fdTask
-	        cmd.setInt(4, f.fdID);//f_fdID
-	        cmd.setBoolean(5, f.fdChild);//f_fdChild
-	        cmd.setInt(6, f.uid);//f_uid
-	        cmd.setString(7, f.nameLoc);//f_nameLoc
-	        cmd.setString(8, f.nameSvr);//f_nameSvr
-	        cmd.setString(9, f.pathLoc);//f_pathLoc
-	        cmd.setString(10, f.pathSvr);//f_pathSvr
-	        cmd.setString(11, f.pathRel);//f_pathRel
-	        cmd.setString(12, f.md5);//f_md5
-	        cmd.setLong(13, f.lenLoc);//f_lenLoc
-	        cmd.setString(14, f.sizeLoc);//f_sizeLoc
-	        cmd.setLong(15, f.pos);//f_pos
-	        cmd.setLong(16, f.lenSvr);//f_lenSvr
-	        cmd.setString(17, f.lenLoc > 0 ? f.perSvr : "100%");//f_perSvr
-	        cmd.setBoolean(18, f.lenLoc > 0 ? f.complete : true);//f_complete
-	        cmd.setString(19, f.sign);
-	        cmd.setString(20, f.idSign);//f_id
+	        cmd.setBoolean(4, f.fdChild);//f_fdChild
+	        cmd.setInt(5, f.uid);//f_uid
+	        cmd.setString(6, f.nameLoc);//f_nameLoc
+	        cmd.setString(7, f.nameSvr);//f_nameSvr
+	        cmd.setString(8, f.pathLoc);//f_pathLoc
+	        cmd.setString(9, f.pathSvr);//f_pathSvr
+	        cmd.setString(10, f.pathRel);//f_pathRel
+	        cmd.setString(11, f.md5);//f_md5
+	        cmd.setLong(12, f.lenLoc);//f_lenLoc
+	        cmd.setString(13, f.sizeLoc);//f_sizeLoc
+	        cmd.setLong(14, f.pos);//f_pos
+	        cmd.setLong(15, f.lenSvr);//f_lenSvr
+	        cmd.setString(16, f.lenLoc > 0 ? f.perSvr : "100%");//f_perSvr
+	        cmd.setBoolean(17, f.lenLoc > 0 ? f.complete : true);//f_complete
+	        cmd.setString(18, f.sign);
+	        cmd.setString(19, f.idSign);//f_id
 	        cmd.execute();	
 		}
 		cmd.close();

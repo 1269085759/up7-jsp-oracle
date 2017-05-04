@@ -110,6 +110,7 @@ public class fd_redis
 		}
 		
 		this.m_root = new fd_root();
+		this.m_root.idSign = idSign;
 		this.m_root.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		this.m_root.lenSvr = Long.parseLong(j.hget(idSign, "lenSvr") );
 		this.m_root.sizeLoc = j.hget(idSign, "sizeLoc");
@@ -150,6 +151,7 @@ public class fd_redis
 	{
 		//取文件ID列表
 		fd_files_redis rfs = new fd_files_redis();
+		rfs.idSign = this.m_root.idSign;
 		Set<String> fs = rfs.all(j);
 		this.m_root.files = new ArrayList<fd_file_redis>();
 		System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
@@ -165,6 +167,7 @@ public class fd_redis
 	{		
 		//取文件ID列表
 		fd_folders_redis rfs = new fd_folders_redis();
+		rfs.idSign = this.m_root.idSign;
 		this.m_root.folders = new ArrayList<fd_child_redis>();		
 		List<String> fs = rfs.all(j);
 		System.out.println("fd_redis.loadFolders() 文件夹数：".concat(Integer.toString(fs.size())));
