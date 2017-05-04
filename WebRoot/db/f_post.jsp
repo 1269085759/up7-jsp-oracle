@@ -116,6 +116,9 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("perSvr", perSvr);
 	XDebug.Output("lenSvr", lenSvr);
 	XDebug.Output("lenLoc", lenLoc);
+	pathLoc	= pathLoc.replace("+","%20");
+	pathLoc	= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
+	
 	XDebug.Output("uid", uid);
 	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
@@ -141,7 +144,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_child.nameLoc = nameLoc;
 		f_child.sizeLoc = sizeLoc;
 		f_child.lenLoc = Long.parseLong( lenLoc );
-		f_child.pathLoc = pathLoc;
+		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
 		up7.biz.redis.file child = new up7.biz.redis.file();
 		child.create(f_child);
@@ -151,7 +154,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		root.idSign = fd_idSign;
 		root.add(idSign);
 		
-		//保存存
+		//保存块
 		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);
 		folder  = true;
 	}

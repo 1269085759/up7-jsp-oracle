@@ -95,9 +95,12 @@ public class file {
 			String pathLocFD = j.hget(fdSign, "pathLoc");
 			String pathSvrFD = j.hget(fdSign, "pathSvr");
 			String pathLocF = j.hget(idSign, "pathLoc");
+			
+			
 			//将文件的本地根路径替换为服务器路径
-			pathSvrF = pathLocF.replace(pathLocFD, pathSvrFD);
-			pathSvrF.replaceAll("\\\\", "/");
+			pathLocFD = pathLocFD.replace("\\", "/");
+			pathSvrFD = pathSvrFD.replace("\\", "/");
+			pathSvrF = pathLocF.replace(pathLocFD, pathSvrFD);			
 			j.hset(idSign, "pathSvr", pathSvrF);
 		}
 		else
@@ -123,7 +126,7 @@ public class file {
 		if( !j.exists(idSign)) {System.out.println("redis-子文件不存在"); return "";}//文件不存在
 		if( !j.exists(fdSign)) {System.out.println("redis-文件夹不存在"); return "";}//文件夹不存在
 		
-		String pathSvr = this.makePath(j, idSign, fdSign);
+		String pathSvr = this.makePath(j, idSign, fdSign);		
 		Integer index = pathSvr.lastIndexOf("/");
 		if(index != -1) pathSvr = pathSvr.substring(0,index);		
 		pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");
