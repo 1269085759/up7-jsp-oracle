@@ -22,7 +22,6 @@
 		idSvr
 		md5
 		lenSvr
-		pathSvr
 		RangePos
 		fd_idSvr
 		fd_lenSvr
@@ -31,7 +30,6 @@
 		2012-04-18 取消更新文件上传进度信息逻辑。
 		2012-10-25 整合更新文件进度信息功能。减少客户端的AJAX调用。
 		2014-07-23 优化代码。
-		2015-03-19 客户端提供pathSvr，此页面减少一次访问数据库的操作。
 		2016-04-09 优化文件存储逻辑，增加更新文件夹进度逻辑
 */
 //String path = request.getContextPath();
@@ -48,7 +46,6 @@ String complete		= "false";//文件块是否已发送完毕（最后一个文件
 String fd_idSign	= "";
 String fd_lenSvr	= "";
 String fd_perSvr	= "0%";
-String pathSvr		= "";//add(2015-03-19):服务器文件路径由客户端提供，此页面减少一次访问数据库的操作。
  
 // Check that we have a file upload request
 boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -87,7 +84,6 @@ while (fileItr.hasNext())
 		if(fn.equals("RangePos")) f_pos = fv;
 		if(fn.equals("rangeIndex")) rangeIndex = fv;
 		if(fn.equals("complete")) complete = fv;
-		if(fn.equals("pathSvr")) pathSvr = fv;//add(2015-03-19):
 		if(fn.equals("fd-idSign")) fd_idSign = fv;
 		if(fn.equals("fd-lenSvr")) fd_lenSvr = fv;
 		if(fn.equals("fd-perSvr")) fd_perSvr = fv;
@@ -99,7 +95,8 @@ while (fileItr.hasNext())
 }
 
 //参数为空 
-if(	 StringUtils.isBlank( uid )
+if(	 StringUtils.isBlank( lenSvr )
+	|| StringUtils.isBlank( uid )
 	|| StringUtils.isBlank( idSign )
 	|| StringUtils.isBlank( f_pos ))
 {
@@ -110,9 +107,6 @@ if(	 StringUtils.isBlank( uid )
 	return;
 }
 
-	pathSvr	= pathSvr.replace("+","%20");	
-	pathSvr = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码//客户端使用的是encodeURIComponent编码，
-
 	XDebug.Output("perSvr", perSvr);
 	XDebug.Output("lenSvr", lenSvr);
 	XDebug.Output("lenLoc", lenLoc);
@@ -120,7 +114,6 @@ if(	 StringUtils.isBlank( uid )
 	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("complete", complete);
-	XDebug.Output("pathSvr",pathSvr);
 	XDebug.Output("fd_idSign",fd_idSign);
 	XDebug.Output("fd_lenSvr",fd_lenSvr);
 	XDebug.Output("fd_perSvr",fd_perSvr);
