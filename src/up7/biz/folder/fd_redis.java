@@ -33,7 +33,17 @@ public class fd_redis
 	//文件夹json数据
 	public String data;
 	fd_root m_root = null;
+	Jedis con = null;
 	Map<String/*guid*/,String/*pathSvr*/> parentPathMap = new HashMap<String,String>();
+	
+	public fd_redis(){}
+	public fd_redis(Jedis j){this.con = j;}
+	
+	Jedis getCon()
+	{
+		if(this.con==null) this.con = JedisTool.con();
+		return this.con;
+	}
 	
 	void parse() throws IOException
 	{

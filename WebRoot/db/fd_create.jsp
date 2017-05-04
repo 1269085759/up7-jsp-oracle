@@ -5,7 +5,8 @@
 	page import="up7.*" %><%@
 	page import="up7.model.*" %><%@
 	page import="up7.biz.*" %><%@
-	page import="up7.biz.folder.*" %><%@	
+	page import="up7.biz.folder.*" %><%@
+	page import="redis.clients.jedis.Jedis" %><%@	
 	page import="org.apache.commons.lang.StringUtils" %><%@
 	page import="java.net.URLDecoder" %><%@
 	page import="java.net.URLEncoder" %><%/*
@@ -72,9 +73,11 @@ f.filesCount = Integer.parseInt(fCount);
 PathGuidBuilder pb = new PathGuidBuilder();
 f.pathSvr = pb.genFolder(0, nameLoc);
 PathTool.createDirectory(f.pathSvr);	
-        
-up7.biz.redis.file fd = new up7.biz.redis.file();
+
+Jedis j = JedisTool.con();
+up7.biz.redis.file fd = new up7.biz.redis.file(j);
 fd.create(f);
+j.close();
 
 JSONObject obj = JSONObject.fromObject(f);
 String json = obj.toString();
