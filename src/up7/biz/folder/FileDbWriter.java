@@ -34,6 +34,7 @@ public class FileDbWriter
         sb.append(",f_lenSvr");
         sb.append(",f_perSvr");
         sb.append(",f_sign");
+        sb.append(",f_complete");
         
         sb.append(") values(");
         
@@ -51,6 +52,7 @@ public class FileDbWriter
         sb.append(",?");//f_lenSvr
         sb.append(",?");//f_perSvr
         sb.append(",?");//f_sign
+        sb.append(",1");//f_complete
         sb.append(")");
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());

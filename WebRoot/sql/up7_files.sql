@@ -20,7 +20,7 @@ CREATE TABLE up7_files
 	,f_pathRel  		varchar2(512)  DEFAULT '' /*文件在服务器中的相对路径。*/
 	,f_md5  			varchar2(40)   DEFAULT '' /*文件md5,sha1,crc*/
 	,f_lenLoc  			number(19) DEFAULT 0  	 /*文件总长度。以字节为单位*/
-	,f_sizeLoc  		varchar2(10) DEFAULT ''   /*格式化的文件尺寸。示例：10MB*/
+	,f_sizeLoc  		varchar2(15) DEFAULT ''   /*格式化的文件尺寸。示例：10MB*/
 	,f_pos  			number(19) DEFAULT 0  	 /*文件续传位置。*/
 	,f_lenSvr			number(19) DEFAULT 0  	 /*已上传长度。以字节为单位。*/
 	,f_perSvr  			varchar2(6) DEFAULT '0%'  /*已上传百分比。示例：10%*/

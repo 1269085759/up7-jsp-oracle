@@ -146,8 +146,8 @@ if(	 StringUtils.isBlank( lenSvr )
 		up7.model.xdb_files f_child = new up7.model.xdb_files();
 		f_child.idSign = idSign;
 		f_child.nameLoc = nameLoc;
-		f_child.sizeLoc = sizeLoc;
 		f_child.lenLoc = Long.parseLong( lenLoc );
+		f_child.sizeLoc = f_child.lenLoc<1024 ? PathTool.getDataSize(f_child.lenLoc) : sizeLoc;
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
 				
