@@ -5,27 +5,24 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String uid = request.getParameter("uid");
-String sign = request.getParameter("sign");
-String idSvr = request.getParameter("idSvr");
+String idSign = request.getParameter("idSign");
 String perSvr = request.getParameter("perSvr");
 String lenSvr = request.getParameter("lenSvr");
-String lenLoc = request.getParameter("lenLoc");
 
 //参数为空
-if(		StringUtils.isBlank(lenSvr)
-	||StringUtils.isBlank(uid)
-	||StringUtils.isBlank(idSvr)
+if(	  StringUtils.isBlank(lenSvr)
+	||StringUtils.isBlank(idSign)
 	||StringUtils.isBlank(perSvr)
 	)
-{
-	XDebug.Output("lenLoc", lenLoc);
-	XDebug.Output("uid", uid);
-	XDebug.Output("idSvr", idSvr);
+{	
+	XDebug.Output("idSign", idSign);
+	XDebug.Output("perSvr", perSvr);
+	XDebug.Output("lenSvr", lenSvr);
 	out.write("param is null\n");
 	return;
 }
 
 //文件夹进度
-DBFolder.update(Integer.parseInt(idSvr),perSvr,Long.parseLong(lenSvr),Integer.parseInt(uid));
+up7.biz.redis.file f = new up7.biz.redis.file();
+f.process(idSign,perSvr,lenSvr);
 %>

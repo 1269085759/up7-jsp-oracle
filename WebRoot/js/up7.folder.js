@@ -55,7 +55,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
     };
     this.svr_update = function ()
     {
-        var param = jQuery.extend({}, this.fields, { uid: this.folderSvr.uid, sign: this.folderSvr.sign, idSvr: this.folderSvr.idSvr, lenSvr: this.folderSvr.lenSvr, perSvr: this.folderSvr.perSvr, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, { uid: this.folderSvr.uid, sign: this.folderSvr.sign, idSign: this.folderSvr.idSign, lenSvr: this.folderSvr.lenSvr, perSvr: this.folderSvr.perSvr, time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
