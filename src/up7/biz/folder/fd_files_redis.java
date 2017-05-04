@@ -23,6 +23,16 @@ import up7.JedisTool;
 public class fd_files_redis 
 {
 	public String idSign;
+	Jedis con=null;
+	public fd_files_redis(Jedis c)
+	{
+		this.con = c;
+	}
+	public fd_files_redis(){}
+	public Jedis getCon(){
+		if(this.con==null) this.con = JedisTool.con();
+		return this.con;
+	}
 	
 	String getKey()
 	{
@@ -35,8 +45,9 @@ public class fd_files_redis
 		j.del(this.getKey());
 	}
 	
-	public void add(Jedis j,String fSign)
-	{		
+	public void add(String fSign)
+	{	
+		Jedis j = this.getCon();
 		j.sadd(this.getKey(), fSign);	
 		System.out.println("文件数：".concat(Long.toString( j.scard(this.getKey()) ) ) );
 	}

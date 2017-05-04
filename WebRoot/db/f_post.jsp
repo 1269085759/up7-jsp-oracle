@@ -147,18 +147,22 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_child.lenLoc = Long.parseLong( lenLoc );
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
-		
+				
 		Jedis j = JedisTool.con();
-		up7.biz.redis.file child = new up7.biz.redis.file();
-		child.create(j,f_child);
+		up7.biz.redis.file child = new up7.biz.redis.file(j);
+		child.create(f_child);
 		
 		//添加到文件夹
-		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis();
+		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j);
 		root.idSign = fd_idSign;
-		root.add(j,idSign);
+		root.add(idSign);
+		
+		//块路径
+		String fpathSvr = child.getPartPath(idSign,rangeIndex,fd_idSign);
+		j.close();
 		
 		//保存块
-		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);
+		part.savePart(fpathSvr,rangeFile);
 		folder  = true;
 	}
 	

@@ -59,25 +59,22 @@ public class file {
 	 * @param rangeData
 	 * @throws IOException 
 	 */
-	public void savePart(String idSign,String fdSign,String rangeIndex,FileItem rangeData) throws IOException
+	public void savePart(String pathSvr,FileItem rangeData) throws IOException
 	{
-		up7.biz.redis.file f_svr = new up7.biz.redis.file();
-		String fpart = f_svr.getPartPath(idSign, rangeIndex, fdSign);
-		System.out.println("文件块路径：".concat(fpart));
-		if( StringUtils.isBlank(fpart))
+		if( StringUtils.isBlank(pathSvr))
 		{
 			System.out.println("未找到子文件块路径，保存子文件块数据失败");
 			return;
 		}
 		
 		//创建文件夹：目录/guid/1
-		File part_path = new File(fpart);		
+		File part_path = new File(pathSvr);		
 		PathTool.createDirectory( part_path.getParent());//		
 
 		try {
-			rangeData.write(new File(fpart));
+			rangeData.write(new File(pathSvr));
 		} catch (Exception e) {
-			System.out.println("保存文件块错误,路径：".concat(fpart));
+			System.out.println("保存文件块错误,路径：".concat(pathSvr));
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

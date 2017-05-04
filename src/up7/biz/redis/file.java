@@ -10,7 +10,22 @@ import up7.JedisTool;
 import up7.PathTool;
 import up7.model.xdb_files;
 
-public class file {
+public class file 
+{
+	Jedis con=null;
+	public file(Jedis c)
+	{
+		this.con = c;
+	}
+	public file()
+	{		
+	}
+	Jedis getCon()
+	{
+		if(this.con == null) this.con = JedisTool.con();
+		return this.con;
+	}
+	
 	public void process(String idSign,String perSvr,String lenSvr)
 	{
 		Jedis j = JedisTool.con();
@@ -26,22 +41,7 @@ public class file {
 	
 	public void create(xdb_files f)
 	{	
-		Jedis j = JedisTool.con();
-		if(j.exists(f.idSign)) return;
-		
-		j.hset(f.idSign, "pathLoc", f.pathLoc);
-		j.hset(f.idSign, "pathSvr", f.pathSvr);
-		j.hset(f.idSign, "nameLoc", f.nameLoc);
-		j.hset(f.idSign, "nameSvr", f.nameSvr);
-		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
-		j.hset(f.idSign, "lenSvr", "0" );
-		j.hset(f.idSign, "sizeLoc",f.sizeLoc);
-		j.hset(f.idSign, "filesCount", Integer.toString(f.filesCount) );
-		j.hset(f.idSign, "foldersCount", "0" );
-	}
-	
-	public void create(Jedis j,xdb_files f)
-	{	
+		Jedis j = this.getCon();
 		if(j.exists(f.idSign)) return;
 		
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
@@ -138,7 +138,7 @@ public class file {
 	public String getPartPath(String idSign,String blockIndex,String fdSign) throws IOException
 	{		
 		String pathSvr = "";
-		Jedis j = JedisTool.con();
+		Jedis j = this.getCon();
 		Boolean hasData = j.exists(idSign);
 		if(hasData) hasData = j.exists(fdSign);
 		if(hasData)
