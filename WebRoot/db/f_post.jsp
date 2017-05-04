@@ -145,10 +145,12 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_child.rootSign = fd_idSign;
 		up7.biz.redis.file child = new up7.biz.redis.file();
 		child.create(f_child);
+		
 		//添加到文件夹
 		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis();
 		root.idSign = fd_idSign;
 		root.add(idSign);
+		
 		//保存存
 		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);
 		folder  = true;

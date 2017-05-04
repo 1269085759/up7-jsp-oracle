@@ -97,7 +97,7 @@ public class file {
 			String pathLocF = j.hget(idSign, "pathLoc");
 			//将文件的本地根路径替换为服务器路径
 			pathSvrF = pathLocF.replace(pathLocFD, pathSvrFD);
-			pathSvrF.replaceAll("\\", "/");
+			pathSvrF.replaceAll("\\\\", "/");
 			j.hset(idSign, "pathSvr", pathSvrF);
 		}
 		else

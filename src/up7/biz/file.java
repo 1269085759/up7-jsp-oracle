@@ -63,6 +63,7 @@ public class file {
 	{
 		up7.biz.redis.file f_svr = new up7.biz.redis.file();
 		String fpart = f_svr.getPartPath(idSign, rangeIndex, fdSign);
+		System.out.println("文件块路径：".concat(fpart));
 		if( StringUtils.isBlank(fpart))
 		{
 			System.out.println("未找到子文件块路径，保存子文件块数据失败");
