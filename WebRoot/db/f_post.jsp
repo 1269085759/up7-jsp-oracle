@@ -127,11 +127,7 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("fd_lenSvr",fd_lenSvr);
 	XDebug.Output("fd_perSvr",fd_perSvr);
 	boolean cmp = StringUtils.equals(complete,"true");
-	
-	//保存文件块数据
-	FileBlockWriter res = new FileBlockWriter();
-	res.write(pathSvr,Long.parseLong(f_pos),rangeFile);
-	
+		
 	up7.biz.file part = new up7.biz.file();
 	Boolean folder = false;
 	//文件块

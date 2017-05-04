@@ -51,7 +51,7 @@ public class PathGuidBuilder extends PathBuilder{
 	 * @see Xproer.PathBuilder#genFile(int, Xproer.xdb_files)
 	 */
 	public String genFile(int uid,xdb_files f) throws IOException{
-		String uuid = UUID.randomUUID().toString();
+		String uuid = f.idSign;
 		uuid = uuid.replace("-", "");
 		
 

@@ -63,11 +63,12 @@ public class file {
 		Jedis j = JedisTool.con();
 		if(!j.exists(idSign)) return "";
 		
-		String pathSvr = j.hget(idSign, "pathSvr");
+		String pathSvr = j.hget(idSign, "pathSvr");//f:/files/guid/QQ2013.exe
 		File path = new File(pathSvr);
-		pathSvr = path.getParent();
-		pathSvr.concat("/");
-		pathSvr.concat(blockIndex);
+		pathSvr = path.getParent();//d:\\soft
+		pathSvr = pathSvr.concat("/");
+		pathSvr = pathSvr.concat(blockIndex).concat(".part");
+		pathSvr = pathSvr.replace("\\", "/");
 		return pathSvr;
 	}
 	
@@ -119,7 +120,7 @@ public class file {
 		String pathSvr = this.makePath(j, idSign, fdSign);
 		Integer index = pathSvr.lastIndexOf("/");
 		if(index != -1) pathSvr = pathSvr.substring(0,index);		
-		pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex);
+		pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");
 		return pathSvr;
 	}
 }
