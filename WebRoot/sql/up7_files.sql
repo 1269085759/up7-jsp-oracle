@@ -11,7 +11,6 @@ CREATE TABLE up7_files
 	,f_pidSign			char(36) DEFAULT ''		 /**/
 	,f_rootSign			char(36) DEFAULT ''		 /*根级文件夹ID*/
 	,f_fdTask			number(1) DEFAULT 0	 	 /*表示是否是一个文件夹上传任务。提供给 ajax_f_list.jsp使用*/
-	,f_fdID				number DEFAULT '0'		 /*文件夹详细ID，与hub_folders.fd_id对应*/
 	,f_fdChild			number DEFAULT '0'		 /*是文件夹中的子项*/
 	,f_uid  			number DEFAULT '0'   	 /*用户ID*/
 	,f_nameLoc 			varchar2(255)  DEFAULT '' /*文件在本地电脑中的名称。例：QQ.exe*/ 

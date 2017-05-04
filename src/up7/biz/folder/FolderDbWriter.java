@@ -29,8 +29,8 @@ public class FolderDbWriter
         sb.append(",fd_pathSvr=?");
         sb.append(",fd_folders=?");
         sb.append(",fd_files=?");
-        sb.append(",fd_pidRoot=?");
-        sb.append(" where idSign=?");
+        sb.append(",fd_rootSign=?");
+        sb.append(" where fd_sign=?");
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());
         cmd.setString(1, "");//fd_name
@@ -43,12 +43,14 @@ public class FolderDbWriter
         cmd.setInt(8, 0);//fd_folders
         cmd.setInt(9, 0);//fd_files
         cmd.setInt(10, 0);//fd_pidRoot
-        cmd.setInt(11, 0);//fd_id
+        cmd.setString(11, "");//fd_id
         return cmd;
 	}
 	
 	public void save() throws SQLException
 	{
+		if(this.root.folders==null) return;
+		if(this.root.folders.size() <1) return;
 		PreparedStatement cmd = this.makeCmd(con);
 		
 		//写根目录
@@ -61,8 +63,8 @@ public class FolderDbWriter
         cmd.setString(7, this.root.pathSvr);//fd_pathSvr
         cmd.setInt(8, this.root.foldersCount);//fd_folders
         cmd.setInt(9, this.root.filesCount);//fd_files
-        cmd.setInt(10, this.root.pidRoot);//fd_pidRoot
-        cmd.setInt(11, this.root.idSvr);//fd_id
+        cmd.setString(10, this.root.rootSign);//fd_pidRoot
+        cmd.setString(11, this.root.idSign);//fd_id
         cmd.execute();
         
 		//写子目录列表
@@ -77,8 +79,8 @@ public class FolderDbWriter
 	        cmd.setString(7, fd.pathSvr);//fd_pathSvr
 	        cmd.setInt(8, fd.foldersCount);//fd_folders
 	        cmd.setInt(9, fd.filesCount);//fd_files
-	        cmd.setInt(10, fd.pidRoot);//fd_pidRoot
-	        cmd.setInt(11, fd.idSvr);//fd_id
+	        cmd.setString(10, fd.rootSign);//fd_pidRoot
+	        cmd.setString(11, fd.idSign);//fd_id
 	        cmd.execute();			
 		}
 		cmd.close();

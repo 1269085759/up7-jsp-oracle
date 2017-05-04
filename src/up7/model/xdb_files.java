@@ -150,6 +150,7 @@ public class xdb_files {
 	public int getFilesComplete() {return filesComplete;}
 	public void setFilesComplete(int filesComplete) {this.filesComplete = filesComplete;	}
 
+	public String rootSign="";
 	//根级文件夹ID
     public int pidRoot=0;	
 	/**	 * 表示当前项是否是一个文件夹项。	 */

@@ -40,6 +40,9 @@ String idSign 		= "";// 		= request.getParameter("fid");
 String perSvr 		= "";// 	= request.getParameter("FileSize");
 String lenSvr		= "";
 String lenLoc		= "";
+String nameLoc		= "";
+String pathLoc		= "";
+String sizeLoc		= "";
 String f_pos 		= "";// 	= request.getParameter("RangePos");
 String rangeIndex	= "1";
 String complete		= "false";//文件块是否已发送完毕（最后一个文件块数据）
@@ -78,6 +81,9 @@ while (fileItr.hasNext())
 		String fv = rangeFile.getString(); 
 		if(fn.equals("uid")) uid = fv;
 		if(fn.equals("idSign")) idSign = fv;
+		if(fn.equals("nameLoc")) nameLoc = fv;
+		if(fn.equals("pathLoc")) pathLoc = fv;
+		if(fn.equals("sizeLoc")) sizeLoc = fv;
 		if(fn.equals("lenSvr")) lenSvr = fv;
 		if(fn.equals("lenLoc")) lenLoc = fv;
 		if(fn.equals("perSvr")) perSvr = fv;
@@ -113,12 +119,13 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("uid", uid);
 	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
+	XDebug.Output("rangeIndex", rangeIndex);
 	XDebug.Output("complete", complete);
 	XDebug.Output("fd_idSign",fd_idSign);
 	XDebug.Output("fd_lenSvr",fd_lenSvr);
 	XDebug.Output("fd_perSvr",fd_perSvr);
 	boolean cmp = StringUtils.equals(complete,"true");
-		
+	
 	up7.biz.file part = new up7.biz.file();
 	Boolean folder = false;
 	//文件块
@@ -128,6 +135,21 @@ if(	 StringUtils.isBlank( lenSvr )
 	}//子文件块
 	else
 	{
+		//向redis添加子文件信息
+		up7.model.xdb_files f_child = new up7.model.xdb_files();
+		f_child.idSign = idSign;
+		f_child.nameLoc = nameLoc;
+		f_child.sizeLoc = sizeLoc;
+		f_child.lenLoc = Long.parseLong( lenLoc );
+		f_child.pathLoc = pathLoc;
+		f_child.rootSign = fd_idSign;
+		up7.biz.redis.file child = new up7.biz.redis.file();
+		child.create(f_child);
+		//添加到文件夹
+		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis();
+		root.idSign = fd_idSign;
+		root.add(idSign);
+		//保存存
 		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);
 		folder  = true;
 	}

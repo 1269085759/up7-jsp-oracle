@@ -57,6 +57,7 @@ pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 String sizeLoc 	= request.getParameter("sizeLoc");
 String lenLoc 	= request.getParameter("lenLoc");
 String uid 		= request.getParameter("uid");
+String fCount	= request.getParameter("filesCount");
 String callback = request.getParameter("callback");
 
 
@@ -66,6 +67,7 @@ f.idSign = idSign;
 f.pathLoc = pathLoc;
 f.sizeLoc = sizeLoc;
 f.lenLoc = Long.parseLong(lenLoc);
+f.filesCount = Integer.parseInt(fCount);
 //生成路径
 PathGuidBuilder pb = new PathGuidBuilder();
 f.pathSvr = pb.genFolder(0, nameLoc);

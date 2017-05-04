@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -102,7 +103,11 @@ public class fd_redis
 	{
 		Jedis j = JedisTool.con();
 		//folder不存在
-		if(!j.exists(idSign)) return;
+		if(!j.exists(idSign)) 
+		{
+			System.out.println("redis-文件夹不存在");
+			return;			
+		}
 		
 		this.m_root = new fd_root();
 		this.m_root.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
@@ -145,7 +150,9 @@ public class fd_redis
 	{
 		//取文件ID列表
 		fd_files_redis rfs = new fd_files_redis();
-		List<String> fs = rfs.all(j);
+		Set<String> fs = rfs.all(j);
+		this.m_root.files = new ArrayList<fd_file_redis>();
+		System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
 		for(String s : fs)
 		{
 			fd_file_redis file = new fd_file_redis();
@@ -158,7 +165,9 @@ public class fd_redis
 	{		
 		//取文件ID列表
 		fd_folders_redis rfs = new fd_folders_redis();
+		this.m_root.folders = new ArrayList<fd_child_redis>();		
 		List<String> fs = rfs.all(j);
+		System.out.println("fd_redis.loadFolders() 文件夹数：".concat(Integer.toString(fs.size())));
 		for(String s : fs)
 		{
 			fd_child_redis fd = new fd_child_redis();

@@ -25,14 +25,19 @@ public class file {
 	}
 	
 	public void create(xdb_files f)
-	{
+	{		
 		Jedis j = JedisTool.con();
+		if(j.exists(f.idSign)) return;
+		
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
 		j.hset(f.idSign, "pathSvr", f.pathSvr);
 		j.hset(f.idSign, "nameLoc", f.nameLoc);
 		j.hset(f.idSign, "nameSvr", f.nameSvr);
 		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
+		j.hset(f.idSign, "lenSvr", "0" );
 		j.hset(f.idSign, "sizeLoc",f.sizeLoc);
+		j.hset(f.idSign, "filesCount", Integer.toString(f.filesCount) );
+		j.hset(f.idSign, "foldersCount", "0" );
 	}
 	
 	public xdb_files read(String idSign)
@@ -47,6 +52,7 @@ public class file {
 		f.nameSvr = j.hget(idSign, "nameSvr");
 		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		f.sizeLoc = j.hget(idSign, "sizeLoc");
+		f.filesCount = Integer.parseInt( j.hget(idSign, "filesCount") );
 		return f;
 	}
 	
@@ -114,8 +120,8 @@ public class file {
 	public String getPartPath(String idSign,String blockIndex,String fdSign) throws IOException
 	{
 		Jedis j = JedisTool.con();
-		if( !j.exists(idSign)) return "";//文件不存在
-		if( !j.exists(fdSign)) return "";//文件夹不存在
+		if( !j.exists(idSign)) {System.out.println("redis-子文件不存在"); return "";}//文件不存在
+		if( !j.exists(fdSign)) {System.out.println("redis-文件夹不存在"); return "";}//文件夹不存在
 		
 		String pathSvr = this.makePath(j, idSign, fdSign);
 		Integer index = pathSvr.lastIndexOf("/");

@@ -65,7 +65,7 @@ public class file {
 		String fpart = f_svr.getPartPath(idSign, rangeIndex, fdSign);
 		if( StringUtils.isBlank(fpart))
 		{
-			System.out.println("未找到子文件块路径，保存文件块数据失败");
+			System.out.println("未找到子文件块路径，保存子文件块数据失败");
 			return;
 		}
 		
