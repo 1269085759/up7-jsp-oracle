@@ -86,7 +86,8 @@ function FolderUploader(idLoc, fdLoc, mgr)
             if (!this.check_opened()) return;
             //在此处增加服务器验证代码。
             this.ui.msg.text("初始化...");
-            var f_data = jQuery.extend({}, this.fields, { nameLoc: this.folderSvr.nameLoc, idSign: this.folderSvr.idSign, lenLoc: this.folderSvr.lenLoc, sizeLoc: this.folderSvr.sizeLoc, uid: this.folderSvr.uid, time: new Date().getTime() });
+            var loc_path = encodeURIComponent(this.folderSvr.pathLoc);
+            var f_data = jQuery.extend({}, this.fields, { nameLoc: this.folderSvr.nameLoc, pathLoc: loc_path, idSign: this.folderSvr.idSign, lenLoc: this.folderSvr.lenLoc, sizeLoc: this.folderSvr.sizeLoc, uid: this.folderSvr.uid, time: new Date().getTime() });
 
             $.ajax({
                 type: "GET"

@@ -1,6 +1,7 @@
 <%@ page language="java" import="up7.*" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="com.google.gson.*" %><%@
+	page import="net.sf.json.*" %><%@
 	page import="up7.*" %><%@
 	page import="up7.model.*" %><%@
 	page import="up7.biz.*" %><%@
@@ -48,12 +49,16 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String nameLoc = request.getParameter("nameLoc");
-String idSign = request.getParameter("idSign");
-String pathLoc = request.getParameter("pathLoc");
-String sizeLoc = request.getParameter("sizeLoc");
-String lenLoc = request.getParameter("lenLoc");
-String uid = request.getParameter("uid");
+String nameLoc 	= request.getParameter("nameLoc");
+String idSign 	= request.getParameter("idSign");
+String pathLoc 	= request.getParameter("pathLoc");
+pathLoc			= pathLoc.replace("+","%20");
+pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
+String sizeLoc 	= request.getParameter("sizeLoc");
+String lenLoc 	= request.getParameter("lenLoc");
+String uid 		= request.getParameter("uid");
+String callback = request.getParameter("callback");
+
 
 xdb_files f = new xdb_files();
 f.nameLoc = nameLoc;
@@ -69,4 +74,11 @@ PathTool.createDirectory(f.pathSvr);
 up7.biz.redis.file fd = new up7.biz.redis.file();
 fd.create(f);
 
-out.write("1");%>
+JSONObject obj = JSONObject.fromObject(f);
+String json = obj.toString();
+json = URLEncoder.encode(json,"UTF-8");//编码，防止中文乱码
+json = json.replace("+","%20");
+
+json = callback + "({\"ret\":\"" + json + "\"})";//返回jsonp格式数据。
+out.write(json);
+%>
