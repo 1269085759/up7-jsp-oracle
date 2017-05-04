@@ -30,6 +30,11 @@ public class fd_files_redis
 		return key;
 	}
 	
+	public void del(Jedis j)
+	{
+		j.del(this.getKey());
+	}
+	
 	public void add(Jedis j,String fSign)
 	{		
 		j.sadd(this.getKey(), fSign);	

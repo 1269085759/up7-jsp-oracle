@@ -21,6 +21,11 @@ public class fd_folders_redis {
 		j.lpush(this.getKey(), fSign);
 	}
 	
+	public void del(Jedis j)
+	{		
+		j.del(this.getKey());
+	}
+	
 	public void add(Jedis j,List<fd_child_redis> fs)
 	{
 		String key = this.getKey();		

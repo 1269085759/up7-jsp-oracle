@@ -136,15 +136,19 @@ public class file {
 	 * @throws IOException 
 	 */
 	public String getPartPath(String idSign,String blockIndex,String fdSign) throws IOException
-	{
+	{		
+		String pathSvr = "";
 		Jedis j = JedisTool.con();
-		if( !j.exists(idSign)) {System.out.println("redis-子文件不存在"); return "";}//文件不存在
-		if( !j.exists(fdSign)) {System.out.println("redis-文件夹不存在"); return "";}//文件夹不存在
-		
-		String pathSvr = this.makePath(j, idSign, fdSign);		
-		Integer index = pathSvr.lastIndexOf("/");
-		if(index != -1) pathSvr = pathSvr.substring(0,index);		
-		pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");
-		return pathSvr;
+		Boolean hasData = j.exists(idSign);
+		if(hasData) hasData = j.exists(fdSign);
+		if(hasData)
+		{
+			pathSvr = this.makePath(j, idSign, fdSign);		
+			Integer index = pathSvr.lastIndexOf("/");
+			if(index != -1) pathSvr = pathSvr.substring(0,index);		
+			pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");			
+		}
+		j.close();
+		return pathSvr;		
 	}
 }

@@ -105,6 +105,7 @@ public class fd_redis
 		//folder不存在
 		if(!j.exists(idSign)) 
 		{
+			j.close();
 			System.out.println("redis-文件夹不存在");
 			return;			
 		}
@@ -120,6 +121,25 @@ public class fd_redis
 		//
 		this.loadFiles(j);//加载文件列表		
 		this.loadFolders(j);//加载目录列表
+		j.close();
+	}
+	
+	public void del(String idSign)
+	{
+		Jedis j = JedisTool.con();
+		//清除文件列表
+		fd_files_redis fs = new fd_files_redis();
+		fs.idSign = idSign;		
+		fs.del(j);
+		
+		//清除目录列表
+		fd_folders_redis ds = new fd_folders_redis();
+		ds.idSign = idSign;
+		ds.del(j);
+		
+		//清除文件夹
+		j.del(idSign);
+		j.close();
 	}
 	
 	//保存到数据库
