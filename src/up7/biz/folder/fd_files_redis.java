@@ -49,7 +49,6 @@ public class fd_files_redis
 	{	
 		Jedis j = this.getCon();
 		j.sadd(this.getKey(), fSign);	
-		System.out.println("文件数：".concat(Long.toString( j.scard(this.getKey()) ) ) );
 	}
 	
 	public void add(Jedis j,List<fd_file_redis> fs)

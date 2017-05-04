@@ -114,22 +114,9 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("param is null");
 	return;
 }
-
-	XDebug.Output("perSvr", perSvr);
-	XDebug.Output("lenSvr", lenSvr);
-	XDebug.Output("lenLoc", lenLoc);
 	pathLoc	= pathLoc.replace("+","%20");
 	pathLoc	= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 	
-	XDebug.Output("uid", uid);
-	XDebug.Output("idSign", idSign);
-	XDebug.Output("f_pos", f_pos);
-	XDebug.Output("rangeIndex", rangeIndex);
-	XDebug.Output("rangeCount", rangeCount);
-	XDebug.Output("complete", complete);
-	XDebug.Output("fd_idSign",fd_idSign);
-	XDebug.Output("fd_lenSvr",fd_lenSvr);
-	XDebug.Output("fd_perSvr",fd_perSvr);
 	boolean cmp = StringUtils.equals(complete,"true");
 
 	Jedis j = JedisTool.con();
