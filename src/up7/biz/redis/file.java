@@ -28,4 +28,19 @@ public class file {
 		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
 		j.hset(f.idSign, "sizeLoc",f.sizeLoc);
 	}
+	
+	public xdb_files read(String idSign)
+	{
+		Jedis j = JedisTool.con();
+		if(!j.exists(idSign)) return null;
+		
+		xdb_files f = new xdb_files();
+		f.pathLoc = j.hget(idSign, "pathLoc");
+		f.pathSvr = j.hget(idSign, "pathSvr");
+		f.nameLoc = j.hget(idSign, "nameLoc");
+		f.nameSvr = j.hget(idSign, "nameSvr");
+		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
+		f.sizeLoc = j.hget(idSign, "sizeLoc");
+		return f;
+	}
 }

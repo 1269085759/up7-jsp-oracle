@@ -54,7 +54,7 @@ DBFile db = new DBFile();
 db.Add(fileSvr);
 
 //添加到redis
-file rf = new file();
+up7.biz.redis.file rf = new up7.biz.redis.file();
 rf.create(fileSvr);
 
 //创建文件

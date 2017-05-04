@@ -23,11 +23,9 @@
 		2012-06-29 增加创建文件逻辑，
 */
 
-//连接本地的 Redis 服务
-Jedis j = new Jedis("localhost");
-System.out.println("Connection to server sucessfully");
-//查看服务是否运行
-      j.lpush("tutorial-list", "Redis");
-System.out.println("Server is running: "+j.ping());
+File f = new File("D:\\soft\\qq.exe");
+	out.write(f.getParent());
+	out.write("<br/>");
+	out.write(f.getPath());
 
 %>
