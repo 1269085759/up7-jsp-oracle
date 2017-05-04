@@ -43,6 +43,7 @@ String perSvr 		= "";// 	= request.getParameter("FileSize");
 String lenSvr		= "";
 String lenLoc		= "";
 String f_pos 		= "";// 	= request.getParameter("RangePos");
+String rangeIndex	= "1";
 String complete		= "false";//文件块是否已发送完毕（最后一个文件块数据）
 String fd_idSign	= "";
 String fd_lenSvr	= "";
@@ -84,6 +85,7 @@ while (fileItr.hasNext())
 		if(fn.equals("lenLoc")) lenLoc = fv;
 		if(fn.equals("perSvr")) perSvr = fv;
 		if(fn.equals("RangePos")) f_pos = fv;
+		if(fn.equals("rangeIndex")) rangeIndex = fv;
 		if(fn.equals("complete")) complete = fv;
 		if(fn.equals("pathSvr")) pathSvr = fv;//add(2015-03-19):
 		if(fn.equals("fd-idSign")) fd_idSign = fv;
@@ -130,26 +132,28 @@ if(	 StringUtils.isBlank( lenSvr )
 	FileBlockWriter res = new FileBlockWriter();
 	res.write(pathSvr,Long.parseLong(f_pos),rangeFile);
 	
-	//更新文件进度信息
-	DBFile db = new DBFile();
-	boolean fd = !StringUtils.isBlank(fd_idSign);
-	if(fd) fd = !StringUtils.isBlank(fd_lenSvr);	
-	if(fd) fd = Long.parseLong(fd_lenSvr)>0;
+	up7.biz.file part = new up7.biz.file();
+	Boolean folder = false;
+	//文件块
+	if(StringUtils.isBlank(fd_idSign))
+	{
+		part.savePart(idSign,rangeIndex,rangeFile);
+	}//子文件块
+	else
+	{
+		part.savePart(idSign,fd_idSign,rangeIndex,rangeFile);
+		folder  = true;
+	}
 	
 	//第一块数据
 	if(Long.parseLong(f_pos) == 0 )
 	{
+		//更新文件进度
 		up7.biz.redis.file rf = new up7.biz.redis.file();
 		rf.process(idSign,perSvr,lenSvr);
-		
-		if(fd)
-		{
-			rf.process(fd_idSign,fd_perSvr,fd_lenSvr);
-			//更新文件进度			
-			//FolderCache fc = new FolderCache();
-			//fc.process(uid,idSvr,f_pos,lenSvr,perSvr,fd_idSvr,fd_lenSvr,fd_perSvr,complete);
-			//db.fd_fileProcess(Integer.parseInt(uid),Integer.parseInt(idSvr),Long.parseLong(f_pos),Long.parseLong(lenSvr),perSvr,Integer.parseInt(fd_idSvr),Long.parseLong(fd_lenSvr),fd_perSvr,cmp);
-		}
+	
+		//更新文件夹进度
+		if(folder) rf.process(fd_idSign,fd_perSvr,fd_lenSvr);
 	}
 			
 	out.write("ok");

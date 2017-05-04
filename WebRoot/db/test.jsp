@@ -23,9 +23,8 @@
 		2012-06-29 增加创建文件逻辑，
 */
 
-File f = new File("D:\\soft\\qq.exe");
-	out.write(f.getParent());
-	out.write("<br/>");
-	out.write(f.getPath());
+String ps = "d:\\soft\\qq.exe";
+	Integer index = ps.lastIndexOf("\\");
+	out.write(ps.substring(0,index) );
 
 %>
