@@ -46,6 +46,7 @@ String pathLoc		= "";
 String sizeLoc		= "";
 String f_pos 		= "";// 	= request.getParameter("RangePos");
 String rangeIndex	= "1";
+String rangeCount	= "1";
 String complete		= "false";//文件块是否已发送完毕（最后一个文件块数据）
 String fd_idSign	= "";
 String fd_lenSvr	= "";
@@ -89,6 +90,7 @@ while (fileItr.hasNext())
 		if(fn.equals("perSvr")) perSvr = fv;
 		if(fn.equals("RangePos")) f_pos = fv;
 		if(fn.equals("rangeIndex")) rangeIndex = fv;
+		if(fn.equals("rangeCount")) rangeCount = fv;
 		if(fn.equals("complete")) complete = fv;
 		if(fn.equals("fd-idSign")) fd_idSign = fv;
 		if(fn.equals("fd-lenSvr")) fd_lenSvr = fv;
@@ -123,6 +125,7 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("rangeIndex", rangeIndex);
+	XDebug.Output("rangeCount", rangeCount);
 	XDebug.Output("complete", complete);
 	XDebug.Output("fd_idSign",fd_idSign);
 	XDebug.Output("fd_lenSvr",fd_lenSvr);
