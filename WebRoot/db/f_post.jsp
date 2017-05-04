@@ -15,7 +15,7 @@
 	page import="java.util.Iterator"%><%@
 	page import="redis.clients.jedis.Jedis"%><%@ 
 	page import="java.util.List"%><%
-/*
+	/*
 	此页面负责将文件块数据写入文件中。
 	此页面一般由控件负责调用
 	参数：
@@ -63,8 +63,7 @@ try
 catch (FileUploadException e) 
 {// 解析文件数据错误  
     out.println("read file data error:" + e.toString());
-    return;
-   
+    return;   
 }
 
 FileItem rangeFile = null;
@@ -129,13 +128,17 @@ if(	 StringUtils.isBlank( lenSvr )
 	XDebug.Output("fd_lenSvr",fd_lenSvr);
 	XDebug.Output("fd_perSvr",fd_perSvr);
 	boolean cmp = StringUtils.equals(complete,"true");
-	
-	up7.biz.file part = new up7.biz.file();
+
+	Jedis j = JedisTool.con();
+	up7.biz.redis.file f_svr = new up7.biz.redis.file(j);
+
+	up7.biz.file_part part = new up7.biz.file_part();
 	Boolean folder = false;
 	//文件块
 	if(StringUtils.isBlank(fd_idSign))
 	{
-		part.savePart(idSign,rangeIndex,rangeFile);
+		String ps = f_svr.getPartPath(idSign, rangeIndex);
+		part.save(ps,rangeFile);
 	}//子文件块
 	else
 	{
@@ -148,9 +151,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
 				
-		Jedis j = JedisTool.con();
-		up7.biz.redis.file child = new up7.biz.redis.file(j);
-		child.create(f_child);
+		f_svr.create(f_child);
 		
 		//添加到文件夹
 		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j);
@@ -158,11 +159,10 @@ if(	 StringUtils.isBlank( lenSvr )
 		root.add(idSign);
 		
 		//块路径
-		String fpathSvr = child.getPartPath(idSign,rangeIndex,fd_idSign);
-		j.close();
+		String fpathSvr = f_svr.getPartPath(idSign,rangeIndex,fd_idSign);
 		
 		//保存块
-		part.savePart(fpathSvr,rangeFile);
+		part.save(fpathSvr,rangeFile);
 		folder  = true;
 	}
 	
@@ -170,12 +170,12 @@ if(	 StringUtils.isBlank( lenSvr )
 	if(Long.parseLong(f_pos) == 0 )
 	{
 		//更新文件进度
-		up7.biz.redis.file rf = new up7.biz.redis.file();
-		rf.process(idSign,perSvr,lenSvr);
+		f_svr.process(idSign,perSvr,lenSvr);
 	
 		//更新文件夹进度
-		if(folder) rf.process(fd_idSign,fd_perSvr,fd_lenSvr);
+		if(folder) f_svr.process(fd_idSign,fd_perSvr,fd_lenSvr);
 	}
-			
+	j.close();
+		
 	out.write("ok");
-%>
+ %>
