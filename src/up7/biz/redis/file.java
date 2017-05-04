@@ -50,6 +50,7 @@ public class file
 		j.hset(f.idSign, "nameSvr", f.nameSvr);
 		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
 		j.hset(f.idSign, "lenSvr", "0" );
+		j.hset(f.idSign, "blockCount", Integer.toString(f.blockCount) );
 		j.hset(f.idSign, "sizeLoc",f.sizeLoc);
 		j.hset(f.idSign, "filesCount", Integer.toString(f.filesCount) );
 		j.hset(f.idSign, "foldersCount", "0" );
@@ -67,6 +68,7 @@ public class file
 		f.nameSvr = j.hget(idSign, "nameSvr");
 		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		f.sizeLoc = j.hget(idSign, "sizeLoc");
+		f.blockCount = Integer.parseInt(j.hget(idSign, "blockCount"));
 		f.filesCount = Integer.parseInt( j.hget(idSign, "filesCount") );
 		return f;
 	}

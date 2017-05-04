@@ -134,6 +134,7 @@ if(	 StringUtils.isBlank( lenSvr )
 	{
 		//向redis添加子文件信息
 		up7.model.xdb_files f_child = new up7.model.xdb_files();
+		f_child.blockCount = Integer.parseInt(rangeCount);
 		f_child.idSign = idSign;
 		f_child.nameLoc = nameLoc;
 		f_child.lenLoc = Long.parseLong( lenLoc );		

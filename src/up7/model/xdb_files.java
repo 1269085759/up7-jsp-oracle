@@ -30,12 +30,10 @@ public class xdb_files {
 	
 	//文件夹ID
 	public int pid=0;
-    public int getIdSvr() {
-		return idSvr;
-	}
-	public void setIdSvr(int idSvr) {
-		this.idSvr = idSvr;
-	}
+    public int getIdSvr() {	return idSvr;}
+	public void setIdSvr(int idSvr) {this.idSvr = idSvr;}
+	//文件块
+	public int blockCount=1;
 
 	public int getPid() {
 		return pid;
