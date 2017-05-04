@@ -101,7 +101,7 @@ public class file
 	 * @param fdSign
 	 * @return
 	 */
-	public String makePath(Jedis j,String idSign,String fdSign)
+	public String makePathFile(Jedis j,String idSign,String fdSign)
 	{		
 		String pathSvrF = "";
 		String fPath = j.hget(idSign, "pathSvr");
@@ -135,7 +135,7 @@ public class file
 	 * @return
 	 * @throws IOException 
 	 */
-	public String getPartPath(String idSign,String blockIndex,String fdSign) throws IOException
+	public String getPartPath(String idSign,String blockIndex,String blockCount,String fdSign) throws IOException
 	{		
 		String pathSvr = "";
 		Jedis j = this.getCon();
@@ -143,10 +143,14 @@ public class file
 		if(hasData) hasData = j.exists(fdSign);
 		if(hasData)
 		{
-			pathSvr = this.makePath(j, idSign, fdSign);		
-			Integer index = pathSvr.lastIndexOf("/");
-			if(index != -1) pathSvr = pathSvr.substring(0,index);		
-			pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");			
+			pathSvr = this.makePathFile(j, idSign, fdSign);
+			//需要分块			
+			if( !StringUtils.equals(blockCount, "1") )
+			{
+				Integer index = pathSvr.lastIndexOf("/");
+				if(index != -1) pathSvr = pathSvr.substring(0,index);		
+				pathSvr = pathSvr.concat("/").concat(idSign).concat("/").concat(blockIndex).concat(".part");
+			}
 		}
 		j.close();
 		return pathSvr;		

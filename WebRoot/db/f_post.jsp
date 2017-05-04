@@ -149,7 +149,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		up7.model.xdb_files f_child = new up7.model.xdb_files();
 		f_child.idSign = idSign;
 		f_child.nameLoc = nameLoc;
-		f_child.lenLoc = Long.parseLong( lenLoc );
+		f_child.lenLoc = Long.parseLong( lenLoc );		
 		f_child.sizeLoc = f_child.lenLoc<1024 ? PathTool.getDataSize(f_child.lenLoc) : sizeLoc;
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.rootSign = fd_idSign;
@@ -162,7 +162,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		root.add(idSign);
 		
 		//块路径
-		String fpathSvr = f_svr.getPartPath(idSign,rangeIndex,fd_idSign);
+		String fpathSvr = f_svr.getPartPath(idSign,rangeIndex,rangeCount,fd_idSign);
 		
 		//保存块
 		part.save(fpathSvr,rangeFile);
