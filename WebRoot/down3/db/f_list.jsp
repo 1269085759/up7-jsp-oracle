@@ -1,6 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
-	page import="down3.biz.*" %><%@ 
+	page import="down3.biz.*" %><%@
+	page import="up7.*" %><%@
+	page import="up7.biz.*" %><%@
+	page import="down3.biz.redis.*" %><%@
+	page import="redis.clients.jedis.Jedis" %><%@  
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
 	page import="org.apache.commons.lang.*" %><%@ 
@@ -23,8 +27,9 @@ String cbk		 = request.getParameter("callback");
 
 if (!StringUtils.isBlank(uid))
 {
-	un_builder fd = new un_builder();
-	String json = fd.read(uid);
+	Jedis j = JedisTool.con();
+	tasks svr = new tasks(uid,j);
+	String json = svr.toJson();
 	
 	if(!StringUtils.isBlank(json))
 	{
