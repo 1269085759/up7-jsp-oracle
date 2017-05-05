@@ -43,6 +43,7 @@ public class file
 		Jedis j = this.getCon();
 		if(j.exists(f.idSign)) return;
 		
+		j.hset(f.idSign, "fdTask", f.f_fdTask==true?"true":"false");
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
 		j.hset(f.idSign, "pathSvr", f.pathSvr);
 		j.hset(f.idSign, "nameLoc", f.nameLoc);

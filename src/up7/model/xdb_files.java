@@ -35,102 +35,39 @@ public class xdb_files {
 	//文件块
 	public int blockCount=1;
 
-	public int getPid() {
-		return pid;
-	}
-	public void setPid(int pid) {
-		this.pid = pid;
-	}
-	public int getPidRoot() {
-		return pidRoot;
-	}
-	public void setPidRoot(int pidRoot) {
-		this.pidRoot = pidRoot;
-	}
-	public boolean isF_fdTask() {
-		return f_fdTask;
-	}
-	public void setF_fdTask(boolean fFdTask) {
-		f_fdTask = fFdTask;
-	}
-	public int getF_fdID() {
-		return f_fdID;
-	}
-	public void setF_fdID(int fFdID) {
-		f_fdID = fFdID;
-	}
-	public boolean isF_fdChild() {
-		return f_fdChild;
-	}
-	public void setF_fdChild(boolean fFdChild) {
-		f_fdChild = fFdChild;
-	}
-	public int getUid() {
-		return uid;
-	}
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
-	public String getNameLoc() {
-		return nameLoc;
-	}
-	public void setNameLoc(String nameLoc) {
-		this.nameLoc = nameLoc;
-	}
-	public String getNameSvr() {
-		return nameSvr;
-	}
-	public void setNameSvr(String nameSvr) {
-		this.nameSvr = nameSvr;
-	}
-	public String getPathLoc() {
-		return pathLoc;
-	}
-	public void setPathLoc(String pathLoc) {
-		this.pathLoc = pathLoc;
-	}
-	public String getPathSvr() {
-		return pathSvr;
-	}
-	public void setPathSvr(String pathSvr) {
-		this.pathSvr = pathSvr;
-	}
-	public String getPathRel() {
-		return pathRel;
-	}
-	public void setPathRel(String pathRel) {
-		this.pathRel = pathRel;
-	}
-	public String getMd5() {
-		return md5;
-	}
-	public void setMd5(String md5) {
-		this.md5 = md5;
-	}
-	public long getLenLoc() {
-		return lenLoc;
-	}
-	public void setLenLoc(long lenLoc) {
-		this.lenLoc = lenLoc;
-	}
-	public String getSizeLoc() {
-		return sizeLoc;
-	}
-	public void setSizeLoc(String sizeLoc) {
-		this.sizeLoc = sizeLoc;
-	}
-	public long getFilePos() {
-		return FilePos;
-	}
-	public void setFilePos(long filePos) {
-		FilePos = filePos;
-	}
-	public long getLenSvr() {
-		return lenSvr;
-	}
-	public void setLenSvr(long lenSvr) {
-		this.lenSvr = lenSvr;
-	}
+	public int getPid() {return pid;}
+	public void setPid(int pid) {this.pid = pid;}
+	public int getPidRoot() {return pidRoot;}
+	public void setPidRoot(int pidRoot) {this.pidRoot = pidRoot;}
+	public boolean isF_fdTask() {return f_fdTask;}
+	public void setF_fdTask(boolean fFdTask) {f_fdTask = fFdTask;}
+	public boolean getfdTask(){return this.f_fdTask;}
+	public int getF_fdID() {return f_fdID;}
+	public void setF_fdID(int fFdID) {f_fdID = fFdID;}
+	public boolean isF_fdChild() {return f_fdChild;}
+	public void setF_fdChild(boolean fFdChild) {f_fdChild = fFdChild;}
+	public int getUid() {return uid;}
+	public void setUid(int uid) {this.uid = uid;}
+	public String getNameLoc() {return nameLoc;}
+	public void setNameLoc(String nameLoc) {this.nameLoc = nameLoc;}
+	public String getNameSvr() {return nameSvr;}
+	public void setNameSvr(String nameSvr) {this.nameSvr = nameSvr;}
+	public String getPathLoc() {return pathLoc;}
+	public void setPathLoc(String pathLoc) {this.pathLoc = pathLoc;}
+	public String getPathSvr() {return pathSvr;}
+	public void setPathSvr(String pathSvr) {this.pathSvr = pathSvr;}
+	public String getPathRel() {return pathRel;}
+	public void setPathRel(String pathRel) {this.pathRel = pathRel;}
+	public String getMd5() {return md5;}
+	public void setMd5(String md5) {this.md5 = md5;}
+	public long getLenLoc() {return lenLoc;}
+	public void setLenLoc(long lenLoc) {this.lenLoc = lenLoc;}
+	public String getSizeLoc() {return sizeLoc;}
+	public void setSizeLoc(String sizeLoc) {this.sizeLoc = sizeLoc;}
+	public long getFilePos() {return FilePos;}
+	public void setFilePos(long filePos) {FilePos = filePos;}
+	public long getLenSvr() {return lenSvr;}
+	public void setLenSvr(long lenSvr) {this.lenSvr = lenSvr;}
 	public String getSign() { return this.sign;}
 	public void setSign(String v) { this.sign = v;}
 	public String getPerSvr() {	return perSvr;}

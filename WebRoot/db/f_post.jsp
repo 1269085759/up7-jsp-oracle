@@ -145,8 +145,7 @@ if(	 StringUtils.isBlank( lenSvr )
 		f_svr.create(f_child);
 		
 		//添加到文件夹
-		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j);
-		root.idSign = fd_idSign;
+		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j,fd_idSign);		
 		root.add(idSign);
 		
 		//块路径

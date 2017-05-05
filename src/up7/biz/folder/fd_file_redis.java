@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+
+import org.apache.commons.lang.StringUtils;
+
 import redis.clients.jedis.Jedis;
 import up7.PathTool;
 
@@ -24,7 +27,8 @@ public class fd_file_redis extends fd_file
 		this.nameLoc = j.hget(idSign, "nameLoc");
 		this.nameSvr = j.hget(idSign, "nameSvr");
 		this.pidSign = j.hget(idSign, "pidSign");
-		this.rootSign = j.hget(idSign, "rootSign");
+		this.rootSign = j.hget(idSign, "rootSign");		
+		this.fdTask = StringUtils.equals(j.hget(idSign, "fdTask"),"true");
 		this.complete = j.hget(idSign, "complete")=="true";
 		this.sign = j.hget(idSign, "sign");
 	}
@@ -42,7 +46,8 @@ public class fd_file_redis extends fd_file
 		j.hset(this.idSign,"nameLoc", this.nameLoc);//
 		j.hset(this.idSign,"nameSvr", this.nameSvr);//
 		j.hset(this.idSign,"pidSign", this.pidSign);//
-		j.hset(this.idSign,"rootSign", this.rootSign);//
+		j.hset(this.idSign,"rootSign", this.rootSign);//		
+		j.hset(this.idSign,"fdTask", this.fdTask==true?"true":"false");//
 		j.hset(this.idSign,"complete", this.lenLoc > 0 ? "false" : "true");//
 		j.hset(this.idSign,"sign", this.sign);//
 	}
