@@ -24,6 +24,7 @@ if (	!StringUtils.isBlank(idSign)
 {
 	Jedis j = JedisTool.con();
 	tasks cache = new tasks(j);
+	cache.uid = uid;
 	cache.del(idSign);
 	j.close();
 	
