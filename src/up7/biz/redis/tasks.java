@@ -68,8 +68,8 @@ public class tasks {
 		fd_folders_redis folders = new fd_folders_redis(this.con,sign);
 		folders.del();
 		
-		//清除文件夹
-		this.con.del(sign);
+		//从队列中清除
+		this.del(sign);
 	}
 	
 	public void clear()
