@@ -22,8 +22,9 @@ int ret = 0;
 if ( !StringUtils.isBlank(sign) )
 {
 	fd_redis fd = new fd_redis();
-	fd.read(sign);
-	fd.saveToDb();//保存到数据库	
+	fd.read(sign);	
+	fd.mergeAll();//合并文件块
+	fd.saveToDb();//保存到数据库
 	ret = 1;
 }
 out.write(cbk + "(" + ret + ")");

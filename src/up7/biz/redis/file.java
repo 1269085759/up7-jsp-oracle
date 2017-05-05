@@ -89,7 +89,7 @@ public class file
 		String pathSvr = j.hget(idSign, "pathSvr");//f:/files/guid/QQ2013.exe
 		File path = new File(pathSvr);
 		pathSvr = path.getParent();//d:\\soft
-		pathSvr = pathSvr.concat("/");
+		pathSvr = pathSvr.concat("/").concat(idSign).concat("/");
 		pathSvr = pathSvr.concat(blockIndex).concat(".part");
 		pathSvr = pathSvr.replace("\\", "/");
 		return pathSvr;

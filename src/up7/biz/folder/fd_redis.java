@@ -134,6 +134,20 @@ public class fd_redis
 		j.close();
 	}
 	
+	public void mergeAll()
+	{
+		for(fd_file_redis f : this.m_root.files)
+		{
+			try {
+				f.merge();
+			} catch (IOException e) {
+				System.out.println("合并文件块错误，文件路径：".concat(f.pathSvr));
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void del(String idSign)
 	{
 		Jedis j = JedisTool.con();
