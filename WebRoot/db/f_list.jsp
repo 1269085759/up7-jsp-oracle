@@ -21,14 +21,14 @@ String cbk = request.getParameter("callback");//jsonp
 if( uid.length() > 0 )
 {
 	Jedis j = JedisTool.con();
-	tasks t = new tasks(j);	
+	tasks t = new tasks(j);
+	t.uid = uid;
 	String json = t.toJson();
 	j.close();
 	if(!StringUtils.isBlank(json))
 	{
 		json = URLEncoder.encode(json,"utf-8");
 		json = json.replace("+","%20");
-		XDebug.Output("编码后的JSON",json);
 		out.write( cbk + "({\"value\":\""+json + "\"})" );
 		return;
 	}

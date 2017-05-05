@@ -1,6 +1,7 @@
 <%@ page language="java" import="up7.*" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@	
 	page import="net.sf.json.*" %><%@
+	page import="redis.clients.jedis.Jedis" %><%@
 	page import="up7.*" %><%@
 	page import="up7.model.*" %><%@
 	page import="up7.biz.*" %><%@
@@ -51,8 +52,11 @@ PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
 
 //添加到redis
-up7.biz.redis.file rf = new up7.biz.redis.file();
-rf.create(fileSvr);
+Jedis j = JedisTool.con();
+tasks taskSvr = new tasks(j);
+taskSvr.uid = uid;
+taskSvr.add(fileSvr);
+j.close();
 
 JSONObject obj = JSONObject.fromObject(fileSvr);
 String json = obj.toString();

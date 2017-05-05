@@ -2,29 +2,50 @@ package up7.biz.redis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
-import up7.JedisTool;
 import up7.biz.folder.fd_file_redis;
+import up7.model.xdb_files;
 
 /*
  * 任务列表，redis中
+ * 只保存文件夹，和文件任务，不保存子文件任务。
+ * 用户任务Key：uid-tasks
  * */
 public class tasks {
-	String key = "tasks";
-	Jedis con = null;	
+	public String uid = "";
+	String keyName = "tasks";
+	Jedis con = null;
+	
 	public tasks(Jedis j){this.con = j;}
+	
+	String getKey()
+	{
+		return this.uid.concat("-").concat(this.keyName);
+	}
 	
 	public void add(String sign)
 	{		
-		this.con.lpush(this.key, sign);
+		this.con.sadd(this.getKey(), sign);
+		System.out.println(this.getKey());
+	}
+	
+	public void add(xdb_files f)
+	{
+		//添加到任务列表
+		this.add(f.idSign);
+		
+		//添加key
+		up7.biz.redis.file fs = new up7.biz.redis.file(this.con);
+		fs.create(f);
 	}
 	
 	public void del(String sign)
 	{
-		this.con.lrem(this.key, 1, sign);
+		this.con.srem(this.getKey(), sign);
 	}
 	
 	public void clear()
@@ -35,7 +56,9 @@ public class tasks {
 	public List<fd_file_redis> all()
 	{
 		List<fd_file_redis> arr = null;		
-		List<String> ls = this.con.lrange(this.key, 0, -1);
+		Set<String> ls = this.con.smembers(this.getKey());
+		System.out.println("用户uid=".concat(this.uid)
+				.concat(" 任务数：").concat(Integer.toString(ls.size())));
 		if(ls.size() > 0) arr = new ArrayList<fd_file_redis>();
 		
 		for(String s : ls)

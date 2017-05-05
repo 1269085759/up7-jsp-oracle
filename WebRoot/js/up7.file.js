@@ -304,7 +304,7 @@ function FileUploader(fileLoc, mgr)
     this.post = function ()
     {
         this.Manager.AppendQueuePost(this.idLoc);
-        if (this.fileSvr.sign.length > 0)
+        if (this.fileSvr.lenSvr > 0)
         {
             this.post_file();
         }
