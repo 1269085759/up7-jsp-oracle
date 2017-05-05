@@ -2,6 +2,7 @@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="com.google.gson.*" %><%@
 	page import="net.sf.json.*" %><%@
+	page import="java.io.*" %><%@
 	page import="up7.*" %><%@
 	page import="up7.model.*" %><%@
 	page import="up7.biz.*" %><%@
@@ -51,7 +52,6 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String nameLoc 	= request.getParameter("nameLoc");
 String idSign 	= request.getParameter("idSign");
 String pathLoc 	= request.getParameter("pathLoc");
 pathLoc			= pathLoc.replace("+","%20");
@@ -62,9 +62,9 @@ String uid 		= request.getParameter("uid");
 String fCount	= request.getParameter("filesCount");
 String callback = request.getParameter("callback");
 
-
+File ps = new File(pathLoc);
 xdb_files f = new xdb_files();
-f.nameLoc = nameLoc;
+f.nameLoc = ps.getName();
 f.idSign = idSign;
 f.pathLoc = pathLoc;
 f.sizeLoc = sizeLoc;
@@ -73,7 +73,7 @@ f.filesCount = Integer.parseInt(fCount);
 f.f_fdTask = true;
 //生成路径
 PathGuidBuilder pb = new PathGuidBuilder();
-f.pathSvr = pb.genFolder(0, nameLoc);
+f.pathSvr = pb.genFolder(0, f.nameLoc);
 PathTool.createDirectory(f.pathSvr);	
 
 Jedis j = JedisTool.con();
