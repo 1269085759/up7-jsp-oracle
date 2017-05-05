@@ -30,6 +30,7 @@ if ( !StringUtils.isBlank(uid)
 		
 	//从任务列表（未完成）中删除
 	tasks t = new tasks(j);
+	t.uid = uid;
 	t.del(idSign);
 	j.close();
 	
