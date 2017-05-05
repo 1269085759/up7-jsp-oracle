@@ -23,7 +23,7 @@ public class fd_file_redis extends fd_file
 		this.sizeLoc = j.hget(idSign, "sizeLoc");
 		this.pathLoc = j.hget(idSign, "pathLoc");
 		this.pathSvr = j.hget(idSign, "pathSvr");
-		this.perSvr = j.hget(idSign, "perSvr");
+		this.perSvr  = j.hget(idSign, "perSvr");
 		this.nameLoc = j.hget(idSign, "nameLoc");
 		this.nameSvr = j.hget(idSign, "nameSvr");
 		this.pidSign = j.hget(idSign, "pidSign");

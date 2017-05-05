@@ -1,5 +1,6 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
+	page import="java.io.*" %><%@
 	page import="up7.FileBlockWriter" %><%@
 	page import="up7.biz.folder.*" %><%@
 	page import="up7.FolderCache" %><%@
@@ -136,7 +137,9 @@ if(	 StringUtils.isBlank( lenSvr )
 		up7.model.xdb_files f_child = new up7.model.xdb_files();
 		f_child.blockCount = Integer.parseInt(rangeCount);
 		f_child.idSign = idSign;
-		f_child.nameLoc = nameLoc;
+		File path_loc = new File(pathLoc);
+		f_child.nameLoc = path_loc.getName();
+		f_child.nameSvr = nameLoc;
 		f_child.lenLoc = Long.parseLong( lenLoc );		
 		f_child.sizeLoc = f_child.lenLoc<1024 ? PathTool.getDataSize(f_child.lenLoc) : sizeLoc;
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理

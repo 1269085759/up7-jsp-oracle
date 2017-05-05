@@ -61,7 +61,7 @@ public class FileDbWriter
         cmd.setString(3, "");//rootSign
         cmd.setBoolean(4, false);//fdChild
         cmd.setInt(5, 0);//uid
-        cmd.setInt(6, 0);//nameLoc
+        cmd.setString(6, "");//nameLoc
         cmd.setString(7, "");//nameSvr
         cmd.setString(8, "");//pathLoc
         cmd.setString(9, "");//pathSvr
