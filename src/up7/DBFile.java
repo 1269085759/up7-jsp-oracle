@@ -574,17 +574,17 @@ public class DBFile {
 		
 		sb.append(") values(");
 				
-		sb.append(" ?");//sb.append("@f_pid");
-		sb.append(",?");//sb.append(",@f_pidRoot");
-		sb.append(",?");//sb.append(",@f_fdChild");
+		sb.append(" ?");//sb.append("@f_idSign");
 		sb.append(",?");//sb.append(",@f_uid");
 		sb.append(",?");//sb.append(",@f_nameLoc");
 		sb.append(",?");//sb.append(",@f_nameSvr");
 		sb.append(",?");//sb.append(",@f_pathLoc");
 		sb.append(",?");//sb.append(",@f_pathSvr");
-		sb.append(",?");//sb.append(",@f_md5");
 		sb.append(",?");//sb.append(",@f_lenLoc");
 		sb.append(",?");//sb.append(",@f_lenSvr");
+		sb.append(",'100%'");//sb.append(",@f_perSvr");
+		sb.append(",?");//sb.append(",@f_sizeLoc");
+		sb.append(",1");//sb.append(",@f_complete");
 		sb.append(")");
 
 		DbHelper db = new DbHelper();
@@ -597,10 +597,9 @@ public class DBFile {
 			cmd.setString(5, inf.pathLoc);
 			cmd.setString(6, inf.pathSvr);
 			cmd.setLong(7, inf.lenLoc);
-			cmd.setLong(8, inf.lenLoc);
-			cmd.setString(9, "100%");
-			cmd.setString(10, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
-			cmd.setBoolean(11, true);
+			cmd.setLong(8, inf.lenLoc);			
+			cmd.setString(9, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
+			cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
