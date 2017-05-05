@@ -220,7 +220,7 @@ function HttpUploaderMgr()
 			            var files = JSON.parse(decodeURIComponent(msg.value));
 			            for (var i = 0, l = files.length; i < l; ++i)
 			            {
-			                ref.filesSvr.push(files[i].idSvr);
+			                ref.filesSvr.push(files[i].idSign);
 			                ref.addFileSvr(files[i]);
 			            }
 			        }

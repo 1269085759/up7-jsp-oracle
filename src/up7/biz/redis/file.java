@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import redis.clients.jedis.Jedis;
 import up7.JedisTool;
-import up7.PathTool;
 import up7.model.xdb_files;
 
 public class file 
@@ -62,6 +61,7 @@ public class file
 		if(!j.exists(idSign)) return null;
 		
 		xdb_files f = new xdb_files();
+		f.idSign = idSign;
 		f.pathLoc = j.hget(idSign, "pathLoc");
 		f.pathSvr = j.hget(idSign, "pathSvr");
 		f.nameLoc = j.hget(idSign, "nameLoc");
