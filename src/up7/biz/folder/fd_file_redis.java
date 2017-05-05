@@ -12,8 +12,11 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
+import java.util.Collections;
 
 import redis.clients.jedis.Jedis;
+import up7.FilePartComparator;
 import up7.PathTool;
 
 public class fd_file_redis extends fd_file
@@ -75,7 +78,9 @@ public class fd_file_redis extends fd_file
 		
 		for(Integer i = 0,l = parts.length;i<l;++i)
 		{
-			RandomAccessFile partRead = new RandomAccessFile(parts[i],"rw");
+			String partName = part_path.concat(Integer.toString(i+1)).concat(".part");
+			System.out.println(partName);
+			RandomAccessFile partRead = new RandomAccessFile(partName,"rw");
 			FileChannel partC = partRead.getChannel();
 			while(partC.read(trunk) != -1)
 			{
