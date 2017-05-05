@@ -232,7 +232,7 @@ function HttpUploaderMgr()
         , "addFileSvr": function (fileSvr)
         {
             var ref = this;
-            var idSvr = fileSvr.idSign;
+            var idSign = fileSvr.idSign;
             this.filesSvrMap[idSign] = fileSvr;
             var ui = this.FileItemTemp.clone();
             var liName = ui.find('li[name="fname"]');
@@ -247,7 +247,7 @@ function HttpUploaderMgr()
 
             if (fileSvr.complete)
             {
-                liOp.html('<span fid="' + idSvr + '">删除</span>').css("cursor", "pointer").click(function ()
+                liOp.html('<span fid="' + idSign + '">删除</span>').css("cursor", "pointer").click(function ()
                 {
                     ref.RemoveFile(fileSvr);
                 });
