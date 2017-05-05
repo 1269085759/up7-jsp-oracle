@@ -15,6 +15,7 @@
 		2015-07-30 取消文件夹层级结构存储规则，改为使用日期存储规则，文件夹层级结构仅保存在数据库中。
 		2016-01-07 返回值改为JSON
 		2016-04-09 完善逻辑。
+		2017-05-05 取消添加数据库操作，在文件上传完后添加到数据库
 */
 
 String uid 			= request.getParameter("uid");
@@ -48,10 +49,6 @@ fileSvr.nameSvr = fileSvr.nameLoc;
 //所有单个文件均以guid方式存储
 PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
-
-//添加到数据库
-DBFile db = new DBFile();
-db.Add(fileSvr);
 
 //添加到redis
 up7.biz.redis.file rf = new up7.biz.redis.file();

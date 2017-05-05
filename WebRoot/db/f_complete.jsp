@@ -10,6 +10,7 @@
 	更新记录：
 		2012-05-24 完善
 		2012-06-29 增加创建文件逻辑，
+		2017-05-05 文件上传完后添加到数据库
 */
 
 String uid 		= request.getParameter("uid");
@@ -26,13 +27,15 @@ if ( !StringUtils.isBlank(uid)
 	f_svr.read(j,idSign);//加载信息
 	f_svr.merge();//合并文件
 	j.del(idSign);//删除文件缓存
+		
+	//从任务列表（未完成）中删除
+	tasks t = new tasks(j);
+	t.del(idSign);
 	j.close();
 	
-	tasks t = new tasks();
-	t.del(idSign);
-	
 	DBFile db = new DBFile();
-	db.complete(Integer.parseInt(uid),idSign);	
+	db.addComplete(f_svr);	
+		
 	ret = 1;
 }
 XDebug.Output("文件上传完毕");

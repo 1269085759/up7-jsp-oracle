@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import up7.biz.folder.fd_file_redis;
 import up7.model.FileInf;
 import up7.model.FolderInf;
 import up7.model.xdb_files;
@@ -549,6 +550,61 @@ public class DBFile {
 		int fid = (int)db.ExecuteGenKey(cmd);		
 		
 		return fid;
+	}
+
+	/**
+	 * 将文件缓存信息添加到数据库，
+	 * @param inf
+	 */
+	public void addComplete(fd_file_redis inf)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("insert into up7_files(");
+		sb.append(" f_idSign");//1		
+		sb.append(",f_uid");//2
+		sb.append(",f_nameLoc");//3
+		sb.append(",f_nameSvr");//4
+		sb.append(",f_pathLoc");//5
+		sb.append(",f_pathSvr");//6		
+		sb.append(",f_lenLoc");//7
+		sb.append(",f_lenSvr");//8
+		sb.append(",f_perSvr");//9
+		sb.append(",f_sizeLoc");//10
+		sb.append(",f_complete");//11
+		
+		sb.append(") values(");
+				
+		sb.append(" ?");//sb.append("@f_pid");
+		sb.append(",?");//sb.append(",@f_pidRoot");
+		sb.append(",?");//sb.append(",@f_fdChild");
+		sb.append(",?");//sb.append(",@f_uid");
+		sb.append(",?");//sb.append(",@f_nameLoc");
+		sb.append(",?");//sb.append(",@f_nameSvr");
+		sb.append(",?");//sb.append(",@f_pathLoc");
+		sb.append(",?");//sb.append(",@f_pathSvr");
+		sb.append(",?");//sb.append(",@f_md5");
+		sb.append(",?");//sb.append(",@f_lenLoc");
+		sb.append(",?");//sb.append(",@f_lenSvr");
+		sb.append(")");
+
+		DbHelper db = new DbHelper();
+		PreparedStatement cmd = db.GetCommand(sb.toString());
+		try {
+			cmd.setString(1, inf.idSign);
+			cmd.setInt(2, inf.uid);
+			cmd.setString(3, inf.nameLoc);
+			cmd.setString(4, inf.nameLoc);
+			cmd.setString(5, inf.pathLoc);
+			cmd.setString(6, inf.pathSvr);
+			cmd.setLong(7, inf.lenLoc);
+			cmd.setLong(8, inf.lenLoc);
+			cmd.setString(9, "100%");
+			cmd.setString(10, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
+			cmd.setBoolean(11, true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/// <summary>

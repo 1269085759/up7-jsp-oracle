@@ -14,36 +14,34 @@ import up7.biz.folder.fd_file_redis;
  * */
 public class tasks {
 	String key = "tasks";
+	Jedis con = null;	
+	public tasks(Jedis j){this.con = j;}
 	
 	public void add(String sign)
-	{
-		Jedis j = JedisTool.con();
-		j.lpush(this.key, sign);
+	{		
+		this.con.lpush(this.key, sign);
 	}
 	
 	public void del(String sign)
 	{
-		Jedis j = JedisTool.con();
-		j.lrem(this.key, 1, sign);
+		this.con.lrem(this.key, 1, sign);
 	}
 	
 	public void clear()
 	{
-		Jedis j = JedisTool.con();
-		j.flushDB();//		
+		this.con.flushDB();//		
 	}
 	
 	public List<fd_file_redis> all()
 	{
-		List<fd_file_redis> arr = null;
-		Jedis j = JedisTool.con();
-		List<String> ls = j.lrange(this.key, 0, -1);
+		List<fd_file_redis> arr = null;		
+		List<String> ls = this.con.lrange(this.key, 0, -1);
 		if(ls.size() > 0) arr = new ArrayList<fd_file_redis>();
 		
 		for(String s : ls)
 		{
 			fd_file_redis f = new fd_file_redis();
-			f.read(j, s);
+			f.read(this.con, s);
 			arr.add(f);
 		}
 		return arr;
