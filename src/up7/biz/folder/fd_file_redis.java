@@ -1,22 +1,11 @@
 package up7.biz.folder;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
-import java.util.Collections;
-
 import redis.clients.jedis.Jedis;
-import up7.FilePartComparator;
 import up7.PathTool;
 
 public class fd_file_redis extends fd_file
