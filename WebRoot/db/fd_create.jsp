@@ -65,6 +65,7 @@ String callback = request.getParameter("callback");
 File ps = new File(pathLoc);
 xdb_files f = new xdb_files();
 f.nameLoc = ps.getName();
+f.nameSvr = f.nameLoc;
 f.idSign = idSign;
 f.pathLoc = pathLoc;
 f.sizeLoc = sizeLoc;

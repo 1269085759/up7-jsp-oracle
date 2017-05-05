@@ -122,6 +122,8 @@ public class fd_redis
 		
 		this.m_root = new fd_root();
 		this.m_root.idSign = idSign;
+		this.m_root.nameLoc = j.hget(idSign, "nameLoc");
+		this.m_root.nameSvr = this.m_root.nameLoc;
 		this.m_root.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		this.m_root.lenSvr = Long.parseLong(j.hget(idSign, "lenSvr") );
 		this.m_root.sizeLoc = j.hget(idSign, "sizeLoc");
