@@ -35,6 +35,11 @@ public class tasks {
 		System.out.println(this.getKey());
 	}
 	
+	/**
+	 * 将文件信息添加到缓存
+	 * 将文件idSign添加到任务列表
+	 * @param f
+	 */
 	public void add(xdb_files f)
 	{
 		//添加到任务列表
