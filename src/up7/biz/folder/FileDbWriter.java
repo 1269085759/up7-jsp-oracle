@@ -35,6 +35,7 @@ public class FileDbWriter
         sb.append(",f_perSvr");
         sb.append(",f_sign");
         sb.append(",f_complete");
+        sb.append(",f_fdTask");
         
         sb.append(") values(");
         
@@ -53,6 +54,7 @@ public class FileDbWriter
         sb.append(",?");//f_perSvr
         sb.append(",?");//f_sign
         sb.append(",1");//f_complete
+        sb.append(",?");//f_fdTask
         sb.append(")");
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());
@@ -70,6 +72,7 @@ public class FileDbWriter
         cmd.setLong(12, 0);//lenSvr
         cmd.setString(13, "");//perSvr
         cmd.setString(14, "");//sign
+        cmd.setBoolean(15, false);//fdTask
         return cmd;
 	}
 	
@@ -94,6 +97,7 @@ public class FileDbWriter
         cmd.setLong(12, this.root.lenLoc);//lenSvr
         cmd.setString(13, "100%");//perSvr
         cmd.setString(14, this.root.sign);//sign
+        cmd.setBoolean(15, true);//sign
         cmd.execute();
 		
 		//写子文件列表
@@ -113,6 +117,7 @@ public class FileDbWriter
 	        cmd.setLong(12, f.lenLoc);//lenSvr
 	        cmd.setString(13, "100%");//perSvr
 	        cmd.setString(14, f.sign);//sign
+	        cmd.setBoolean(15, false);//fdTask
 	        cmd.execute();	
 		}
 		cmd.close();
