@@ -24,15 +24,8 @@ public class fd_files_redis
 {
 	public String idSign;
 	Jedis con=null;
-	public fd_files_redis(Jedis c)
-	{
-		this.con = c;
-	}
-	public fd_files_redis(){}
-	public Jedis getCon(){
-		if(this.con==null) this.con = JedisTool.con();
-		return this.con;
-	}
+	
+	public fd_files_redis(Jedis c,String idSign){this.con = c;this.idSign = idSign;}
 	
 	String getKey()
 	{
@@ -40,29 +33,28 @@ public class fd_files_redis
 		return key;
 	}
 	
-	public void del(Jedis j)
+	public void del()
 	{
-		j.del(this.getKey());
+		this.con.del(this.getKey());
 	}
 	
 	public void add(String fSign)
 	{	
-		Jedis j = this.getCon();
-		j.sadd(this.getKey(), fSign);	
+		this.con.sadd(this.getKey(), fSign);	
 	}
 	
-	public void add(Jedis j,List<fd_file_redis> fs)
+	public void add(List<fd_file_redis> fs)
 	{
 		String key = this.getKey();		
 		for(fd_file_redis f : fs)
 		{
-			j.sadd(key, f.idSign);
+			this.con.sadd(key, f.idSign);
 		}
 	}
 	
-	public Set<String> all(Jedis j)
+	public Set<String> all()
 	{
-		Set<String> ids = j.smembers(this.getKey());		
+		Set<String> ids = this.con.smembers(this.getKey());		
 		return ids;		
 	}
 }

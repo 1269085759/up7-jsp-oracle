@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
 import up7.biz.folder.fd_file_redis;
+import up7.biz.folder.fd_files_redis;
+import up7.biz.folder.fd_folders_redis;
 import up7.model.xdb_files;
 
 /*
@@ -48,6 +50,20 @@ public class tasks {
 		//从队列中删除
 		this.con.srem(this.getKey(), sign);
 		//删除key
+		this.con.del(sign);
+	}
+	
+	public void delFd(String sign)
+	{
+		//清除文件列表缓存
+		fd_files_redis files = new fd_files_redis(this.con,sign);
+		files.del();
+		
+		//清除目录列表缓存
+		fd_folders_redis folders = new fd_folders_redis(this.con,sign);
+		folders.del();
+		
+		//清除文件夹
 		this.con.del(sign);
 	}
 	

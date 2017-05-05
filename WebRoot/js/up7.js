@@ -322,15 +322,15 @@ function HttpUploaderMgr()
         , "RemoveFolder": function (fileSvr)
         {
             var ref = this;
-            var idSvr = fileSvr.idSvr;
-            var ui = this.filesUiMap[idSvr];
+            var idSign = fileSvr.idSign;
+            var ui = this.filesUiMap[idSign];
 
             $.ajax({
                 type: "GET"
 				, dataType: 'jsonp'
 				, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 				, url: this.Config["UrlFdDel"]
-				, data: { uid: fileSvr.uid, fid: fileSvr.idSvr,fd_id:fileSvr.fdID, time: new Date().getTime() }
+                , data: { uid: fileSvr.uid, idSign: fileSvr.idSign,time: new Date().getTime() }
 			    , success:function (msg){if (msg.value == 1){ui.empty();}}
 			    , error: function () { alert("发送删除文件信息失败！"); }
 			    , complete: function (req, sta) { req = null; }

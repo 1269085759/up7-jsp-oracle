@@ -8,6 +8,9 @@ import up7.JedisTool;
 public class fd_folders_redis {
 
 	public String idSign;
+	Jedis con;
+	
+	public fd_folders_redis(Jedis j,String idSign/*文件夹ID*/){this.con = j;this.idSign = idSign;}
 	
 	String getKey()
 	{
@@ -17,27 +20,26 @@ public class fd_folders_redis {
 	
 	public void add(String fSign)
 	{
-		Jedis j = JedisTool.con();
-		j.lpush(this.getKey(), fSign);
+		this.con.lpush(this.getKey(), fSign);
 	}
 	
-	public void del(Jedis j)
+	public void del()
 	{		
-		j.del(this.getKey());
+		this.con.del(this.getKey());
 	}
 	
-	public void add(Jedis j,List<fd_child_redis> fs)
+	public void add(List<fd_child_redis> fs)
 	{
 		String key = this.getKey();		
 		for(fd_child_redis f : fs)
 		{
-			j.lpush(key, f.idSign);
+			this.con.lpush(key, f.idSign);
 		}
 	}
 	
-	public List<String> all(Jedis j)
+	public List<String> all()
 	{		
-		List<String> ids = j.lrange(this.getKey(), 0, -1);		
+		List<String> ids = this.con.lrange(this.getKey(), 0, -1);		
 		return ids;		
 	}
 }

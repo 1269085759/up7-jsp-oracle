@@ -152,14 +152,12 @@ public class fd_redis
 	{
 		Jedis j = JedisTool.con();
 		//清除文件列表
-		fd_files_redis fs = new fd_files_redis();
-		fs.idSign = idSign;		
-		fs.del(j);
+		fd_files_redis fs = new fd_files_redis(j,idSign);		
+		fs.del();
 		
 		//清除目录列表
-		fd_folders_redis ds = new fd_folders_redis();
-		ds.idSign = idSign;
-		ds.del(j);
+		fd_folders_redis ds = new fd_folders_redis(j,idSign);
+		ds.del();
 		
 		//清除文件夹
 		j.del(idSign);
@@ -194,9 +192,8 @@ public class fd_redis
 	void loadFiles(Jedis j)
 	{
 		//取文件ID列表
-		fd_files_redis rfs = new fd_files_redis();
-		rfs.idSign = this.m_root.idSign;
-		Set<String> fs = rfs.all(j);
+		fd_files_redis rfs = new fd_files_redis(j,this.m_root.idSign);		
+		Set<String> fs = rfs.all();
 		this.m_root.files = new ArrayList<fd_file_redis>();
 		System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
 		for(String s : fs)
@@ -210,10 +207,9 @@ public class fd_redis
 	void loadFolders(Jedis j)
 	{		
 		//取文件ID列表
-		fd_folders_redis rfs = new fd_folders_redis();
-		rfs.idSign = this.m_root.idSign;
+		fd_folders_redis rfs = new fd_folders_redis(j,this.m_root.idSign);		
 		this.m_root.folders = new ArrayList<fd_child_redis>();		
-		List<String> fs = rfs.all(j);
+		List<String> fs = rfs.all();
 		System.out.println("fd_redis.loadFolders() 文件夹数：".concat(Integer.toString(fs.size())));
 		for(String s : fs)
 		{
@@ -227,19 +223,19 @@ public class fd_redis
 	{
 		j.del(this.m_root.idSign);		
 		
-		j.hset(this.m_root.idSign, "lenLoc", Long.toString(this.m_root.lenLoc) );//数字化的长度
+		j.hset(this.m_root.idSign,"lenLoc", Long.toString(this.m_root.lenLoc) );//数字化的长度
 		j.hset(this.m_root.idSign,"lenSvr", "0" );//格式化的
 		j.hset(this.m_root.idSign,"sizeLoc", this.m_root.sizeLoc );//格式化的
 		j.hset(this.m_root.idSign,"pathLoc", this.m_root.pathLoc);//
 		j.hset(this.m_root.idSign,"pathSvr", this.m_root.pathSvr);//
 		j.hset(this.m_root.idSign,"filesCount",Integer.toString( this.m_root.filesCount) );
 		
-		fd_files_redis rfs = new fd_files_redis();
-		rfs.add(j,this.m_root.files);
+		fd_files_redis rfs = new fd_files_redis(j,this.m_root.idSign);
+		rfs.add(this.m_root.files);
 
 		//保存目录
-		fd_folders_redis rds = new fd_folders_redis();
-		rds.add(j, this.m_root.folders);			
+		fd_folders_redis rds = new fd_folders_redis(j,this.m_root.idSign);
+		rds.add(this.m_root.folders);			
 	}
 	
 	void saveFiles(Jedis j)
