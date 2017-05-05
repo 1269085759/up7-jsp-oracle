@@ -9,6 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 import redis.clients.jedis.Jedis;
 import up7.PathTool;
@@ -60,27 +63,35 @@ public class fd_file_redis extends fd_file
 				
 		PathTool.createDirectory( fp.getParent());//		
 		
-		RandomAccessFile dst = new RandomAccessFile(this.pathSvr, "rw");
-		dst.setLength(this.lenSvr);
-		dst.seek(0);
+		RandomAccessFile dstFile = new RandomAccessFile(this.pathSvr, "rw");
+		FileChannel fw = dstFile.getChannel();		
 		
 		//取文件块路径
 		String part_path = fp.getParent();
 		part_path = part_path.concat("/").concat(this.idSign).concat("/");//f:/files/folder/guid/
 		fp = new File(part_path);
-		File[] parts = fp.listFiles();
-		byte[] data = new byte[1048576];//1mb
-		for(Integer i = 0,l=parts.length;i<l;++i)
+		File[] parts = fp.listFiles();		//
+		ByteBuffer trunk = ByteBuffer.allocateDirect(1048576);//1mb		
+		
+		for(Integer i = 0,l = parts.length;i<l;++i)
 		{
-			BufferedInputStream bre = new BufferedInputStream(new FileInputStream(parts[i]));
-			int lenRead = 0;
-			while( (lenRead = bre.read(data) )!= -1 )
+			RandomAccessFile partRead = new RandomAccessFile(parts[i],"rw");
+			FileChannel partC = partRead.getChannel();
+			while(partC.read(trunk) != -1)
 			{
-				dst.write(data,0,lenRead);				
+				trunk.flip();
+				while(trunk.hasRemaining()) fw.write(trunk);
+				//fw.write(trunk);
+				//fw.force(true);
+				trunk.clear();
 			}
-			bre.close();
+			partC.close();
+			partRead.close();
 		}
-		dst.close();
+		fw.close();
+		dstFile.close();
+		
+		//dst.close();
 		//删除文件块
 		for(File part : parts)
 		{
