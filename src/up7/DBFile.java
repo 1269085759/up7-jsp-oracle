@@ -907,6 +907,22 @@ public class DBFile {
 			e.printStackTrace();
 		}
 	}
+	
+	public void remove(String idSign)
+	{
+		String sql = "update up7_files set f_deleted=1 where f_idSign=?";
+		DbHelper db = new DbHelper();
+		PreparedStatement cmd = db.GetCommand(sql);
+
+		try {			
+			cmd.setString(1, idSign);
+			db.ExecuteNonQuery(cmd);
+		} catch (SQLException e) {
+			System.out.println("更新数据库文件信息失败，");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/// <summary>
 	/// 根据根文件夹ID获取未上传完成的文件列表，并转换成JSON格式。

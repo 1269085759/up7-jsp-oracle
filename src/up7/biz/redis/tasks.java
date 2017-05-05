@@ -45,7 +45,10 @@ public class tasks {
 	
 	public void del(String sign)
 	{
+		//从队列中删除
 		this.con.srem(this.getKey(), sign);
+		//删除key
+		this.con.del(sign);
 	}
 	
 	public void clear()

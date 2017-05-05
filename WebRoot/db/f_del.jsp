@@ -1,5 +1,8 @@
 <%@ page language="java" import="up7.DBFile" pageEncoding="UTF-8"%><%@
 	page contentType="text/html;charset=UTF-8"%><%@ 
+	page import="redis.clients.jedis.Jedis" %><%@
+	page import="up7.*" %><%@
+	page import="up7.biz.redis.*" %><%@
 	page import="org.apache.commons.lang.StringUtils" %><%
 /*
 	此页面主要用来向数据库添加一条记录。
@@ -11,16 +14,21 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String fid = request.getParameter("fid");
-String uid = request.getParameter("uid");
+String idSign = request.getParameter("idSign");
+String uid    = request.getParameter("uid");
 String callback = request.getParameter("callback");//jsonp
 int ret = 0;
 
-if (	!StringUtils.isBlank(fid)
+if (	!StringUtils.isBlank(idSign)
 	&&	!StringUtils.isBlank(uid))
 {
+	Jedis j = JedisTool.con();
+	tasks cache = new tasks(j);
+	cache.del(idSign);
+	j.close();
+	
 	DBFile db = new DBFile();
-	db.Delete(Integer.parseInt(uid),Integer.parseInt(fid));
+	db.remove(idSign);
 	ret = 1;
 }
 %><%= callback + "(" + ret + ")" %>

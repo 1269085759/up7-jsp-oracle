@@ -168,7 +168,7 @@ function HttpUploaderMgr()
 		, filesUI: null //文件列表容器,JQuery
 		, filesUiMap: new Object()//ui映射表,JQuery
         , filesSvr: new Array()//服务器文件列表(json obj)
-        , filesSvrMap:new Object()//服务器文件映射表：(idSvr,json obj)
+        , filesSvrMap:new Object()//服务器文件映射表：(idSign,json obj)
 		, "GetHtml": function ()//加载控件
 		{
 			var html = '<div class="file-list-view" name="file-list-view">\
@@ -232,8 +232,8 @@ function HttpUploaderMgr()
         , "addFileSvr": function (fileSvr)
         {
             var ref = this;
-            var idSvr = fileSvr.idSvr;
-            this.filesSvrMap[idSvr] = fileSvr;
+            var idSvr = fileSvr.idSign;
+            this.filesSvrMap[idSign] = fileSvr;
             var ui = this.FileItemTemp.clone();
             var liName = ui.find('li[name="fname"]');
             var liSize = ui.find('li[name="fsize"]');
@@ -259,17 +259,17 @@ function HttpUploaderMgr()
                 liOp.find('span[name="btnDel"]').click(function () { ref.RemoveFile(fileSvr); });
             }
             //添加到文件列表项集合
-            this.filesUiMap[fileSvr.idSvr] = ui;
+            this.filesUiMap[fileSvr.idSign] = ui;
             this.filesUI.append(ui);
         }
 		, "UploadComplete": function (fileSvr)//上传完成，将操作改为删除。
 		{
-			//文件已存在
-		    if ( this.filesSvrMap[fileSvr.idSvr] != null)
+            //文件已存在
+            if (this.filesSvrMap[fileSvr.idSign] != null)
 		    {
-		        var ref = this;
-		        var idSvr = fileSvr.idSvr;
-		        var ui = this.filesUiMap[idSvr];
+                var ref = this;
+                var idSign = fileSvr.idSign;
+                var ui = this.filesUiMap[idSign];
 		        var liPer = ui.find('li[name="fper"]');
 		        var liOp = ui.find('li[name="fop"]');
 
@@ -304,16 +304,16 @@ function HttpUploaderMgr()
 		        return;
 		    }
 		    var ref = this;
-		    var idSvr = fileSvr.idSvr;
-			var item = this.filesSvrMap[idSvr];
-			var ui = this.filesUiMap[idSvr];
+            var idSign = fileSvr.idSign;
+            var item = this.filesSvrMap[idSign];
+            var ui = this.filesUiMap[idSign];
 
 			$.ajax({
 				type: "GET"
 				, dataType: 'jsonp'
 				, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-				, url: this.Config["UrlDel"]
-				, data: { uid: fileSvr.uid, fid: fileSvr.idSvr, time: new Date().getTime() }
+                , url: this.Config["UrlDel"]
+                , data: { uid: fileSvr.uid, idSign: fileSvr.idSign, time: new Date().getTime() }
 				, success: function (msg) {if (msg == 1) {ui.empty();}}
 				, error: function () { alert("发送删除文件信息失败！"+req.responseText); }
 				, complete: function (req, sta) { req = null; }
