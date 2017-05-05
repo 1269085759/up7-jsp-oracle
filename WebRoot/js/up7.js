@@ -292,8 +292,8 @@ function HttpUploaderMgr()
 			{
 		        _this.ResumeFile(fileSvr);
 			}
-			_this.OpenPnlUpload(); //打开上传面板
-			this.RemoveFileCache(fileSvr.idSvr); //从内存中删除
+            _this.OpenPnlUpload(); //打开上传面板
+            this.RemoveFileCache(fileSvr.idSign); //从内存中删除
 			this.UploaderMgr.PostFirst();
 		}
 		, "RemoveFile": function (fileSvr)//删除文件
@@ -336,11 +336,11 @@ function HttpUploaderMgr()
 			    , complete: function (req, sta) { req = null; }
             });
         }
-		, "RemoveFileCache": function (idSvr)
+		, "RemoveFileCache": function (idSign)
 		{
-		    this.filesSvrMap[idSvr] = null;
-		    this.filesUiMap[idSvr].empty();
-		    this.filesUiMap[idSvr] = null;
+            this.filesSvrMap[idSign] = null;
+            this.filesUiMap[idSign].empty();
+            this.filesUiMap[idSign] = null;
 		}
 	};
 
