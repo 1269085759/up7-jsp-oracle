@@ -11,6 +11,7 @@ public class un_file extends DnFileInf
     public void read(int pidRoot, ResultSet r) throws SQLException
     {
         this.idSvr = r.getInt("f_idSvr");//
+        this.idSign = r.getString("f_idSign");//
         this.nameLoc = r.getString("f_nameLoc");
         this.pathLoc = r.getString("f_pathLoc");//
         this.lenLoc = r.getLong("f_lenLoc");
@@ -22,5 +23,4 @@ public class un_file extends DnFileInf
         this.fdTask = r.getBoolean("f_fdTask");
         if (this.fdTask) this.pathLoc = r.getString("f_pathLoc");
     }
-
 }

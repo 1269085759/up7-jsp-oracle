@@ -2,6 +2,7 @@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.DBFolder" %><%@
 	page import="up7.biz.folder.*" %><%@
+	page import="up7.biz.redis.*" %><%@
 	page import="up7.*" %><%@
 	page import="redis.clients.jedis.Jedis" %><%@
 	page import="org.apache.commons.lang.StringUtils" %><%
@@ -21,8 +22,16 @@ int ret = 0;
 //参数为空
 if ( !StringUtils.isBlank(sign) )
 {
-	fd_redis fd = new fd_redis();
-	fd.read(sign);	
+	Jedis j = JedisTool.con();
+	fd_redis fd = new fd_redis(j);
+	fd.read(sign);
+	
+	//清除缓存
+	tasks svr = new tasks(j);
+	svr.uid = uid;
+	svr.delFd(sign);
+	j.close();
+	
 	fd.mergeAll();//合并文件块
 	fd.saveToDb();//保存到数据库
 	ret = 1;

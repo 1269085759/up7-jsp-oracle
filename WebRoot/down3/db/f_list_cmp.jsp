@@ -21,13 +21,13 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String uid 		 = request.getParameter("uid");
-String cbk  	 = request.getParameter("callback");//jsonp
+String uid = request.getParameter("uid");
+String cbk = request.getParameter("callback");//jsonp
 
 if (!StringUtils.isBlank(uid))
 {
-	cmp_builder cb = new cmp_builder();
-	String json = cb.read(Integer.parseInt(uid));
+	CompleteReader cb = new CompleteReader();
+	String json = cb.all(Integer.parseInt(uid));
 	if(!StringUtils.isBlank(json))
 	{
 		System.out.println("上传文件列表："+json);
