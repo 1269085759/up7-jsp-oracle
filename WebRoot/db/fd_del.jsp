@@ -27,7 +27,9 @@ if ( !StringUtils.isBlank(idSign)
 	svr.delFd(idSign);
 	j.close();
 	
-	DBFolder.Remove(Integer.parseInt(fid),Integer.parseInt(fd_id), Integer.parseInt(uid));
+	//清除数据库
+	DBFolder fd = new DBFolder();
+	fd.remove(idSign,Integer.parseInt(uid));
 	ret = 1;
 }
 out.write(callback + "({\"value\":"+ret+"})");
