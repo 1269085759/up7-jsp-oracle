@@ -31,10 +31,10 @@ public class file {
 		DnFileInf f = new DnFileInf();
 		f.signSvr = signSvr;
 		f.lenLoc = Long.parseLong( this.con.hget(signSvr, "lenLoc") );//已经下载的大小
-		f.lenSvr = Long.parseLong( this.con.hget(signSvr, "lenSvr"));//
+		f.lenSvr = Long.parseLong( this.con.hget(signSvr, "lenSvr"));//服务器文件大小。
 		f.perLoc = this.con.hget(signSvr, "perLoc");
-		f.pathLoc = this.con.hget(signSvr, "pathLoc");
-		f.pathSvr = this.con.hget(signSvr, "pathSvr");
+		f.pathLoc = this.con.hget(signSvr, "pathLoc");//本地下载地址
+		f.pathSvr = this.con.hget(signSvr, "pathSvr");//服务器文件地址
 		return f;
 	}
 	

@@ -51,12 +51,12 @@ public class tasks {
 	{
 		System.out.println("下载队列：".concat(Long.toString( this.con.scard(this.getKey() ) ) ) );
 		Set<String> keys = this.con.smembers(this.getKey());
-		List<file> files = new ArrayList<file>();
+		List<DnFileInf> files = new ArrayList<DnFileInf>();
 		for(String key : keys)
 		{
 			file f_svr = new file(this.con);
-			f_svr.read(key);
-			files.add(f_svr);
+			DnFileInf data = f_svr.read(key);
+			files.add(data);
 		}
 
     	Gson g = new Gson();
