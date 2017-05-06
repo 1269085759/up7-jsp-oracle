@@ -19,22 +19,51 @@
 			解决方法参考：http://stackoverflow.com/questions/1776142/getoutputstream-has-already-been-called-for-this-response
 	更新记录：
 		2015-05-13 创建
+		2017-05-06 增加业务逻辑数据，简化处理逻辑
 */
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String fid 		= request.getParameter("fid");
-String uid 		= request.getParameter("uid");
-String signSvr	= request.getParameter("signSvr");
-if (	StringUtils.isBlank(fid)
-	||	StringUtils.isBlank(uid))
+String lenSvr 		= request.getHeader("x-down3-lenSvr");
+String pathSvr 		= request.getHeader("x-down3-pathSvr");
+String blockIndex 	= request.getHeader("x-down3-blockIndex");
+String lenLoc 		= request.getHeader("x-down3-lenLoc");
+String signSvr 		= request.getHeader("x-down3-signSvr");
+String uid 			= request.getHeader("x-down3-uid");
+String percent		= request.getHeader("x-down3-percent");
+
+pathSvr	 = pathSvr.replaceAll("\\+","%20");
+pathSvr	 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
+
+if (	StringUtils.isBlank(lenSvr)
+	||	StringUtils.isBlank(pathSvr)
+	||	StringUtils.isBlank(blockIndex)
+	||	StringUtils.isBlank(lenLoc)
+	||	StringUtils.isBlank(signSvr)
+	||	StringUtils.isBlank(uid)
+	||	StringUtils.isBlank(percent)
+	)
 {
+	System.out.println("lenSvr:".concat(lenSvr));
+	System.out.println("pathSvr:".concat(pathSvr));
+	System.out.println("blockIndex:".concat(blockIndex));
+	System.out.println("lenLoc:".concat(lenLoc));
+	System.out.println("signSvr:".concat(signSvr));
+	System.out.println("percent:".concat(percent));
+	System.out.println("业务逻辑参数为空。");
 	return;
 }
 
 Jedis j = JedisTool.con();
 file f_cache = new file(j);
-DnFileInf fileSvr = f_cache.read(signSvr);
+DnFileInf fileSvr = new DnFileInf();
+fileSvr.signSvr = signSvr;
+fileSvr.uid = Integer.parseInt(uid);
+fileSvr.lenLoc = Long.parseLong(lenLoc);
+fileSvr.lenSvr = Long.parseLong(lenSvr);
+fileSvr.perLoc = percent;
+fileSvr.pathSvr = pathSvr;
+f_cache.create(fileSvr);
 j.close();
 
 //文件不存在（未创建下载任务）

@@ -16,7 +16,7 @@ public class file {
 	public void create(DnFileInf f)
 	{
 		Jedis j = this.con;
-		if(j.exists(f.signSvr)) return;
+		//if(j.exists(f.signSvr)) return;
 						
 		j.hset(f.signSvr, "pathLoc", f.pathLoc);
 		j.hset(f.signSvr, "pathSvr", f.pathSvr);
@@ -30,7 +30,7 @@ public class file {
 		if(!this.con.exists(signSvr)) return null;
 		DnFileInf f = new DnFileInf();
 		f.signSvr = signSvr;
-		f.lenLoc = Long.parseLong( this.con.hget(signSvr, "lenLoc") );
+		f.lenLoc = Long.parseLong( this.con.hget(signSvr, "lenLoc") );//已经下载的大小
 		f.lenSvr = Long.parseLong( this.con.hget(signSvr, "lenSvr"));//
 		f.perLoc = this.con.hget(signSvr, "perLoc");
 		f.pathLoc = this.con.hget(signSvr, "pathLoc");
