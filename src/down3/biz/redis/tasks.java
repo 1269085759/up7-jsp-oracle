@@ -48,7 +48,8 @@ public class tasks {
 	 * @return
 	 */
 	public String toJson()
-	{		
+	{
+		System.out.println("下载队列：".concat(Long.toString( this.con.scard(this.getKey() ) ) ) );
 		Set<String> keys = this.con.smembers(this.getKey());
 		List<file> files = new ArrayList<file>();
 		for(String key : keys)

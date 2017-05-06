@@ -59,8 +59,6 @@ if (	StringUtils.isEmpty(lenSvr)
 	return;
 }
 
-Jedis j = JedisTool.con();
-file f_cache = new file(j);
 DnFileInf fileSvr = new DnFileInf();
 fileSvr.signSvr = signSvr;
 fileSvr.uid = Integer.parseInt(uid);
@@ -69,7 +67,11 @@ fileSvr.lenSvr = Long.parseLong(lenSvr);
 fileSvr.perLoc = percent;
 fileSvr.pathSvr = pathSvr;
 fileSvr.pathLoc = pathLoc;
-f_cache.create(fileSvr);
+
+//添加到缓存
+Jedis j = JedisTool.con();
+tasks svr = new tasks(uid,j);
+svr.add(fileSvr);
 j.close();
 
 //文件不存在（未创建下载任务）
