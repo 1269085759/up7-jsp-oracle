@@ -18,10 +18,12 @@ public class file {
 		Jedis j = this.con;
 		//if(j.exists(f.signSvr)) return;
 						
+		j.hset(f.signSvr, "nameLoc", f.nameLoc);
 		j.hset(f.signSvr, "pathLoc", f.pathLoc);
 		j.hset(f.signSvr, "pathSvr", f.pathSvr);
 		j.hset(f.signSvr, "lenLoc", Long.toString(f.lenLoc) );//已下载大小		
 		j.hset(f.signSvr, "lenSvr",Long.toString( f.lenSvr ) );//文件大小
+		j.hset(f.signSvr, "sizeSvr", f.sizeSvr);
 		j.hset(f.signSvr, "perLoc",f.perLoc );//已下载百分比		
 	}
 	
@@ -35,6 +37,8 @@ public class file {
 		f.perLoc = this.con.hget(signSvr, "perLoc");
 		f.pathLoc = this.con.hget(signSvr, "pathLoc");//本地下载地址
 		f.pathSvr = this.con.hget(signSvr, "pathSvr");//服务器文件地址
+		f.sizeSvr = this.con.hget(signSvr, "sizeSvr");//
+		f.nameLoc = this.con.hget(signSvr, "nameLoc");//
 		return f;
 	}
 	

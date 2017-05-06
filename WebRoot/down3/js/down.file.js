@@ -27,7 +27,7 @@ function FileDownloader(fileLoc, mgr)
     this.browser = mgr.browser;
     this.Manager = mgr;
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({},mgr.Fields);//每一个对象自带一个fields幅本
+    this.fields = jQuery.extend({}, mgr.Fields, { nameLoc: encodeURIComponent(fileLoc.nameLoc), sizeSvr: fileLoc.sizeSvr });//每一个对象自带一个fields幅本
     this.State = HttpDownloaderState.None;
     this.event = mgr.event;
     this.fileSvr = {
@@ -48,7 +48,9 @@ function FileDownloader(fileLoc, mgr)
         , fdTask: false
     };
     jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
-    jQuery.extend(this.fileSvr, { fields: mgr.Fields });//附加字段
+    jQuery.extend(this.fileSvr, { fields: this.fields });//附加字段
+    var url = mgr.Config["UrlDown"] + "?id=" + this.fileSvr.signSvr;
+    if (this.fileSvr.fileUrl.length < 1) this.fileSvr.fileUrl = url;
 
     this.hideBtns = function ()
     {
@@ -164,8 +166,7 @@ function FileDownloader(fileLoc, mgr)
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
-        if (this.fileSvr.idSvr == 0) return;
-        var param = jQuery.extend({}, this.fields,this.fileSvr, {time:new Date().getTime()});
+        var param = jQuery.extend({}, { uid: this.fileSvr.uid,signSvr:this.fileSvr.signSvr,time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'

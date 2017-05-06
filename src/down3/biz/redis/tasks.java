@@ -40,7 +40,9 @@ public class tasks {
 	{
 		//从队列中删除
 		this.con.srem(this.getKey(), signSvr);
-		this.con.del(signSvr);//删除文件信息
+		
+		//删除文件信息
+		this.con.del(signSvr);
 	}
 	
 	/**

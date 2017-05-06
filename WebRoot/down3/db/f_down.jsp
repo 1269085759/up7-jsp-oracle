@@ -25,6 +25,8 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 String lenSvr 		= request.getHeader("x-down3-lenSvr");
+String nameLoc 		= request.getHeader("x-down3-nameLoc");
+String sizeSvr 		= request.getHeader("x-down3-sizeSvr");
 String pathSvr 		= request.getHeader("x-down3-pathSvr");
 String pathLoc 		= request.getHeader("x-down3-pathLoc");
 String blockIndex 	= request.getHeader("x-down3-blockIndex");
@@ -35,11 +37,15 @@ String percent		= request.getHeader("x-down3-percent");
 
 pathSvr	 = pathSvr.replaceAll("\\+","%20");
 pathLoc	 = pathLoc.replaceAll("\\+","%20");
+nameLoc	 = nameLoc.replaceAll("\\+","%20");
 pathSvr	 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
 pathLoc	 = URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
+nameLoc	 = URLDecoder.decode(nameLoc,"UTF-8");//utf-8解码
 
 if (	StringUtils.isEmpty(lenSvr)
+	||	StringUtils.isEmpty(sizeSvr)
 	||	StringUtils.isEmpty(pathSvr)
+	||	StringUtils.isEmpty(nameLoc)
 	||	StringUtils.isEmpty(pathLoc)
 	||	StringUtils.isEmpty(blockIndex)
 	||	StringUtils.isEmpty(lenLoc)
@@ -49,6 +55,8 @@ if (	StringUtils.isEmpty(lenSvr)
 	)
 {
 	System.out.println("lenSvr:".concat(lenSvr));
+	System.out.println("nameLoc:".concat(nameLoc));
+	System.out.println("sizeSvr:".concat(sizeSvr));
 	System.out.println("pathSvr:".concat(pathSvr));
 	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
@@ -64,9 +72,11 @@ fileSvr.signSvr = signSvr;
 fileSvr.uid = Integer.parseInt(uid);
 fileSvr.lenLoc = Long.parseLong(lenLoc);
 fileSvr.lenSvr = Long.parseLong(lenSvr);
+fileSvr.sizeSvr = sizeSvr;
 fileSvr.perLoc = percent;
 fileSvr.pathSvr = pathSvr;
 fileSvr.pathLoc = pathLoc;
+fileSvr.nameLoc = nameLoc;
 
 //添加到缓存
 Jedis j = JedisTool.con();

@@ -192,14 +192,12 @@ function DownloaderMgr()
 
 	    var _this = this;
         var fileNameArray = fileSvr.fileUrl.split("/");
-	    var fileName = fileNameArray[fileNameArray.length - 1];
 	    //自定义文件名称
         var fileLoc = { fileUrl: fileSvr.fileUrl};
 	    //自定义名称
 	    if (typeof (f_name) == "string")
 	    {
 	        jQuery.extend(fileLoc, { nameCustom: f_name });
-	        fileName = f_name;
 	    }
 
 	    var ui = this.tmpFile.clone();
@@ -229,7 +227,7 @@ function DownloaderMgr()
 	    this.filesMap[fileSvr.signSvr] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
-        uiName.text(fileName);
+        uiName.text(fileSvr.nameLoc);
         uiName.attr("title", fileSvr.fileUrl);
 	    uiMsg.text("");
 	    uiSize.text("0字节");
@@ -245,10 +243,11 @@ function DownloaderMgr()
 	this.resume_file = function (fileSvr)
 	{
         var f = this.add_ui(false, fileSvr);
-	    f.ui.size.text(fileSvr.sizeSvr);
+        f.ui.size.text(fileSvr.sizeSvr);
+        f.ui.name.text(fileSvr.nameLoc);
 	    f.ui.process.css("width", fileSvr.perLoc);
 	    f.ui.percent.text("(" + fileSvr.perLoc + ")");
-	    jQuery.extend(f.fileSvr, fileSvr);
+	    //jQuery.extend(f.fileSvr, fileSvr);
 	    f.addQueue();//添加到队列
 	};
 	this.resume_folder = function (fdSvr)

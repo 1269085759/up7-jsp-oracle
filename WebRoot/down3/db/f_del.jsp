@@ -1,6 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="down3.biz.*" %><%@
+	page import="down3.biz.redis.*" %><%@
+	page import="up7.*" %><%@
+	page import="redis.clients.jedis.Jedis" %><%@
 	page import="down3.model.*" %><%@ 
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
@@ -18,17 +21,20 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String fid = request.getParameter("idSvr");
+String id = request.getParameter("signSvr");
 String uid = request.getParameter("uid");
 String cbk = request.getParameter("callback");//jsonp
 
 if (	StringUtils.isBlank(uid)
-	||	StringUtils.isBlank(fid)
+	||	StringUtils.isBlank(id)
 	)
 {
 	out.write(cbk + "({\"value\":null})");
 	return;
 }
-DnFile.Delete(fid,uid);
-DnFile.delFiles(fid,uid);
+
+Jedis j = JedisTool.con();
+tasks svr = new tasks(uid,j);
+svr.del(id);
+j.close();
 out.write(cbk+"({\"value\":1})");%>
