@@ -1,6 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.*" %><%@
+	page import="redis.clients.jedis.Jedis" %><%@
+	page import="down3.biz.redis.*" %><%@
+	page import="down3.model.*" %><%@
 	page import="up7.model.*" %><%@ 
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
@@ -20,27 +23,32 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String fid 	= request.getParameter("fid");
-if (StringUtils.isBlank(fid))
+String fid 		= request.getParameter("fid");
+String uid 		= request.getParameter("uid");
+String signSvr	= request.getParameter("signSvr");
+if (	StringUtils.isBlank(fid)
+	||	StringUtils.isBlank(uid))
 {
 	return;
 }
 
-xdb_files inf = new xdb_files();
-DBFile db = new DBFile();
-//文件不存在
-if(!db.find(Integer.parseInt(fid),inf))
+Jedis j = JedisTool.con();
+file f_cache = new file(j);
+DnFileInf fileSvr = f_cache.read(signSvr);
+j.close();
+
+//文件不存在（未创建下载任务）
+if( fileSvr == null)
 {
 	response.addHeader("Content-Range","0-0/0");
 	response.addHeader("Content-Length","0");
 	return;
 }
-File f = new File(inf.pathSvr);
-long fileLen = f.length();
-RandomAccessFile raf = new RandomAccessFile(inf.pathSvr,"r");
+long fileLen = fileSvr.lenSvr;
+RandomAccessFile raf = new RandomAccessFile(fileSvr.pathSvr,"r");
 FileInputStream in = new FileInputStream( raf.getFD() );
 
-String fileName = inf.nameLoc;//QQ.exe
+String fileName = fileSvr.nameLoc;//QQ.exe
 fileName = URLEncoder.encode(fileName,"UTF-8");
 fileName = fileName.replaceAll("\\+","%20");
 response.setContentType("application/x-download");

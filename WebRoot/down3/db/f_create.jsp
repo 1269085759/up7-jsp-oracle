@@ -26,20 +26,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 String uid 		 = request.getParameter("uid");
 String idSign	 = request.getParameter("idSign");
 String signSvr	 = request.getParameter("signSvr");
-String nameLoc 	 = request.getParameter("nameCustom");
+String nameCustom= request.getParameter("nameCustom");
 String pathLoc	 = request.getParameter("pathLoc");
-String pathSvr	 = request.getParameter("fileUrl");
+String pathSvr	 = request.getParameter("pathSvr");
+String fileUrl	 = request.getParameter("fileUrl");
 String lenSvr 	 = request.getParameter("lenSvr");
 String sizeSvr 	 = request.getParameter("sizeSvr"); 
 String cbk  	 = request.getParameter("callback");//jsonp
 pathLoc 		 = pathLoc.replaceAll("\\+","%20");
-nameLoc			 = pathSvr.replaceAll("\\+","%20");
+nameCustom		 = pathSvr.replaceAll("\\+","%20");
+fileUrl			 = fileUrl.replaceAll("\\+","%20");
 pathLoc			 = URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
-nameLoc			 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
+nameCustom		 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
+fileUrl			 = URLDecoder.decode(fileUrl,"UTF-8");//utf-8解码
 
 if (StringUtils.isBlank(uid)
 	||StringUtils.isBlank(pathLoc)
 	||StringUtils.isBlank(pathSvr)
+	||StringUtils.isBlank(fileUrl)
 	||StringUtils.isBlank(lenSvr))
 {
 	out.write(cbk + "({\"value\":null}) ");
@@ -50,9 +54,15 @@ DnFileInf	inf = new DnFileInf();
 inf.idSign = idSign;
 inf.signSvr = signSvr;
 inf.uid = Integer.parseInt(uid);
-inf.nameLoc = nameLoc;
+inf.nameLoc = nameCustom;
+if(StringUtils.isBlank(nameCustom))
+{
+	File ps = new File(pathSvr);
+	inf.nameLoc = ps.getName();
+}
 inf.pathLoc = pathLoc;
-inf.fileUrl = pathSvr;
+inf.pathSvr = pathSvr;
+inf.fileUrl = fileUrl;
 inf.lenSvr = Long.parseLong(lenSvr);
 inf.sizeSvr = sizeSvr;
 
