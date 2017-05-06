@@ -473,37 +473,37 @@ function HttpUploaderMgr()
 	};
 	this.post_process = function (json)
 	{
-	    var p = this.filesMap[json.id];
+	    var p = this.filesMap[json.idSign];
 	    p.post_process(json);
 	};
 	this.post_error = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.post_error(json);
 	};
 	this.post_stoped = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.post_stoped(json);
 	};
 	this.post_complete = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.post_complete(json);
 	};
 	this.md5_process = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.md5_process(json);
 	};
 	this.md5_complete = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.md5_complete(json);
 	};
 	this.md5_error = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.idSign];
 	    p.md5_error(json);
 	};
     this.load_complete = function (json)
@@ -973,11 +973,11 @@ function HttpUploaderMgr()
 	参数:
 		fid 上传项ID。唯一标识
 	*/
-	this.Delete = function(idLoc)
+	this.Delete = function(idSign)
 	{
-	    _this.filesMap[idLoc].LocalFile = null;
-	    _this.RemoveQueue(idLoc); //从队列中删除
-	    _this.RemoveQueueWait(idLoc);//从未上传列表中删除
+        _this.filesMap[idSign].LocalFile = null;
+        _this.RemoveQueue(idSign); //从队列中删除
+        _this.RemoveQueueWait(idSign);//从未上传列表中删除
 	};
 
 	/*
@@ -1038,10 +1038,8 @@ function HttpUploaderMgr()
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
-		var idLoc = this.idCount++;
 		var nameLoc = fileLoc.nameLoc;
-		jQuery.extend(fileLoc, { idLoc: idLoc });
-		_this.AppendQueue(idLoc);//添加到队列
+        _this.AppendQueue(fileLoc.idSign);//添加到队列
 
 		var ui = _this.tmpFile.clone();//文件信息
 		var sp = _this.tmpSpliter.clone();//分隔线
@@ -1061,10 +1059,9 @@ function HttpUploaderMgr()
 		var uiPercent	= ui.find("div[name='percent']");
 		
 		var upFile = new FileUploader(fileLoc, _this);
-		this.filesMap[idLoc] = upFile;//添加到映射表
+        this.filesMap[fileLoc.idSign] = upFile;//添加到映射表
 		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui, split: sp };
 		upFile.ui = ui_eles;
-		upFile.idLoc = idLoc;
 
 		uiName.text(nameLoc).attr("title", nameLoc);
 		uiSize.text(fileLoc.sizeLoc);
@@ -1090,7 +1087,7 @@ function HttpUploaderMgr()
 		    {
 		        upFile.Ready();
 		        //添加到队列
-		        _this.AppendQueue(idLoc);
+                _this.AppendQueue(fileLoc.idSign);
 		    }
 		});
 		btnStop.click(function ()
@@ -1113,8 +1110,7 @@ function HttpUploaderMgr()
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
-	    var idLoc = this.idCount++;
-		this.AppendQueue(idLoc);//添加到队列
+        this.AppendQueue(json.idSign);//添加到队列
 
 		var ui = this.tmpFolder.clone();//文件夹信息
 		var sp = this.tmpSpliter.clone();//分隔线
@@ -1142,8 +1138,8 @@ function HttpUploaderMgr()
 		uiName.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
 		uiSize.text(fdLoc.sizeLoc);
 
-		var fdTask = new FolderUploader(idLoc, fdLoc, this);
-		this.filesMap[idLoc] = fdTask;//添加到映射表
+		var fdTask = new FolderUploader(fdLoc, this);
+        this.filesMap[json.idSign] = fdTask;//添加到映射表
 		fdTask.ui = ui_eles;
 	    btnCancel.click(function()
 		{
@@ -1165,7 +1161,7 @@ function HttpUploaderMgr()
 	        else
 	        {
 	            fdTask.Ready();
-	            _this.AppendQueue(fdTask.idLoc);
+                _this.AppendQueue(json.idSign);
 	        }
 	    });
 	    btnStop.click(function ()
