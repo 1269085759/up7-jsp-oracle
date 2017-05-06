@@ -18,6 +18,7 @@
 	更新记录：
 		2015-05-13
 		2016-07-29 更新
+		2017-05-06 从缓存中加载文件列表（未完成）
 */
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
