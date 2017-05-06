@@ -50,8 +50,8 @@ public class CompleteReader
         	fi.idSign = r.getString(1);//与up7_files表对应
         	fi.nameLoc = r.getString(2);
         	fi.pathLoc = r.getString(3);
-        	fi.lenLoc = r.getLong(4);        	
-        	fi.lenSvr = fi.lenLoc;
+        	fi.lenLoc = 0;//本地大小（已下载）        	
+        	fi.lenSvr = r.getLong(4);//远程大小
         	fi.pathSvr = r.getString(7);
         	fi.sizeSvr = r.getString(5);
         	fi.fdTask = r.getBoolean(6);
