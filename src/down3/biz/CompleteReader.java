@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -30,6 +31,8 @@ public class CompleteReader
         sb.append(",f_lenLoc");//4
         sb.append(",f_sizeLoc");//5
         sb.append(",f_fdTask");//6
+        sb.append(",f_pathSvr");//7
+        sb.append(",f_lenSvr");//8        
         //
         sb.append(" from up7_files");
         //
@@ -44,13 +47,16 @@ public class CompleteReader
         while (r.next())
         {
         	cmp_file fi = new cmp_file();
-        	fi.idSign = r.getString(1);
+        	fi.idSign = r.getString(1);//与up7_files表对应
         	fi.nameLoc = r.getString(2);
         	fi.pathLoc = r.getString(3);
         	fi.lenLoc = r.getLong(4);        	
         	fi.lenSvr = fi.lenLoc;
+        	fi.pathSvr = r.getString(7);
         	fi.sizeSvr = r.getString(5);
-        	fi.fdTask = r.getBoolean(6);        	
+        	fi.fdTask = r.getBoolean(6);
+        	fi.lenSvr = r.getLong(8);
+        	fi.signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识
         	files.add(fi);
         }
         r.close();

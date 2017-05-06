@@ -14,6 +14,9 @@ public class DnFileInf
     @SerializedName("idSign")
     public String idSign="";
     
+    @SerializedName("signSvr")
+    public String signSvr="";//服务端生成的一个标识
+    
     @SerializedName("uid")
     public int uid =0;
     
@@ -22,6 +25,9 @@ public class DnFileInf
     
     @SerializedName("pathLoc")
     public String pathLoc ="";
+    
+    @SerializedName("pathSvr")
+    public String pathSvr ="";
     
     @SerializedName("fileUrl")
     public String fileUrl ="";
