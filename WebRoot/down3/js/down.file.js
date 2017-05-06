@@ -48,6 +48,7 @@ function FileDownloader(fileLoc, mgr)
         , fdTask: false
     };
     jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
+    jQuery.extend(this.fileSvr, { fields: mgr.Fields });//附加字段
 
     this.hideBtns = function ()
     {

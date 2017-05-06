@@ -193,9 +193,8 @@ function DownloaderMgr()
 	    var _this = this;
         var fileNameArray = fileSvr.fileUrl.split("/");
 	    var fileName = fileNameArray[fileNameArray.length - 1];
-	    var fid = this.idCount++;
 	    //自定义文件名称
-        var fileLoc = { fileUrl: fileSvr.fileUrl, id: fid };
+        var fileLoc = { fileUrl: fileSvr.fileUrl};
 	    //自定义名称
 	    if (typeof (f_name) == "string")
 	    {
@@ -227,7 +226,7 @@ function DownloaderMgr()
         if (fd) { downer = new FdDownloader(fileSvr, this); }
         else { downer = new FileDownloader(fileSvr,this);}
 	    //var downer = new FileDownloader(fileLoc, this);
-	    this.filesMap[fileSvr.singSvr] = downer;//
+	    this.filesMap[fileSvr.signSvr] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
         uiName.text(fileName);

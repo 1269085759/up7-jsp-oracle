@@ -27,12 +27,10 @@ public class CompleteReader
         sb.append("select ");
         sb.append(" f_idSign");//1
         sb.append(",f_nameLoc");//2
-        sb.append(",f_pathLoc");//3
-        sb.append(",f_lenLoc");//4
-        sb.append(",f_sizeLoc");//5
-        sb.append(",f_fdTask");//6
-        sb.append(",f_pathSvr");//7
-        sb.append(",f_lenSvr");//8        
+        sb.append(",f_lenLoc");//3
+        sb.append(",f_sizeLoc");//4
+        sb.append(",f_fdTask");//5
+        sb.append(",f_pathSvr");//6   
         //
         sb.append(" from up7_files");
         //
@@ -49,13 +47,10 @@ public class CompleteReader
         	cmp_file fi = new cmp_file();
         	fi.idSign = r.getString(1);//与up7_files表对应
         	fi.nameLoc = r.getString(2);
-        	fi.pathLoc = r.getString(3);
-        	fi.lenLoc = 0;//本地大小（已下载）        	
-        	fi.lenSvr = r.getLong(4);//远程大小
-        	fi.pathSvr = r.getString(7);
-        	fi.sizeSvr = r.getString(5);
-        	fi.fdTask = r.getBoolean(6);
-        	fi.lenSvr = r.getLong(8);
+        	fi.lenSvr = r.getLong(3);
+        	fi.pathSvr = r.getString(6);
+        	fi.sizeSvr = r.getString(4);
+        	fi.fdTask = r.getBoolean(5);
         	fi.signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识
         	files.add(fi);
         }

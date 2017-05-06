@@ -26,6 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 String lenSvr 		= request.getHeader("x-down3-lenSvr");
 String pathSvr 		= request.getHeader("x-down3-pathSvr");
+String pathLoc 		= request.getHeader("x-down3-pathLoc");
 String blockIndex 	= request.getHeader("x-down3-blockIndex");
 String lenLoc 		= request.getHeader("x-down3-lenLoc");
 String signSvr 		= request.getHeader("x-down3-signSvr");
@@ -33,24 +34,28 @@ String uid 			= request.getHeader("x-down3-uid");
 String percent		= request.getHeader("x-down3-percent");
 
 pathSvr	 = pathSvr.replaceAll("\\+","%20");
+pathLoc	 = pathLoc.replaceAll("\\+","%20");
 pathSvr	 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
+pathLoc	 = URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 
-if (	StringUtils.isBlank(lenSvr)
-	||	StringUtils.isBlank(pathSvr)
-	||	StringUtils.isBlank(blockIndex)
-	||	StringUtils.isBlank(lenLoc)
-	||	StringUtils.isBlank(signSvr)
-	||	StringUtils.isBlank(uid)
-	||	StringUtils.isBlank(percent)
+if (	StringUtils.isEmpty(lenSvr)
+	||	StringUtils.isEmpty(pathSvr)
+	||	StringUtils.isEmpty(pathLoc)
+	||	StringUtils.isEmpty(blockIndex)
+	||	StringUtils.isEmpty(lenLoc)
+	||	StringUtils.isEmpty(signSvr)
+	||	StringUtils.isEmpty(uid)
+	||	StringUtils.isEmpty(percent)
 	)
 {
 	System.out.println("lenSvr:".concat(lenSvr));
 	System.out.println("pathSvr:".concat(pathSvr));
+	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
 	System.out.println("lenLoc:".concat(lenLoc));
 	System.out.println("signSvr:".concat(signSvr));
 	System.out.println("percent:".concat(percent));
-	System.out.println("业务逻辑参数为空。");
+	System.out.println("f_down.jsp 业务逻辑参数为空。");
 	return;
 }
 
@@ -63,6 +68,7 @@ fileSvr.lenLoc = Long.parseLong(lenLoc);
 fileSvr.lenSvr = Long.parseLong(lenSvr);
 fileSvr.perLoc = percent;
 fileSvr.pathSvr = pathSvr;
+fileSvr.pathLoc = pathLoc;
 f_cache.create(fileSvr);
 j.close();
 
