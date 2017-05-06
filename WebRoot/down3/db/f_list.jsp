@@ -31,6 +31,7 @@ if (!StringUtils.isBlank(uid))
 	Jedis j = JedisTool.con();
 	tasks svr = new tasks(uid,j);
 	String json = svr.toJson();
+	j.close();
 	
 	if(!StringUtils.isBlank(json))
 	{

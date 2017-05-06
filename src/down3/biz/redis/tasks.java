@@ -16,14 +16,14 @@ import redis.clients.jedis.Jedis;
  *
  */
 public class tasks {
-	String key = "tasks-down3";
+	String key = "tasks-down3-";
 	Jedis con=null;
 	String uid ="";
 	
 	public tasks(String uid,Jedis j){this.uid=uid; this.con = j;}
 	
 	//tasks-down3-uid
-	String getKey(){return key.concat("-").concat(uid);}
+	String getKey(){return key.concat(uid);}
 	
 	public void add(DnFileInf f)
 	{

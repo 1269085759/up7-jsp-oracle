@@ -491,7 +491,7 @@ function DownloaderMgr()
         , stopFile: function (f)
         {
             _this.queueCount--;
-            var param = { name: "stop_file", id: f.id, config: _this.Config };
+            var param = { name: "stop_file", signSvr: f.signSvr, config: _this.Config };
             this.postMessage(param);
         }
         , startQueue: function ()
