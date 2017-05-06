@@ -662,7 +662,7 @@ function HttpUploaderMgr()
         }
         , stopFile: function (f)
         {
-            var param = { name: "stop_file", id: f.id,config:_this.Config};
+            var param = { name: "stop_file", idSign: f.idSign, config: _this.Config };
             this.postMessage(param);
         }
         , postMessage:function(json)
