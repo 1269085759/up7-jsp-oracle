@@ -150,7 +150,7 @@ function FileDownloader(fileLoc, mgr)
             {
                 if (msg.value == null) return;
                 var json = JSON.parse(decodeURIComponent(msg.value));
-                _this.fileSvr.idSvr = json.idSvr;
+                _this.fileSvr.idSign = json.idSign;
                 //文件已经下载完
                 //if (_this.isComplete()) { _this.svr_delete(); }
             }

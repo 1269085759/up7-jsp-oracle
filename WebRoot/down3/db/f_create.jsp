@@ -24,6 +24,8 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 String uid 		 = request.getParameter("uid");
+String idSign	 = request.getParameter("idSign");
+String signSvr	 = request.getParameter("signSvr");
 String nameLoc 	 = request.getParameter("nameCustom");
 String pathLoc	 = request.getParameter("pathLoc");
 String pathSvr	 = request.getParameter("fileUrl");
@@ -45,6 +47,8 @@ if (StringUtils.isBlank(uid)
 }
 
 DnFileInf	inf = new DnFileInf();
+inf.idSign = idSign;
+inf.signSvr = signSvr;
 inf.uid = Integer.parseInt(uid);
 inf.nameLoc = nameLoc;
 inf.pathLoc = pathLoc;
