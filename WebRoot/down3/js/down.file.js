@@ -34,6 +34,7 @@ function FileDownloader(fileLoc, mgr)
           id:0//累加，唯一标识
         , idSvr: 0
         , idSign: ""
+        , signSvr: ""
         , uid: 0
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
