@@ -146,7 +146,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        this.browser.postFolder({ folder: this.folderSvr, fields: this.fields });
+        this.browser.postFolder(jQuery.extend({}, this.folderSvr, { fields: this.fields }));
     };
     this.post_error = function (json)
     {
