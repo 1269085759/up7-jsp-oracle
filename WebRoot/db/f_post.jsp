@@ -37,21 +37,25 @@
 //String path = request.getContextPath();
 //String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String uid 			= "";// 		= request.getParameter("uid");
-String idSign 		= "";// 		= request.getParameter("fid");
-String perSvr 		= "";// 	= request.getParameter("FileSize");
-String lenSvr		= "";
-String lenLoc		= "";
-String nameLoc		= "";
-String pathLoc		= "";
-String sizeLoc		= "";
-String f_pos 		= "";// 	= request.getParameter("RangePos");
-String rangeIndex	= "1";
-String rangeCount	= "1";
+String uid 			= request.getHeader("f-uid");// 		= request.getParameter("uid");
+String idSign 		= request.getHeader("f-idSign");// 		= request.getParameter("fid");
+String perSvr 		= request.getHeader("f-perSvr");// 	= request.getParameter("FileSize");
+String lenSvr		= request.getHeader("f-lenSvr");
+String lenLoc		= request.getHeader("f-lenLoc");
+String nameLoc		= request.getHeader("f-nameLoc");
+String pathLoc		= request.getHeader("f-pathLoc");
+String sizeLoc		= request.getHeader("f-sizeLoc");
+String f_pos 		= request.getHeader("f-RangePos");// 	= request.getParameter("RangePos");
+String rangeIndex	= request.getHeader("f-rangeIndex");
+String rangeCount	= request.getHeader("f-rangeCount");
 String complete		= "false";//文件块是否已发送完毕（最后一个文件块数据）
-String fd_idSign	= "";
-String fd_lenSvr	= "";
-String fd_perSvr	= "0%";
+String fd_idSign	= request.getHeader("fd-idSign");
+String fd_lenSvr	= request.getHeader("fd-lenSvr");
+String fd_perSvr	= request.getHeader("fd-perSvr");
+pathLoc	= pathLoc.replace("+","%20");
+pathLoc	= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
+nameLoc	= nameLoc.replace("+","%20");
+nameLoc	= URLDecoder.decode(nameLoc,"UTF-8");//utf-8解码
  
 // Check that we have a file upload request
 boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -76,50 +80,22 @@ while (fileItr.hasNext())
 {
 	// 得到当前文件
 	rangeFile = (FileItem) fileItr.next();
-	// 忽略简单form字段而不是上传域的文件域(<input type="text" />等)
-	if(rangeFile.isFormField())
-	{
-		String fn = rangeFile.getFieldName();
-		String fv = rangeFile.getString(); 
-		if(fn.equals("uid")) uid = fv;
-		if(fn.equals("idSign")) idSign = fv;
-		if(fn.equals("nameLoc")) nameLoc = fv;
-		if(fn.equals("pathLoc")) pathLoc = fv;
-		if(fn.equals("sizeLoc")) sizeLoc = fv;
-		if(fn.equals("lenSvr")) lenSvr = fv;
-		if(fn.equals("lenLoc")) lenLoc = fv;
-		if(fn.equals("perSvr")) perSvr = fv;
-		if(fn.equals("RangePos")) f_pos = fv;
-		if(fn.equals("rangeIndex")) rangeIndex = fv;
-		if(fn.equals("rangeCount")) rangeCount = fv;
-		if(fn.equals("complete")) complete = fv;
-		if(fn.equals("fd-idSign")) fd_idSign = fv;
-		if(fn.equals("fd-lenSvr")) fd_lenSvr = fv;
-		if(fn.equals("fd-perSvr")) fd_perSvr = fv;
-	}
-	else 
-	{
-		break;
-	}
 }
 
 //参数为空 
-if(	 StringUtils.isBlank( lenSvr )
+if(	   StringUtils.isBlank( lenSvr )
 	|| StringUtils.isBlank( uid )
 	|| StringUtils.isBlank( idSign )
 	|| StringUtils.isBlank( f_pos ))
 {
+	System.out.println("lenSvr:".concat(lenSvr));
 	XDebug.Output("uid", uid);
 	XDebug.Output("idSign", idSign);
 	XDebug.Output("f_pos", f_pos);
 	XDebug.Output("param is null");
 	return;
 }
-	pathLoc	= pathLoc.replace("+","%20");
-	pathLoc	= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 	
-	boolean cmp = StringUtils.equals(complete,"true");
-
 	Jedis j = JedisTool.con();
 	up7.biz.redis.file f_svr = new up7.biz.redis.file(j);
 

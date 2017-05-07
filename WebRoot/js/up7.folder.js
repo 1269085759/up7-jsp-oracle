@@ -197,8 +197,8 @@ function FolderUploader(fdLoc, mgr)
     {
         if (!json.all)
         {
-            this.folderSvr.files[json.id_f].complete = true;
-            this.folderSvr.filesComplete = json.compCount;//
+            //this.folderSvr.files[json.id_f].complete = true;
+            //this.folderSvr.filesComplete = json.compCount;//
             return;
         }
 
@@ -358,6 +358,8 @@ function FolderUploader(fdLoc, mgr)
     //从上传列表中删除上传任务
     this.remove = function ()
     {
+        //清除缓存
+        this.browser.delFolder({ idSign: this.folderSvr.idSign });
         this.manager.Delete(this.folderSvr.idSign);
         this.ui.div.remove();
         this.ui.split.remove();
