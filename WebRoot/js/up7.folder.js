@@ -190,7 +190,7 @@ function FolderUploader(fdLoc, mgr)
         this.folderSvr.perSvr = json.percent;
         this.ui.percent.text("("+json.percent+")");
         this.ui.process.css("width", json.percent);
-        var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
+        var str = "(" + json.fileCmps + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
         this.ui.msg.text(str);
     };
     this.post_complete = function (json)
