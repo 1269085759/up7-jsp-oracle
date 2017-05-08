@@ -7,7 +7,7 @@
 drop table up7_files;
 CREATE TABLE up7_files
 (
-	 f_idSign			char(36) NOT NULL			 /*文件ID，唯一。由于f_fid与oracle数据库字段有冲突，现改为f_idSign*/
+	 f_idSign			char(36) NOT NULL		 /*文件ID，唯一。由于f_fid与oracle数据库字段有冲突，现改为f_idSign*/
 	,f_pidSign			char(36) DEFAULT ''		 /**/
 	,f_rootSign			char(36) DEFAULT ''		 /*根级文件夹ID*/
 	,f_fdTask			number(1) DEFAULT 0	 	 /*表示是否是一个文件夹上传任务。提供给 ajax_f_list.jsp使用*/
