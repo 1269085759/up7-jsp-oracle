@@ -3,6 +3,7 @@
 	更新记录：
 		2015-11-10 将注释改为/**/方式
 		2016-04-11 完善字段
+		2017-05-08 增加f_idSign字段，f_rootSign,pidSign
 */
 drop table up7_files;
 CREATE TABLE up7_files
