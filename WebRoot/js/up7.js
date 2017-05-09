@@ -470,7 +470,13 @@ function HttpUploaderMgr()
 	    {
 	        this.addFileLoc(json.files[i]);
 	    }
-	};
+    };
+    this.paste_folders = function (json) {
+        for (var i = 0, l = json.folders.length; i < l; ++i) {
+            this.addFolderLoc(json.folders[i]);
+        }
+	    setTimeout(function () { _this.PostFirst(); }, 500);
+    };
 	this.post_process = function (json)
 	{
 	    var p = this.filesMap[json.idSign];
@@ -524,6 +530,7 @@ function HttpUploaderMgr()
 	         if (json.name == "open_files") { _this.open_files(json); }
 	    else if (json.name == "open_folders") { _this.open_folders(json); }
 	    else if (json.name == "paste_files") { _this.paste_files(json); }
+	    else if (json.name == "paste_folders") { _this.paste_folders(json); }
 	    else if (json.name == "post_process") { _this.post_process(json); }
 	    else if (json.name == "post_error") { _this.post_error(json); }
 	    else if (json.name == "post_stoped") { _this.post_stoped(json); }
