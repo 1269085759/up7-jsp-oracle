@@ -92,7 +92,7 @@ function FileUploader(fileLoc, mgr)
             , data: param
             , success: function (sv)
             {
-                _this.svr_init_end(sv);
+                _this.post_file();
             }
             , error: function (req, txt, err)
             {
@@ -102,19 +102,6 @@ function FileUploader(fileLoc, mgr)
             }
             , complete: function (req, sta) { req = null; }
         });
-    };
-    this.svr_init_end = function (sv)
-    {
-        if (sv.value == null)
-        {
-            this.svr_error(sv); return;
-        }
-
-        var str = decodeURIComponent(sv.value);//
-        this.fileSvr = JSON.parse(str);//
-        if (null == this.root) this.ui.process.css("width", this.fileSvr.perSvr);
-        if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
-        this.post_file();
     };
     //在停止和出错时调用
     this.svr_update = function ()
