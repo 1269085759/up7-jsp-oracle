@@ -426,7 +426,7 @@ function HttpUploaderMgr()
 					<div name="post_head" class="toolbar">\
 						<a href="javascript:void(0)" class="btn" name="btnAddFiles">选择多个文件</a>\
 						<a href="javascript:void(0)" class="btn" name="btnAddFolder">选择文件夹</a>\
-						<a href="javascript:void(0)" class="btn" name="btnPasteFile">粘贴文件</a>\
+						<a href="javascript:void(0)" class="btn" name="btnPasteFile">粘贴文件和文件夹</a>\
 						<a href="javascript:void(0)" class="btn hide" name="btnSetup">安装控件</a>\
 					</div>\
 					<div class="content" name="post_content">\
