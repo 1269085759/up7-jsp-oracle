@@ -30,10 +30,6 @@ if (	StringUtils.isBlank(lenLoc)
 	out.write("param is null\n");
 	return;
 }
-
-//更新redis进度
-up7.biz.redis.file rf = new up7.biz.redis.file();
-rf.process(idSign,perSvr,lenSvr);
 %>
 
 

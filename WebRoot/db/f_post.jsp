@@ -139,10 +139,10 @@ if(	   StringUtils.isBlank( lenSvr )
 	if(Long.parseLong(f_pos) == 0 )
 	{
 		//更新文件进度
-		f_svr.process(idSign,perSvr,lenSvr);
+		f_svr.process(idSign,perSvr,lenSvr,rangeCount);
 	
 		//更新文件夹进度
-		if(folder) f_svr.process(fd_idSign,fd_perSvr,fd_lenSvr);
+		if(folder) f_svr.process(fd_idSign,fd_perSvr,fd_lenSvr,"0");
 	}
 	j.close();
 		
