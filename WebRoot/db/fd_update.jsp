@@ -24,5 +24,5 @@ if(	  StringUtils.isBlank(lenSvr)
 
 //文件夹进度
 up7.biz.redis.file f = new up7.biz.redis.file();
-f.process(idSign,perSvr,lenSvr);
+f.process(idSign,perSvr,lenSvr,"0");
 %>
