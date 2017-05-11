@@ -278,13 +278,12 @@ function DownloaderMgr()
         var obj = this.add_ui(true, fileSvr);
 	    if (null == obj) return;
 
-	    obj.ui.name.text(fdLoc.nameLoc);
-	    obj.ui.size.text(fdLoc.sizeSvr);
+	    obj.ui.name.text(fileSvr.nameLoc);
+	    obj.ui.size.text(fileSvr.sizeSvr);
 	    obj.ui.ico.file.hide();
 	    obj.ui.ico.fd.show();
-	    jQuery.extend(obj.fileSvr, fdLoc);//
-	    jQuery.extend(obj.fileSvr, { fileUrl: url });
-	    obj.initFiles();//
+        jQuery.extend(obj.fileSvr, fileSvr);//
+        jQuery.extend(obj.fileSvr, { fileUrl: this.Config["UrlDown"] });
 	    obj.addQueue();
 	    return obj;
 	};
