@@ -30,6 +30,9 @@ String sizeSvr 		= request.getHeader("f-sizeSvr");
 String pathSvr 		= request.getHeader("f-pathSvr");
 String pathLoc 		= request.getHeader("f-pathLoc");
 String blockIndex 	= request.getHeader("f-blockIndex");
+String blockOffset	= request.getHeader("f-blockOffset");
+String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
+String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
 String signSvr 		= request.getHeader("f-signSvr");
 String uid 			= request.getHeader("f-uid");
@@ -41,16 +44,28 @@ nameLoc	 = nameLoc.replaceAll("\\+","%20");
 pathSvr	 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
 pathLoc	 = URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 nameLoc	 = URLDecoder.decode(nameLoc,"UTF-8");//utf-8解码
+System.out.println("lenSvr:".concat(lenSvr));
+System.out.println("nameLoc:".concat(nameLoc));
+//System.out.println("sizeSvr:".concat(sizeSvr));
+System.out.println("pathSvr:".concat(pathSvr));
+System.out.println("pathLoc:".concat(pathLoc));
+System.out.println("blockIndex:".concat(blockIndex));
+System.out.println("blockOffset:".concat(blockOffset));
+System.out.println("blockSize:".concat(blockSize));
+System.out.println("rangeSize:".concat(rangeSize));
+System.out.println("lenLoc:".concat(lenLoc));
+System.out.println("signSvr:".concat(signSvr));
+System.out.println("percent:".concat(percent));
 
 if (	StringUtils.isEmpty(lenSvr)
-	||	StringUtils.isEmpty(sizeSvr)
+	//||	StringUtils.isEmpty(sizeSvr)
 	||	StringUtils.isEmpty(pathSvr)
-	||	StringUtils.isEmpty(nameLoc)
+	//||	StringUtils.isEmpty(nameLoc)
 	||	StringUtils.isEmpty(pathLoc)
 	||	StringUtils.isEmpty(blockIndex)
 	||	StringUtils.isEmpty(lenLoc)
-	||	StringUtils.isEmpty(signSvr)
-	||	StringUtils.isEmpty(uid)
+	//||	StringUtils.isEmpty(signSvr)
+	//||	StringUtils.isEmpty(uid)
 	||	StringUtils.isEmpty(percent)
 	)
 {
@@ -60,6 +75,7 @@ if (	StringUtils.isEmpty(lenSvr)
 	System.out.println("pathSvr:".concat(pathSvr));
 	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
+	System.out.println("blockSize:".concat(blockSize));
 	System.out.println("lenLoc:".concat(lenLoc));
 	System.out.println("signSvr:".concat(signSvr));
 	System.out.println("percent:".concat(percent));
@@ -69,14 +85,14 @@ if (	StringUtils.isEmpty(lenSvr)
 
 DnFileInf fileSvr = new DnFileInf();
 fileSvr.signSvr = signSvr;
-fileSvr.uid = Integer.parseInt(uid);
+fileSvr.uid = uid==null?0:Integer.parseInt(uid);
 fileSvr.lenLoc = Long.parseLong(lenLoc);
 fileSvr.lenSvr = Long.parseLong(lenSvr);
-fileSvr.sizeSvr = sizeSvr;
+fileSvr.sizeSvr = sizeSvr==null?"":sizeSvr;
 fileSvr.perLoc = percent;
 fileSvr.pathSvr = pathSvr;
 fileSvr.pathLoc = pathLoc;
-fileSvr.nameLoc = nameLoc;
+fileSvr.nameLoc = nameLoc==null?"":nameLoc;
 
 //添加到缓存
 Jedis j = JedisTool.con();
@@ -107,44 +123,10 @@ response.addHeader("Content-Disposition","attachment;filename=" + fileName);
 OutputStream os = null;
 try
 {
-	long dataToRead = fileLen;
+	long dataToRead = Long.parseLong(rangeSize);
 	os = response.getOutputStream();
-	String range = request.getHeader("Range");
-	long rangePos = 0;
-	if( !StringUtils.isBlank(range) )
-	{
-		/*
-	        表示头500个字节：bytes=0-499
-	        表示第二个500字节：bytes=500-999
-	        表示最后500个字节：bytes=-500
-	        表示500字节以后的范围：bytes=500-
-	        第一个和最后一个字节：bytes=0-0,-1
-	        同时指定几个范围：bytes=500-600,601-999
-    	*/
-		String[] rs = range.split("-");//bytes=10254
-		int numBegin = rs[0].indexOf("=")+1;
-		String pos = rs[0].substring(numBegin);
-		long offset_begin = Long.parseLong(pos);
-		in.skip(offset_begin);//定位索引
-		
-		//rangePos = Long.parseLong(pos);//起始位置
-		String con_range;
-		if(rs.length == 2)
-		{
-			String offset_end = rs[1];
-			long totalLen = Long.parseLong(offset_end) - offset_begin;
-			//只有1byte
-			if(totalLen>1) ++totalLen;//
-			dataToRead = totalLen;
-			con_range = String.format("bytes %s-%s/%s",offset_begin,offset_end,fileLen);
-		}
-		else
-		{
-			dataToRead -= offset_begin;
-			con_range = String.format("bytes %s-%s/%s",offset_begin,dataToRead,fileLen);
-		}
-		response.addHeader("Content-Range",con_range);
-	}
+	long offset_begin = Long.parseLong(blockOffset);
+	in.skip(offset_begin);//定位索引
 	response.addHeader("Content-Length",Long.toString(dataToRead) );
 	
 	byte[] buffer = new byte[1048576];//1MB

@@ -23,6 +23,7 @@ public class fd_file
     public Boolean fdChild=false;//是否是一个子文件
     public long lenLoc = 0;
     public String sizeLoc = "0";//sizeLoc
+    public String signSvr=UUID.randomUUID().toString();
     public long pos;//上传位置
     public long lenSvr = 0;
     public String perSvr = "0%";

@@ -27,6 +27,7 @@
         ,files:null
     };
     jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
+    jQuery.extend(this.files, { fields: this.fields };
 
     this.hideBtns = function ()
     {
