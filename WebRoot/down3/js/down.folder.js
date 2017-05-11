@@ -46,19 +46,6 @@
         this.State = HttpDownloaderState.Ready;
     };
 
-    //初始化文件,url
-    this.initFiles = function ()
-    {
-        var l = this.fileSvr.files.length;
-        for(var i = 0 ;i<l;++i)
-        {
-            this.fileSvr.files[i].fileUrl = this.Config["UrlDown"] + "?fid=" + this.fileSvr.files[i].idSvr;
-            jQuery.extend(this.fileSvr.files[i], { id: i });
-            this.fileSvr.files[i].idSvr = 0;//
-            this.fileSvr.idSvr = 0;
-        }
-    };
-
     this.addQueue = function ()
     {
         this.browser.addFolder(this.fileSvr);

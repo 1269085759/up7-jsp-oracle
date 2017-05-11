@@ -58,6 +58,7 @@ function DownloaderMgr()
         , "UrlDown"     : "http://localhost:8080/Uploader7Oracle/down3/db/f_down.jsp"
 	    //folder
         , "UrlFdCreate" : "http://localhost:8080/Uploader7Oracle/down3/db/fd_create.jsp"
+        , "UrlFdPage"   : "http://localhost:8080/Uploader7Oracle/down3/db/fd_page.jsp"
         //x86
 		, "ClsidPart"	: "57FA11EE-5E98-415C-933D-BCA188B86B5E"
 		, "CabPath"		: "http://www.ncmem.com/download/down3/down3.cab"
