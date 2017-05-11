@@ -25,13 +25,16 @@ public class file
 		return this.con;
 	}
 	
-	public void process(String idSign,String perSvr,String lenSvr,String blockCount)
+	public void process(String idSign,String perSvr,String lenSvr,String blockCount,String blockSize)
 	{
 		Jedis j = JedisTool.con();
 		j.hset(idSign, "perSvr", perSvr);
 		j.hset(idSign, "lenSvr", lenSvr);
 		if(!StringUtils.equals(blockCount,"0"))
 		j.hset(idSign, "blockCount", blockCount);
+		
+		if(!StringUtils.equals(blockSize,"0"))
+			j.hset(idSign, "blockSize", blockSize);
 	}
 	
 	public void complete(String idSign)

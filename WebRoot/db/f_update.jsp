@@ -33,7 +33,7 @@ if (	StringUtils.isBlank(lenLoc)
 
 //更新redis进度
 up7.biz.redis.file rf = new up7.biz.redis.file();
-rf.process(idSign,perSvr,lenSvr,"0");
+rf.process(idSign,perSvr,lenSvr,"0","0");
 %>
 
 

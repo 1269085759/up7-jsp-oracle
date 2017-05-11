@@ -36,6 +36,8 @@ public class FileDbWriter
         sb.append(",f_sign");
         sb.append(",f_complete");
         sb.append(",f_fdTask");
+        sb.append(",f_blockCount");
+        sb.append(",f_blockSize");
         
         sb.append(") values(");
         
@@ -55,6 +57,8 @@ public class FileDbWriter
         sb.append(",?");//f_sign
         sb.append(",1");//f_complete
         sb.append(",?");//f_fdTask
+        sb.append(",?");//f_blockCount
+        sb.append(",?");//f_blockSize
         sb.append(")");
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());
@@ -73,6 +77,8 @@ public class FileDbWriter
         cmd.setString(13, "");//perSvr
         cmd.setString(14, "");//sign
         cmd.setBoolean(15, false);//fdTask
+        cmd.setInt(16, 1);
+        cmd.setInt(17, 0);
         return cmd;
 	}
 	
@@ -118,6 +124,8 @@ public class FileDbWriter
 	        cmd.setString(13, "100%");//perSvr
 	        cmd.setString(14, f.sign);//sign
 	        cmd.setBoolean(15, false);//fdTask
+	        cmd.setInt(16, f.blockCount);//blockCount
+	        cmd.setInt(17, f.blockSize);//blockSize
 	        cmd.execute();	
 		}
 		cmd.close();

@@ -28,8 +28,10 @@ public class fd_file_redis extends fd_file
 		this.nameSvr = j.hget(idSign, "nameSvr");
 		this.pidSign = j.hget(idSign, "pidSign");
 		this.rootSign = j.hget(idSign, "rootSign");
-		this.blockCount = Integer.parseInt( j.hget(idSign, "blockCount") );
-		this.blockSize = Integer.parseInt( j.hget(idSign, "blockSize") );
+		String blockCount = j.hget(idSign, "blockCount");
+		String blockSize = j.hget(idSign, "blockSize");
+		this.blockCount = blockCount==null ? 1 : Integer.parseInt(blockCount);
+		this.blockSize = blockSize == null ? 0 : Integer.parseInt(blockSize);
 		this.fdTask = StringUtils.equals(j.hget(idSign, "fdTask"),"true");
 		this.complete = j.hget(idSign, "complete")=="true";
 		this.sign = j.hget(idSign, "sign");
