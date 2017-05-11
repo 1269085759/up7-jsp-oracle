@@ -34,6 +34,7 @@ public class xdb_files {
 	public void setIdSvr(int idSvr) {this.idSvr = idSvr;}
 	//文件块
 	public int blockCount=1;
+	public int blockSize=0;//逻辑分块大小
 
 	public int getPid() {return pid;}
 	public void setPid(int pid) {this.pid = pid;}

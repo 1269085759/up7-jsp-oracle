@@ -48,6 +48,7 @@ String sizeLoc		= request.getHeader("f-sizeLoc");
 String f_pos 		= request.getHeader("f-RangePos");// 	= request.getParameter("RangePos");
 String rangeIndex	= request.getHeader("f-rangeIndex");
 String rangeCount	= request.getHeader("f-rangeCount");
+String rangeSize	= request.getHeader("f-rangeSize");//逻辑块大小信息，提供给下载使用
 String complete		= "false";//文件块是否已发送完毕（最后一个文件块数据）
 String fd_idSign	= request.getHeader("fd-idSign");
 String fd_lenSvr	= request.getHeader("fd-lenSvr");

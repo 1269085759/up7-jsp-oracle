@@ -571,6 +571,8 @@ public class DBFile {
 		sb.append(",f_perSvr");//9
 		sb.append(",f_sizeLoc");//10
 		sb.append(",f_complete");//11
+		sb.append(",f_blockCount");//12
+		sb.append(",f_blockSize");//13
 		
 		sb.append(") values(");
 				
@@ -585,6 +587,8 @@ public class DBFile {
 		sb.append(",'100%'");//sb.append(",@f_perSvr");
 		sb.append(",?");//sb.append(",@f_sizeLoc");
 		sb.append(",1");//sb.append(",@f_complete");
+		sb.append(",?");//sb.append(",@f_blockCount");
+		sb.append(",?");//sb.append(",@f_blockSize");
 		sb.append(")");
 
 		DbHelper db = new DbHelper();
@@ -599,6 +603,8 @@ public class DBFile {
 			cmd.setLong(7, inf.lenLoc);
 			cmd.setLong(8, inf.lenLoc);			
 			cmd.setString(9, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
+			cmd.setInt(12, inf.blockCount);
+			cmd.setInt(13,inf.blockSize);
 			cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

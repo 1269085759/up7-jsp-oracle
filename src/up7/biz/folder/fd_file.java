@@ -17,6 +17,8 @@ public class fd_file
     public String pidSign="";//父级目录guid
     public int pidRoot = 0;//
     public String rootSign="";//根级目录sign
+    public int blockCount=0;//块总数
+    public int blockSize=0;//逻辑块大小
     public int fdID = 0;//与up6_folders.fd_id对应，提供给文件夹使用。
     public Boolean fdChild=false;//是否是一个子文件
     public long lenLoc = 0;

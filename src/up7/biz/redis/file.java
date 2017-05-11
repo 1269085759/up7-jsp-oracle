@@ -25,12 +25,13 @@ public class file
 		return this.con;
 	}
 	
-	public void process(String idSign,String perSvr,String lenSvr,String blockCount)
+	public void process(String idSign,String perSvr,String lenSvr,String blockCount,String blockSize)
 	{
 		Jedis j = JedisTool.con();
 		j.hset(idSign, "perSvr", perSvr);
 		j.hset(idSign, "lenSvr", lenSvr);
 		j.hset(idSign, "blockCount", blockCount);
+		j.hset(idSign, "blockSize", blockSize);
 	}
 	
 	public void complete(String idSign)
@@ -72,6 +73,7 @@ public class file
 		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		f.sizeLoc = j.hget(idSign, "sizeLoc");
 		f.blockCount = Integer.parseInt(j.hget(idSign, "blockCount"));
+		f.blockSize = Integer.parseInt(j.hget(idSign, "blockSize"));
 		f.filesCount = Integer.parseInt( j.hget(idSign, "filesCount") );
 		return f;
 	}

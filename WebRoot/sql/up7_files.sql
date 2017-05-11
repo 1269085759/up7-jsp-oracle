@@ -20,15 +20,16 @@ CREATE TABLE up7_files
 	,f_pathSvr 		 	varchar2(512)  DEFAULT '' /*文件在服务器中的完整路径。*/
 	,f_pathRel  		varchar2(512)  DEFAULT '' /*文件在服务器中的相对路径。*/
 	,f_md5  			varchar2(40)   DEFAULT '' /*文件md5,sha1,crc*/
-	,f_lenLoc  			number(19) DEFAULT 0  	 /*文件总长度。以字节为单位*/
+	,f_lenLoc  			number(19) DEFAULT 0  	  /*文件总长度。以字节为单位*/
 	,f_sizeLoc  		varchar2(15) DEFAULT ''   /*格式化的文件尺寸。示例：10MB*/
-	,f_pos  			number(19) DEFAULT 0  	 /*文件续传位置。*/
-	,f_blockCount  		number DEFAULT '1'  	 
-	,f_lenSvr			number(19) DEFAULT 0  	 /*已上传长度。以字节为单位。*/
+	,f_pos  			number(19) DEFAULT 0  	  /*文件续传位置。*/
+	,f_blockCount  		number DEFAULT '1'		  /*文件块总数*/
+	,f_blockSize  		number DEFAULT '0'  	  /*文件块大小*/
+	,f_lenSvr			number(19) DEFAULT 0  	  /*已上传长度。以字节为单位。*/
 	,f_perSvr  			varchar2(6) DEFAULT '0%'  /*已上传百分比。示例：10%*/
-	,f_complete  		number(1) DEFAULT 0    /*是否已上传完毕。*/
-	,f_time  			DATE DEFAULT sysdate     /*文件上传时间*/
-	,f_deleted  		number(1) DEFAULT 0    /*是否已删除。*/
+	,f_complete  		number(1) DEFAULT 0    	  /*是否已上传完毕。*/
+	,f_time  			DATE DEFAULT sysdate      /*文件上传时间*/
+	,f_deleted  		number(1) DEFAULT 0    	  /*是否已删除。*/
 	,f_sign				varchar2(32)  DEFAULT ''
 );
 
