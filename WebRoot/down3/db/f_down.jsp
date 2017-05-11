@@ -24,16 +24,16 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-String lenSvr 		= request.getHeader("x-down3-lenSvr");
-String nameLoc 		= request.getHeader("x-down3-nameLoc");
-String sizeSvr 		= request.getHeader("x-down3-sizeSvr");
-String pathSvr 		= request.getHeader("x-down3-pathSvr");
-String pathLoc 		= request.getHeader("x-down3-pathLoc");
-String blockIndex 	= request.getHeader("x-down3-blockIndex");
-String lenLoc 		= request.getHeader("x-down3-lenLoc");
-String signSvr 		= request.getHeader("x-down3-signSvr");
-String uid 			= request.getHeader("x-down3-uid");
-String percent		= request.getHeader("x-down3-percent");
+String lenSvr 		= request.getHeader("f-lenSvr");
+String nameLoc 		= request.getHeader("f-nameLoc");
+String sizeSvr 		= request.getHeader("f-sizeSvr");
+String pathSvr 		= request.getHeader("f-pathSvr");
+String pathLoc 		= request.getHeader("f-pathLoc");
+String blockIndex 	= request.getHeader("f-blockIndex");
+String lenLoc 		= request.getHeader("f-lenLoc");
+String signSvr 		= request.getHeader("f-signSvr");
+String uid 			= request.getHeader("f-uid");
+String percent		= request.getHeader("f-percent");
 
 pathSvr	 = pathSvr.replaceAll("\\+","%20");
 pathLoc	 = pathLoc.replaceAll("\\+","%20");
