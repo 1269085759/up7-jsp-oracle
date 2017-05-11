@@ -19,7 +19,7 @@ public class FolderDbWriter
 	PreparedStatement makeCmd(Connection con) throws SQLException
 	{
         StringBuilder sb = new StringBuilder();        
-        sb.append("insert up7_folders(");
+        sb.append("insert into up7_folders(");
         sb.append(" fd_sign");
         sb.append(",fd_name");
         sb.append(",fd_pidSign");
@@ -31,7 +31,7 @@ public class FolderDbWriter
         sb.append(",fd_folders");
         sb.append(",fd_files");
         sb.append(",fd_rootSign");
-        sb.append(") values()");
+        sb.append(") values(");
         sb.append(" ?");//fd_sign
         sb.append(",?");//fd_name,
         sb.append(",?");//fd_pidSign,
@@ -43,19 +43,20 @@ public class FolderDbWriter
         sb.append(",?");//fd_folders
         sb.append(",?");//fd_files
         sb.append(",?");//fd_rootSign
+        sb.append(")");//
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());
-        cmd.setString(1, "");//fd_name
-        cmd.setString(2, "");//fd_pidSign
-        cmd.setInt(3, 0);//fd_uid
-        cmd.setInt(4, 0);//fd_length
-        cmd.setInt(5, 0);//fd_size
-        cmd.setString(6, "");//fd_pathLoc
-        cmd.setString(7, "");//fd_pathSvr
-        cmd.setInt(8, 0);//fd_folders
-        cmd.setInt(9, 0);//fd_files
-        cmd.setInt(10, 0);//fd_pidRoot
-        cmd.setString(11, "");//fd_id        
+        cmd.setString(1, "");//fd_sign
+        cmd.setString(2, "");//fd_name
+        cmd.setString(3, "");//fd_pidSign
+        cmd.setInt(4, 0);//fd_uid
+        cmd.setInt(5, 0);//fd_length
+        cmd.setString(6, "");//fd_size
+        cmd.setString(7, "");//fd_pathLoc
+        cmd.setString(8, "");//fd_pathSvr
+        cmd.setInt(9, 0);//fd_folders
+        cmd.setInt(10, 0);//fd_files
+        cmd.setString(11, "");//fd_rootSign                
         return cmd;
 	}
 	
