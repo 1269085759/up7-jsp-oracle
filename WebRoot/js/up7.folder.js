@@ -288,6 +288,19 @@ function FolderUploader(fdLoc, mgr)
 
         });
     };
+
+    this.scan_process = function (json)
+    {
+        this.ui.size.text(json.sizeLoc);
+        this.ui.msg.text("已扫描:"+json.fileCount);
+    };
+
+    this.scan_complete = function (json)
+    {
+        setTimeout(function () {
+            _this.post_fd();
+        }, 1000);
+    };
     
     //所有文件全部上传完成
     this.all_complete = function ()

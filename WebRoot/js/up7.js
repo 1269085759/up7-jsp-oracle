@@ -511,7 +511,15 @@ function HttpUploaderMgr()
 	{
         var p = this.filesMap[json.idSign];
 	    p.md5_error(json);
-	};
+    };
+    this.scan_process = function (json) {
+        var p = this.filesMap[json.idSign];
+        p.scan_process(json);
+    };
+    this.scan_complete = function (json) {
+        var p = this.filesMap[json.idSign];
+        p.scan_complete(json);
+    };
     this.load_complete = function (json)
     {
         this.btnSetup.hide();
@@ -538,6 +546,8 @@ function HttpUploaderMgr()
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
+	    else if (json.name == "scan_process") { _this.scan_process(json); }
+        else if (json.name == "scan_complete") { _this.scan_complete(json); }
 	    else if (json.name == "load_complete") { _this.load_complete(json);}
         else if (json.name == "extension_complete") { 
             setTimeout(function () {
@@ -1139,7 +1149,7 @@ function HttpUploaderMgr()
 		var btnStop     = ui.find("a[name='stop']");
 		var btnDel      = ui.find("a[name='del']");
 		var divPercent	= ui.find("div[name='percent']");
-		var ui_eles = { msg: divMsg, process: divProcess, percent: divPercent, btn: { del: btnDel, cancel: btnCancel, post: btnPost, stop: btnStop }, split: sp, div: ui };
+		var ui_eles = { msg: divMsg,size:uiSize, process: divProcess, percent: divPercent, btn: { del: btnDel, cancel: btnCancel, post: btnPost, stop: btnStop }, split: sp, div: ui };
 
 		divPercent.text("("+fdLoc.perSvr+")");
 		divProcess.css("width",fdLoc.perSvr);
