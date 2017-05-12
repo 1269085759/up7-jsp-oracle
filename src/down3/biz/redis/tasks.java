@@ -56,7 +56,7 @@ public class tasks {
 		f_svr.create(f);
 		
 		this.addSpace(this.getKey());
-		this.addSpace(f.signSvr);
+		this.addSpace(f.signSvr);		
 	}
 	
 	//删除文件

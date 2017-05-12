@@ -150,7 +150,6 @@
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
-        if (this.fileSvr.idSvr == 0) return;
         var param = jQuery.extend({}, this.fields,{signSvr:this.fileSvr.signSvr,time:new Date().getTime()});
         $.ajax({
             type: "GET"
