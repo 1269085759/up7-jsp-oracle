@@ -42,7 +42,6 @@ fileUrl			 = URLDecoder.decode(fileUrl,"UTF-8");//utf-8解码
 
 if (StringUtils.isBlank(uid)
 	||StringUtils.isBlank(pathLoc)
-	||StringUtils.isBlank(pathSvr)
 	||StringUtils.isBlank(fileUrl)
 	||StringUtils.isBlank(lenSvr))
 {
