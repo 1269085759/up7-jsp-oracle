@@ -65,7 +65,7 @@ public class tasks {
 		//从队列中删除
 		this.con.srem(this.getKey(), signSvr);
 		//从空间中删除
-		this.con.srem(this.keySpace, signSvr);
+		this.con.lrem(this.keySpace, 1,signSvr);
 		
 		//删除文件信息
 		this.con.del(signSvr);
