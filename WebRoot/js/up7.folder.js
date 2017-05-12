@@ -9,6 +9,7 @@ function FolderUploader(fdLoc, mgr)
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
+    this.folderScan = false;//已经扫描
     this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", idSign: "", uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
     jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
     this.manager = mgr;
@@ -65,6 +66,13 @@ function FolderUploader(fdLoc, mgr)
             , complete: function (req, sta) { req = null; }
         });
     };
+    this.scan = function ()
+    {
+        this.ui.btn.stop.hide();
+        this.ui.btn.del.hide();
+        this.ui.btn.cancel.show();
+        this.browser.scanFolder(this.folderSvr);
+    };
     //上传，创建文件夹结构信息
     this.post = function ()
     {
@@ -81,6 +89,7 @@ function FolderUploader(fdLoc, mgr)
         }
         else
         {
+            if (!this.folderScan) { this.scan(); return; }
             if (!this.check_opened()) return;
             //在此处增加服务器验证代码。
             this.ui.msg.text("初始化...");
@@ -297,6 +306,7 @@ function FolderUploader(fdLoc, mgr)
 
     this.scan_complete = function (json)
     {
+        this.folderScan = true;
         setTimeout(function () {
             _this.post_fd();
         }, 1000);

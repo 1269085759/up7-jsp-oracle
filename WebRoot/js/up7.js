@@ -664,6 +664,13 @@ function HttpUploaderMgr()
             param.name = "check_folder";
             this.postMessage(param);
         }
+        , scanFolder: function (fd)
+        {
+            var param = { name: "scan_folder", config: _this.Config };
+            jQuery.extend(param, fd);
+            param.name = "scan_folder";
+            this.postMessage(param);
+        }
         , postFile: function (f)
         {
             var param = { name: "post_file", config: _this.Config };
@@ -1196,7 +1203,8 @@ function HttpUploaderMgr()
 	this.ResumeFolder = function (fileSvr)
 	{
 	    var fd = this.addFolderLoc(fileSvr);
-		fd.folderInit = true;
+        fd.folderInit = true;
+        fd.folderScan = true;
 	    //
 		if (null == fileSvr.files)
 		{
