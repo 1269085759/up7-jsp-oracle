@@ -306,6 +306,7 @@ function FolderUploader(fdLoc, mgr)
 
     this.scan_complete = function (json)
     {
+        jQuery.extend(this.folderSvr, json);
         this.folderScan = true;
         setTimeout(function () {
             _this.post();
