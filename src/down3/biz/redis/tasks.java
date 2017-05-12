@@ -56,6 +56,7 @@ public class tasks {
 		List<DnFileInf> files = new ArrayList<DnFileInf>();
 		for(String key : keys)
 		{
+			System.out.println(key);
 			file f_svr = new file(this.con);
 			DnFileInf data = f_svr.read(key);
 			files.add(data);
