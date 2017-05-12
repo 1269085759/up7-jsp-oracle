@@ -35,6 +35,9 @@ String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
 String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
 String signSvr 		= request.getHeader("f-signSvr");
+String fd_signSvr 	= request.getHeader("fd-signSvr");
+String fd_lenLoc 	= request.getHeader("fd-lenLoc");
+String fd_sizeLoc 	= request.getHeader("fd-sizeLoc");
 String uid 			= request.getHeader("f-uid");
 String percent		= request.getHeader("f-percent");
 
@@ -44,18 +47,6 @@ nameLoc	 = nameLoc.replaceAll("\\+","%20");
 pathSvr	 = URLDecoder.decode(pathSvr,"UTF-8");//utf-8解码
 pathLoc	 = URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
 nameLoc	 = URLDecoder.decode(nameLoc,"UTF-8");//utf-8解码
-System.out.println("lenSvr:".concat(lenSvr));
-System.out.println("nameLoc:".concat(nameLoc));
-//System.out.println("sizeSvr:".concat(sizeSvr));
-System.out.println("pathSvr:".concat(pathSvr));
-System.out.println("pathLoc:".concat(pathLoc));
-System.out.println("blockIndex:".concat(blockIndex));
-System.out.println("blockOffset:".concat(blockOffset));
-System.out.println("blockSize:".concat(blockSize));
-System.out.println("rangeSize:".concat(rangeSize));
-System.out.println("lenLoc:".concat(lenLoc));
-System.out.println("signSvr:".concat(signSvr));
-System.out.println("percent:".concat(percent));
 
 if (	StringUtils.isEmpty(lenSvr)
 	//||	StringUtils.isEmpty(sizeSvr)
@@ -85,8 +76,11 @@ if (	StringUtils.isEmpty(lenSvr)
 
 DnFileInf fileSvr = new DnFileInf();
 fileSvr.signSvr = signSvr;
+//子文件项时仅保存文件夹信息
+if(fd_signSvr != null) fileSvr.signSvr = fd_signSvr;
 fileSvr.uid = uid==null?0:Integer.parseInt(uid);
 fileSvr.lenLoc = Long.parseLong(lenLoc);
+if(fd_lenLoc != null) fileSvr.lenLoc = Long.parseLong(fd_lenLoc);
 fileSvr.lenSvr = Long.parseLong(lenSvr);
 fileSvr.sizeSvr = sizeSvr==null?"":sizeSvr;
 fileSvr.perLoc = percent;
