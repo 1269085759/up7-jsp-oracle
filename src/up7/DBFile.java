@@ -603,8 +603,8 @@ public class DBFile {
 			cmd.setLong(7, inf.lenLoc);
 			cmd.setLong(8, inf.lenLoc);			
 			cmd.setString(9, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
-			cmd.setInt(12, inf.blockCount);
-			cmd.setInt(13,inf.blockSize);
+			cmd.setInt(10, inf.blockCount);
+			cmd.setInt(11,inf.blockSize);
 			cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -631,7 +631,7 @@ public class DBFile {
 		PreparedStatement cmd = db.GetCommand(sb.toString());
 		try {
 			cmd.setString(1, inf.pathSvr);
-			cmd.setString(1, inf.md5);
+			cmd.setString(2, inf.md5);
 			cmd.setInt(3, inf.idSvr);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
