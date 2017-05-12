@@ -27,7 +27,7 @@
         ,files:null
     };
     jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
-    jQuery.extend(this.files, { fields: this.fields };
+    jQuery.extend(this.fileSvr, { fields: this.fields });
 
     this.hideBtns = function ()
     {
@@ -151,7 +151,7 @@
     this.svr_delete = function ()
     {
         if (this.fileSvr.idSvr == 0) return;
-        var param = jQuery.extend({}, this.fields,{idSvr:this.fileSvr.idSvr,time:new Date().getTime()});
+        var param = jQuery.extend({}, this.fields,{signSvr:this.fileSvr.signSvr,time:new Date().getTime()});
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -190,15 +190,11 @@
             //this.ui.btn.del.text("打开");
             this.ui.process.css("width", "100%");
             this.ui.percent.text("(100%)");
-            this.ui.msg.text("文件数："+this.fileSvr.files.length+" 成功："+this.fileSvr.success);
+            this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.fileComplete);
             this.State = HttpDownloaderState.Complete;
             //this.SvrDelete();
             this.Manager.filesCmp.push(this);
-
-            if (this.fileSvr.idSvr > 0)
-            {
-                this.svr_delete();
-            }
+            this.svr_delete();
         }
         else
         {
