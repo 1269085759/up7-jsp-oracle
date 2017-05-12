@@ -75,6 +75,8 @@ function FolderUploader(fdLoc, mgr)
     //上传，创建文件夹结构信息
     this.post = function ()
     {
+        if (!this.folderScan) { this.scan(); return; }
+
         this.ui.btn.stop.show();
         this.ui.btn.del.hide();
         this.ui.btn.cancel.hide();
@@ -88,7 +90,6 @@ function FolderUploader(fdLoc, mgr)
         }
         else
         {
-            if (!this.folderScan) { this.scan(); return; }
             if (!this.check_opened()) return;
             //在此处增加服务器验证代码。
             this.ui.msg.text("初始化...");
