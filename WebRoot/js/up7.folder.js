@@ -78,6 +78,7 @@ function FolderUploader(fdLoc, mgr)
     {
         this.ui.btn.stop.show();
         this.ui.btn.del.hide();
+        this.ui.btn.cancel.hide();
         this.ui.btn.post.hide();
         this.ui.btn.cancel.hide();
         this.manager.AppendQueuePost(this.folderSvr.idSign);//添加到队列中
