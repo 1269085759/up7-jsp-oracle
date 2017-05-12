@@ -15,7 +15,6 @@ function FolderUploader(fdLoc, mgr)
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
-    this.arrFilesComplete = new Array();//已上传完的文件列表，存储HttpUploader对象
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
@@ -222,7 +221,6 @@ function FolderUploader(fdLoc, mgr)
         this.State = HttpUploaderState.Complete;
         this.folderSvr.complete = true;
         this.folderSvr.perSvr = "100%";
-        this.manager.arrFilesComplete.push(this);
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.folderSvr.idSign);
         //从未上传列表中删除
