@@ -80,7 +80,6 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.del.hide();
         this.ui.btn.cancel.hide();
         this.ui.btn.post.hide();
-        this.ui.btn.cancel.hide();
         this.manager.AppendQueuePost(this.folderSvr.idSign);//添加到队列中
         this.State = HttpUploaderState.Posting;
         //如果文件夹已初始化，表示续传。
@@ -309,7 +308,7 @@ function FolderUploader(fdLoc, mgr)
     {
         this.folderScan = true;
         setTimeout(function () {
-            _this.post_fd();
+            _this.post();
         }, 1000);
     };
     
