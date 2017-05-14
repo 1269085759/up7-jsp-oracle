@@ -52,7 +52,7 @@ public class tasks {
 		this.con.sadd(this.getKey(), f.signSvr);
 		
 		//添加一条信息
-		file f_svr = new file(this.con);
+		FileRedis f_svr = new FileRedis(this.con);
 		f_svr.create(f);
 		
 		this.addSpace(this.getKey());
@@ -83,7 +83,7 @@ public class tasks {
 		for(String key : keys)
 		{
 			System.out.println(key);
-			file f_svr = new file(this.con);
+			FileRedis f_svr = new FileRedis(this.con);
 			DnFileInf data = f_svr.read(key);
 			files.add(data);
 		}

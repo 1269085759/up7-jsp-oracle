@@ -13,13 +13,14 @@
 	page import="com.google.gson.GsonBuilder" %><%@ 
 	page import="com.google.gson.annotations.SerializedName" %><%@ 
 	page import="java.io.*" %><%/*
-	下载数据库中的文件。
+	下载文件块，针对于合并后的文件处理
 	相关错误：
 		getOutputStream() has already been called for this response
 			解决方法参考：http://stackoverflow.com/questions/1776142/getoutputstream-has-already-been-called-for-this-response
 	更新记录：
 		2015-05-13 创建
 		2017-05-06 增加业务逻辑数据，简化处理逻辑
+		2017-05-14 优化逻辑
 */
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -35,11 +36,12 @@ String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
 String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
 String signSvr 		= request.getHeader("f-signSvr");
+String uid 			= request.getHeader("f-uid");
+String percent		= request.getHeader("f-percent");
 String fd_signSvr 	= request.getHeader("fd-signSvr");
 String fd_lenLoc 	= request.getHeader("fd-lenLoc");
 String fd_sizeLoc 	= request.getHeader("fd-sizeLoc");
-String uid 			= request.getHeader("f-uid");
-String percent		= request.getHeader("f-percent");
+String fd_percent 	= request.getHeader("fd-percent");
 
 pathSvr	 = pathSvr.replaceAll("\\+","%20");
 pathLoc	 = pathLoc.replaceAll("\\+","%20");
@@ -74,54 +76,45 @@ if (	StringUtils.isEmpty(lenSvr)
 	return;
 }
 
-DnFileInf fileSvr = new DnFileInf();
-fileSvr.signSvr = signSvr;
-//子文件项时仅保存文件夹信息
-if(fd_signSvr != null) fileSvr.signSvr = fd_signSvr;
-fileSvr.uid = uid==null?0:Integer.parseInt(uid);
-fileSvr.lenLoc = Long.parseLong(lenLoc);
-if(fd_lenLoc != null) fileSvr.lenLoc = Long.parseLong(fd_lenLoc);
-fileSvr.lenSvr = Long.parseLong(lenSvr);
-fileSvr.sizeSvr = sizeSvr==null?"":sizeSvr;
-fileSvr.perLoc = percent;
-fileSvr.pathSvr = pathSvr;
-fileSvr.pathLoc = pathLoc;
-fileSvr.nameLoc = nameLoc==null?"":nameLoc;
-
-//添加到缓存
-Jedis j = JedisTool.con();
-tasks svr = new tasks(uid,j);
-svr.add(fileSvr);
-j.close();
-
-//文件不存在（未创建下载任务）
-if( fileSvr == null)
+//是文件
+if( StringUtils.isEmpty(fd_signSvr) )
 {
-	response.addHeader("Content-Range","0-0/0");
-	response.addHeader("Content-Length","0");
-	return;
+	//添加到缓存
+	Jedis j = JedisTool.con();
+	FileRedis fr = new FileRedis(j);
+	fr.process(signSvr,percent,lenLoc);
+	j.close();
+}//子文件
+else
+{
+	//添加到缓存
+	Jedis j = JedisTool.con();
+	FileRedis fr = new FileRedis(j);
+	fr.process(fd_signSvr,fd_percent,fd_lenLoc);
+	j.close();
 }
-long fileLen = fileSvr.lenSvr;
-RandomAccessFile raf = new RandomAccessFile(fileSvr.pathSvr,"r");
+
+
+RandomAccessFile raf = new RandomAccessFile(pathSvr,"r");
 FileInputStream in = new FileInputStream( raf.getFD() );
 
-String fileName = fileSvr.nameLoc;//QQ.exe
+long dataToRead = Long.parseLong(rangeSize);
+String fileName = nameLoc;//QQ.exe
 fileName = URLEncoder.encode(fileName,"UTF-8");
-fileName = fileName.replaceAll("\\+","%20");
+fileName = fileName.replace("+","%20");
 response.setContentType("application/x-download");
 response.setHeader("Pragma","No-cache");  
 response.setHeader("Cache-Control","no-cache");  
 response.setDateHeader("Expires", 0);
 response.addHeader("Content-Disposition","attachment;filename=" + fileName);
+response.addHeader("Content-Length",Long.toString(dataToRead) );
 
 OutputStream os = null;
 try
 {
-	long dataToRead = Long.parseLong(rangeSize);
 	os = response.getOutputStream();
 	long offset_begin = Long.parseLong(blockOffset);
 	in.skip(offset_begin);//定位索引
-	response.addHeader("Content-Length",Long.toString(dataToRead) );
 	
 	byte[] buffer = new byte[1048576];//1MB
 	int len = 0;	

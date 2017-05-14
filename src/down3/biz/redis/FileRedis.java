@@ -8,10 +8,10 @@ import redis.clients.jedis.Jedis;
  * @author Administrator
  *
  */
-public class file {
+public class FileRedis {
 	Jedis con = null;
 	
-	public file(Jedis j){this.con = j;}
+	public FileRedis(Jedis j){this.con = j;}
 	
 	public void create(DnFileInf f)
 	{
