@@ -108,6 +108,8 @@ public class xdb_files {
 	public String pathSvr="";
 	/**	 * 文件在服务器中的相对路径。示例：/www/web/upload/md5.exe	 */
 	public String pathRel="";
+	//文件块目录 f:/webapps/files/年/月/日/guid/file-guid/
+	public String blockPath = "";
 	/**	 * 文件MD5	 */
 	public String md5="";
 	/**	 * 数字化的文件长度。以字节为单位，示例：120125	 */

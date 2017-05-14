@@ -50,6 +50,9 @@ fileSvr.nameSvr = fileSvr.nameLoc;
 //所有单个文件均以guid方式存储
 PathGuidBuilder pb = new PathGuidBuilder();
 fileSvr.pathSvr = pb.genFile(fileSvr.uid,fileSvr);
+//文件块目录
+BlockPathBuilder bpb = new BlockPathBuilder();
+fileSvr.blockPath = bpb.root(idSign,fileSvr.pathSvr);
 
 //添加到redis
 Jedis j = JedisTool.con();
