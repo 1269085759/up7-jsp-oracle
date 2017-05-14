@@ -142,7 +142,7 @@ function FileDownloader(fileLoc, mgr)
         //已记录将不再记录
         if (this.fileSvr.idSvr) return;
         var param = jQuery.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
-        jQuery.extend(param, {pathLoc:encodeURIComponent(this.fileSvr.pathLoc),nameLoc:encodeURIComponent(this.fileSvr.nameCustom)});
+        jQuery.extend(param, {pathLoc:encodeURIComponent(this.fileSvr.pathLoc),nameLoc:encodeURIComponent(this.fileSvr.nameLoc)});
 
         $.ajax({
             type: "GET"
