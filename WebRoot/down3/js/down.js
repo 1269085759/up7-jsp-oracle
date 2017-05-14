@@ -271,6 +271,7 @@ function DownloaderMgr()
 	{
         var obj = this.add_ui(false, fileSvr);
 	    if (obj != null) obj.addQueue();
+        if (obj != null) obj.svr_create();
 	    return obj;
 	};
     this.add_folder = function (fileSvr)
@@ -285,6 +286,7 @@ function DownloaderMgr()
         jQuery.extend(obj.fileSvr, fileSvr);//
         jQuery.extend(obj.fileSvr, { fileUrl: this.Config["UrlDown"] });
 	    obj.addQueue();
+        obj.init_end();
 	    return obj;
 	};
 	this.exist_url = function (url)

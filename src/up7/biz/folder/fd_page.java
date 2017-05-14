@@ -10,6 +10,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 import up7.DbHelper;
+import up7.model.xdb_files;
 
 //文件夹读取分页数据
 public class fd_page 
@@ -27,7 +28,7 @@ public class fd_page
 		String sqlData = "select f_nameLoc,f_pathLoc,f_pathSvr,f_lenLoc,f_sizeLoc from up7_files where f_rootSign='"+id+"'";
         String sql = String.format("select * from (select a.*, rownum rn from (%s) a where rownum <= %d) where rn >= %d",sqlData,pageEnd,pageStart);
 
-        List<fd_file> files = new ArrayList<fd_file>();
+        List<xdb_files> files = new ArrayList<xdb_files>();
         DbHelper db = new DbHelper();
         PreparedStatement cmd = db.GetCommand(sql);        
         try
@@ -35,7 +36,7 @@ public class fd_page
 			ResultSet r = db.ExecuteDataSet(cmd);
 			while(r.next())
 			{
-	        	fd_file f = new fd_file();
+	        	xdb_files f = new xdb_files();
 	        	f.nameLoc = r.getString(1);//f_nameLoc
 	        	f.pathLoc = r.getString(2);//f_pathLoc
 	        	f.pathSvr = r.getString(3);
