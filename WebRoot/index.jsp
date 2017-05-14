@@ -41,7 +41,7 @@ String clientCookie = request.getHeader("Cookie");
   <body>
 	<p>up7多文件上传演示页面</p>
 	<p><a href="debug/redis-test.jsp" target="_blank">redis连接测试</a></p>
-	<p><a href="db/clear.jsp" target="_blank">清空数据库和缓存</a></p>
+	<p><a href="db/clear.jsp" target="_blank">清空数据库和缓存(redis)</a></p>
 	<p><a href="down3/index.htm" target="_blank">打开下载页面</a></p>
     <p>
         文件路径：<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;

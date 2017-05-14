@@ -9,14 +9,14 @@ import redis.clients.jedis.Jedis;
 import up7.JedisTool;
 import up7.model.xdb_files;
 
-public class file 
+public class FileRedis 
 {
 	Jedis con=null;
-	public file(Jedis c)
+	public FileRedis(Jedis c)
 	{
 		this.con = c;
 	}
-	public file()
+	public FileRedis()
 	{		
 	}
 	Jedis getCon()
@@ -52,6 +52,7 @@ public class file
 		j.hset(f.idSign, "rootSign", f.rootSign);
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
 		j.hset(f.idSign, "pathSvr", f.pathSvr);
+		j.hset(f.idSign, "blockPath", f.blockPath);
 		j.hset(f.idSign, "nameLoc", f.nameLoc);
 		j.hset(f.idSign, "nameSvr", f.nameSvr);
 		j.hset(f.idSign, "lenLoc", Long.toString(f.lenLoc) );
@@ -71,6 +72,7 @@ public class file
 		f.idSign = idSign;
 		f.pathLoc = j.hget(idSign, "pathLoc");
 		f.pathSvr = j.hget(idSign, "pathSvr");
+		f.blockPath = j.hget(idSign, "blockPath");
 		f.nameLoc = j.hget(idSign, "nameLoc");
 		f.nameSvr = j.hget(idSign, "nameSvr");
 		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );

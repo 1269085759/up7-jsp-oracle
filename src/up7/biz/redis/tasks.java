@@ -46,7 +46,7 @@ public class tasks {
 		this.add(f.idSign);
 		
 		//添加key
-		up7.biz.redis.file fs = new up7.biz.redis.file(this.con);
+		up7.biz.redis.FileRedis fs = new up7.biz.redis.FileRedis(this.con);
 		fs.create(f);
 	}
 	
