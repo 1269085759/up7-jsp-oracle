@@ -16,7 +16,7 @@ import redis.clients.jedis.Jedis;
  *
  */
 public class tasks {
-	String keySpace = "down3";//下载，命名空间，防止与上传冲突
+	String space = "down3";//下载，命名空间，防止与上传冲突
 	String key = "tasks-down3-";
 	Jedis con=null;
 	String uid ="";
@@ -29,15 +29,15 @@ public class tasks {
 	//所有下载项都要加到下载的空间下
 	void addSpace(String key)
 	{
-		this.con.lpush(this.keySpace, key);
+		this.con.lpush(this.space, key);
 	}
 	
 	public void clear()
 	{
-		long len = this.con.llen(this.keySpace);//取总长度
+		long len = this.con.llen(this.space);//取总长度
 		while(len > 0)
 		{
-			List<String> list = this.con.lrange(this.keySpace, 0 ,500);
+			List<String> list = this.con.lrange(this.space, 0 ,500);
 			for(String k : list)
 			{
 				this.con.del(k);
@@ -65,7 +65,7 @@ public class tasks {
 		//从队列中删除
 		this.con.srem(this.getKey(), signSvr);
 		//从空间中删除
-		this.con.lrem(this.keySpace, 1,signSvr);
+		this.con.lrem(this.space, 1,signSvr);
 		
 		//删除文件信息
 		this.con.del(signSvr);
