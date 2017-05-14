@@ -53,6 +53,9 @@ public class BlockMeger {
 			}
 			fw.close();
 			dstFile.close();
+			
+			//删除所有文件块
+			for(File f : parts) f.delete();
 						
 			//删除文件块目录
 			File partFd = new File(fileSvr.blockPath);

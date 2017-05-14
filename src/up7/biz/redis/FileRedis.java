@@ -78,7 +78,9 @@ public class FileRedis
 		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
 		f.sizeLoc = j.hget(idSign, "sizeLoc");
 		f.blockCount = Integer.parseInt(j.hget(idSign, "blockCount"));
-		f.blockSize = Integer.parseInt(j.hget(idSign, "blockSize"));
+		String blockSize = j.hget(idSign, "blockSize");
+		if(null == blockSize) blockSize="0";
+		f.blockSize = Integer.parseInt(blockSize);
 		f.filesCount = Integer.parseInt( j.hget(idSign, "filesCount") );
 		return f;
 	}
