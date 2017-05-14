@@ -31,7 +31,8 @@ public class CompleteReader
         sb.append(",f_sizeLoc");//4
         sb.append(",f_fdTask");//5
         sb.append(",f_pathLoc");//6
-        sb.append(",fd_files");//7
+        sb.append(",f_pathSvr");//7
+        sb.append(",fd_files");//8
         //
         sb.append(" from up7_files");
         sb.append(" left join up7_folders on up7_folders.fd_sign=up7_files.f_idSign");
@@ -52,12 +53,13 @@ public class CompleteReader
         	fi.nameLoc = r.getString(2);
         	fi.lenSvr = r.getLong(3);
         	fi.pathLoc = r.getString(6);
+        	fi.pathSvr = r.getString(7);
         	fi.sizeSvr = r.getString(4);
         	fi.fdTask = r.getBoolean(5);
         	//如果是文件夹则pathSvr保存本地路径，用来替换
         	if(fi.fdTask) fi.pathSvr = fi.pathLoc;
         	fi.signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识
-        	fi.filesCount = r.getInt(7);
+        	fi.filesCount = r.getInt(8);
         	files.add(fi);
         }
         r.close();
