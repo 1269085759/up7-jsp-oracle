@@ -102,30 +102,30 @@ if(	   StringUtils.isBlank( lenSvr )
 }
 	
 	Jedis j = JedisTool.con();
-	FileRedis f_svr = new FileRedis(j);
+	FileRedis cache = new FileRedis(j);
 		
 	//文件块
 	if(StringUtils.isBlank(fd_idSign))
 	{
 		//从缓存中取文件信息
-		xdb_files fileSvr = f_svr.read(idSign);
+		xdb_files fileSvr = cache.read(idSign);
 		
 		//生成文件块路径
 		BlockPathBuilder bpb = new BlockPathBuilder();
 		String partPath = bpb.part(idSign,rangeIndex,fileSvr.pathSvr);
-		String ps = f_svr.getPartPath(idSign, rangeIndex);
+		String ps = cache.getPartPath(idSign, rangeIndex);
 		
 		//保存文件块
 		up7.biz.file_part part = new up7.biz.file_part();
 		part.save(ps,rangeFile);
 		
 		//更新文件进度
-		if(f_pos == "0") f_svr.process(idSign,perSvr,lenSvr,rangeCount,rangeSize);
+		if(f_pos == "0") cache.process(idSign,perSvr,lenSvr,rangeCount,rangeSize);
 	}//子文件块
 	else
 	{
 		//取根文件夹信息
-		xdb_files fd = f_svr.read(fd_idSign);
+		xdb_files fd = cache.read(fd_idSign);
 		
 		//向redis添加子文件信息
 		up7.model.xdb_files f_child = new up7.model.xdb_files();
@@ -143,10 +143,10 @@ if(	   StringUtils.isBlank( lenSvr )
 		f_child.blockCount = Integer.parseInt(rangeCount);
 		//子文件块路径
         BlockPathBuilder bpb = new BlockPathBuilder();
-		f_child.blockPath = bpb.rootFd(idSign,rangeIndex,f_child); 
+		f_child.blockPath = bpb.rootFd(idSign,rangeIndex,fd); 
 				
 		//将文件信息添加到缓存,文件夹上传完毕后会将缓存数据写入数据库
-		f_svr.create(f_child);
+		cache.create(f_child);
 		
 		//添加到文件夹
 		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j,fd_idSign);		
@@ -161,7 +161,7 @@ if(	   StringUtils.isBlank( lenSvr )
 
 
 		//更新文件夹进度
-		if(f_pos == "0") f_svr.process(fd_idSign,fd_perSvr,fd_lenSvr,"0","0");
+		if(f_pos == "0") cache.process(fd_idSign,fd_perSvr,fd_lenSvr,"0","0");
 	}
 	j.close();
 		
