@@ -33,9 +33,9 @@ nameLoc			= URLDecoder.decode(nameLoc,"UTF-8");
 pathLoc		 	= pathLoc.replace("+","%20");
 pathLoc			= URLDecoder.decode(pathLoc,"UTF-8");
 
-if (StringUtils.isBlank(uid)
-	||StringUtils.isBlank(nameLoc)
-	||StringUtils.isBlank(pathLoc)
+if (	!StringUtils.isBlank(uid)
+	||	!StringUtils.isBlank(nameLoc)
+	||	!StringUtils.isBlank(pathLoc)
 	)
 {
 	DnFileInf fd = new DnFileInf();
