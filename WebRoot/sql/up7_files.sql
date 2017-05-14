@@ -4,6 +4,7 @@
 		2015-11-10 将注释改为/**/方式
 		2016-04-11 完善字段
 		2017-05-08 增加f_idSign字段，f_rootSign,pidSign
+		2017-05-14 增加f_blockPath
 */
 drop table up7_files;
 CREATE TABLE up7_files
@@ -25,6 +26,7 @@ CREATE TABLE up7_files
 	,f_pos  			number(19) DEFAULT 0  	  /*文件续传位置。*/
 	,f_blockCount  		number DEFAULT '1'		  /*文件块总数*/
 	,f_blockSize  		number DEFAULT '0'  	  /*文件块大小*/
+	,f_blockPath		varchar2(1000) DEFAULT '' /*文件块路径。*/
 	,f_lenSvr			number(19) DEFAULT 0  	  /*已上传长度。以字节为单位。*/
 	,f_perSvr  			varchar2(6) DEFAULT '0%'  /*已上传百分比。示例：10%*/
 	,f_complete  		number(1) DEFAULT 0    	  /*是否已上传完毕。*/

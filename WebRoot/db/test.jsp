@@ -24,7 +24,7 @@
 */
 
 String ps = "d:\\soft\\qq.exe";
-	Integer index = ps.lastIndexOf("\\");
-	out.write(ps.substring(0,index) );
+File f = new File(ps);
+out.write( f.getParent());
 
 %>
