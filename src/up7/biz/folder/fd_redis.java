@@ -10,15 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-
 import redis.clients.jedis.Jedis;
 import up7.DbHelper;
-import up7.FileBlockWriter;
 import up7.JedisTool;
 import up7.PathTool;
+import up7.biz.BlockMeger;
 import up7.biz.PathGuidBuilder;
+import up7.biz.redis.FileRedis;
+import up7.model.xdb_files;
 
 import com.google.gson.Gson;
 
@@ -65,20 +64,8 @@ public class fd_redis
 			
 			//添加当前路径
 			parentPathMap.put(fd.idSign, fd.pathSvr);
-		}
+		}		
 		
-		//更新文件路径（Server）
-		for(fd_file f : this.m_root.files)
-		{
-			if(parentPathMap.containsKey(f.pidSign))
-			{
-				String path = parentPathMap.get(f.pidSign);//
-				f.pathSvr = PathTool.combine(path, f.nameLoc);
-				//创建空文件（原始大小）
-				FileBlockWriter fr = new FileBlockWriter();
-				fr.make(f.pathSvr, f.lenLoc);
-			}
-		}
 	}
 	
 	//创建目录
@@ -138,15 +125,10 @@ public class fd_redis
 	
 	public void mergeAll()
 	{
-		for(fd_file_redis f : this.m_root.files)
+		BlockMeger bm = new BlockMeger();
+		for(xdb_files f : this.m_root.files)
 		{
-			try {
-				f.merge();
-			} catch (IOException e) {
-				System.out.println("合并文件块错误，文件路径：".concat(f.pathSvr));
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			bm.merge(f);
 		}
 	}
 	
@@ -196,12 +178,13 @@ public class fd_redis
 		//取文件ID列表
 		fd_files_redis rfs = new fd_files_redis(j,this.m_root.idSign);		
 		Set<String> fs = rfs.all();
-		this.m_root.files = new ArrayList<fd_file_redis>();
+		this.m_root.files = new ArrayList<xdb_files>();
 		System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
+		
+		FileRedis cache = new FileRedis(j);
 		for(String s : fs)
 		{
-			fd_file_redis file = new fd_file_redis();
-			file.read(j, s);
+			xdb_files file = cache.read(s);
 			this.m_root.files.add(file);
 		}
 	}
@@ -242,9 +225,10 @@ public class fd_redis
 	
 	void saveFiles(Jedis j)
 	{
-		for(fd_file_redis f : this.m_root.files)
+		FileRedis cache = new FileRedis(j);
+		for(xdb_files f : this.m_root.files)
 		{
-			f.write(j);
+			cache.create(f);
 		}
 	}
 	

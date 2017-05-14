@@ -3,7 +3,7 @@ package up7.biz.folder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
+import up7.model.xdb_files;
 
 public class FileDbWriter 
 {
@@ -107,7 +107,7 @@ public class FileDbWriter
         cmd.execute();
 		
 		//写子文件列表
-		for(fd_file_redis f : this.root.files)
+		for(xdb_files f : this.root.files)
 		{
 	        cmd.setString(1, f.idSign);//idSign
 	        cmd.setString(2, f.pidSign);//pidSign

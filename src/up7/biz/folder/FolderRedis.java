@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 import redis.clients.jedis.Jedis;
 import up7.JedisTool;
+import up7.biz.redis.FileRedis;
+import up7.model.xdb_files;
 
 public class FolderRedis 
 {
@@ -31,11 +33,12 @@ public class FolderRedis
 	
 	void readFiles(Jedis j,String[] fs)
 	{		
+		FileRedis cache = new FileRedis(j);
 		for(String s : fs)
 		{
-			fd_file_redis file = new fd_file_redis();
-			file.read(j, s);
-			this.m_root.files.add(file);
+			xdb_files f = cache.read(s);
+			//file.read(j, s);
+			this.m_root.files.add(f);
 		}
 	}
 	

@@ -50,6 +50,7 @@ public class FileRedis
 		
 		j.hset(f.idSign, "fdTask", f.f_fdTask==true?"true":"false");
 		j.hset(f.idSign, "rootSign", f.rootSign);
+		j.hset(f.idSign, "pidSign", f.pidSign);
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
 		j.hset(f.idSign, "pathSvr", f.pathSvr);
 		j.hset(f.idSign, "blockPath", f.blockPath);
@@ -70,6 +71,8 @@ public class FileRedis
 		
 		xdb_files f = new xdb_files();
 		f.idSign = idSign;
+		f.rootSign = j.hget(idSign, "rootSign");
+		f.pidSign = j.hget(idSign, "pidSign");
 		f.pathLoc = j.hget(idSign, "pathLoc");
 		f.pathSvr = j.hget(idSign, "pathSvr");
 		f.blockPath = j.hget(idSign, "blockPath");

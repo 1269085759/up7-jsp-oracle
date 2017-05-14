@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
-import up7.JedisTool;
+import up7.model.xdb_files;
 
 /*
  * key：文件夹GUID-files
@@ -43,10 +43,10 @@ public class fd_files_redis
 		this.con.sadd(this.getKey(), fSign);	
 	}
 	
-	public void add(List<fd_file_redis> fs)
+	public void add(List<xdb_files> fs)
 	{
 		String key = this.getKey();		
-		for(fd_file_redis f : fs)
+		for(xdb_files f : fs)
 		{
 			this.con.sadd(key, f.idSign);
 		}

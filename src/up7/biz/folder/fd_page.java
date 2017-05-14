@@ -5,10 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import com.google.gson.Gson;
-
 import up7.DbHelper;
 import up7.model.xdb_files;
 

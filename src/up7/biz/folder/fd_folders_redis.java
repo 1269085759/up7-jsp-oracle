@@ -3,7 +3,6 @@ package up7.biz.folder;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
-import up7.JedisTool;
 
 public class fd_folders_redis {
 

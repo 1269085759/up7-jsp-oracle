@@ -3,7 +3,6 @@ package up7.biz.folder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class FolderDbWriter 
 {	
@@ -67,13 +66,13 @@ public class FolderDbWriter
 		//写根目录
         cmd.setString(1, this.root.idSign);//fd_id
 		cmd.setString(2,this.root.nameLoc);
-        cmd.setInt(3, this.root.pidSvr);//fd_pid
+        cmd.setInt(3, 0);//fd_pid
         cmd.setInt(4, this.root.uid);//fd_uid
         cmd.setLong(5, this.root.lenLoc);//fd_length
         cmd.setString(6, this.root.sizeLoc);//fd_size
         cmd.setString(7, this.root.pathLoc);//fd_pathLoc
         cmd.setString(8, this.root.pathSvr);//fd_pathSvr
-        cmd.setInt(9, this.root.foldersCount);//fd_folders
+        cmd.setInt(9, this.root.folderCount);//fd_folders
         cmd.setInt(10, this.root.filesCount);//fd_files
         cmd.setString(11, this.root.rootSign);//fd_pidRoot
         cmd.execute();
@@ -85,14 +84,14 @@ public class FolderDbWriter
 		{
 	        cmd.setString(1, fd.idSign);//fd_id
 	        cmd.setString(2,fd.nameLoc);
-	        cmd.setInt(3, fd.pidSvr);//fd_pid
+	        cmd.setInt(3, 0);//fd_pid
 	        cmd.setInt(4, fd.uid);//fd_uid
 	        cmd.setLong(5, fd.lenLoc);//fd_length
 	        cmd.setString(6, fd.sizeLoc);//fd_size
 	        cmd.setString(7, fd.pathLoc);//fd_pathLoc
 	        cmd.setString(8, fd.pathSvr);//fd_pathSvr
-	        cmd.setInt(8, fd.foldersCount);//fd_folders
-	        cmd.setInt(10, fd.filesCount);//fd_files
+	        cmd.setInt(8, fd.folderCount);//fd_folders
+	        cmd.setInt(10, fd.fileCount);//fd_files
 	        cmd.setString(11, fd.rootSign);//fd_pidRoot
 	        cmd.execute();			
 		}
