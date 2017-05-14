@@ -556,7 +556,7 @@ public class DBFile {
 	 * 将文件缓存信息添加到数据库，
 	 * @param inf
 	 */
-	public void addComplete(fd_file_redis inf)
+	public void addComplete(xdb_files inf)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("insert into up7_files(");
