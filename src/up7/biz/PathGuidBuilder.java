@@ -74,6 +74,7 @@ public class PathGuidBuilder extends PathBuilder{
 		path = path.concat(uuid);
 		path = path.concat("/");
 		path = path.concat(f.nameLoc);
+		path = path.replace('\\', '/');
 		return path;
 	}
 
