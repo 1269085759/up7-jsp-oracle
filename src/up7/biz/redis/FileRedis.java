@@ -70,16 +70,18 @@ public class FileRedis
 		if(!j.exists(idSign)) return null;
 		
 		xdb_files f = new xdb_files();
-		f.idSign = idSign;
-		f.rootSign = j.hget(idSign, "rootSign");
-		f.pidSign = j.hget(idSign, "pidSign");
-		f.pathLoc = j.hget(idSign, "pathLoc");
-		f.pathSvr = j.hget(idSign, "pathSvr");
-		f.blockPath = j.hget(idSign, "blockPath");
-		f.nameLoc = j.hget(idSign, "nameLoc");
-		f.nameSvr = j.hget(idSign, "nameSvr");
-		f.lenLoc = Long.parseLong(j.hget(idSign, "lenLoc") );
-		f.sizeLoc = j.hget(idSign, "sizeLoc");
+		f.idSign 	 = idSign;
+		f.rootSign 	 = j.hget(idSign, "rootSign");
+		f.pidSign 	 = j.hget(idSign, "pidSign");
+		f.pathLoc 	 = j.hget(idSign, "pathLoc");
+		f.pathSvr 	 = j.hget(idSign, "pathSvr");
+		f.blockPath  = j.hget(idSign, "blockPath");
+		f.nameLoc 	 = j.hget(idSign, "nameLoc");
+		f.nameSvr 	 = j.hget(idSign, "nameSvr");
+		f.lenLoc 	 = Long.parseLong(j.hget(idSign, "lenLoc") );
+		f.sizeLoc 	 = j.hget(idSign, "sizeLoc");
+		f.lenSvr 	 = Long.parseLong( j.hget(idSign, "lenSvr") );
+		f.perSvr 	 = j.hget(idSign, "perSvr");
 		f.blockCount = Integer.parseInt(j.hget(idSign, "blockCount"));
 		String blockSize = j.hget(idSign, "blockSize");
 		if(null == blockSize) blockSize="0";
