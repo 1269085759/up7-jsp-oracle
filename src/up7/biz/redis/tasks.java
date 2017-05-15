@@ -88,7 +88,6 @@ public class tasks {
 		for(String s : ls)
 		{
 			xdb_files f = cache.read(s);
-			//f.read(this.con, s);
 			arr.add(f);
 		}
 		return arr;

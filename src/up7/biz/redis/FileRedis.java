@@ -71,6 +71,7 @@ public class FileRedis
 		
 		xdb_files f = new xdb_files();
 		f.idSign 	 = idSign;
+		f.f_fdTask	 = j.hget(idSign, "fdTask").compareTo("true")==0;
 		f.rootSign 	 = j.hget(idSign, "rootSign");
 		f.pidSign 	 = j.hget(idSign, "pidSign");
 		f.pathLoc 	 = j.hget(idSign, "pathLoc");
