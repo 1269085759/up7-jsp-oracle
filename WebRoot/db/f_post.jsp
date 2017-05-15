@@ -144,7 +144,8 @@ if(	   StringUtils.isBlank( lenSvr )
 		f_child.blockCount = Integer.parseInt(rangeCount);
 		//子文件块路径
         BlockPathBuilder bpb = new BlockPathBuilder();
-		f_child.blockPath = bpb.rootFd(idSign,rangeIndex,fd); 
+		f_child.blockPath = bpb.rootFd(f_child,rangeIndex,fd);
+		String partPath = PathTool.combine(f_child.blockPath,rangeIndex+".part");
 				
 		//将文件信息添加到缓存,文件夹上传完毕后会将缓存数据写入数据库
 		cache.create(f_child);
@@ -153,8 +154,6 @@ if(	   StringUtils.isBlank( lenSvr )
 		up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j,fd_idSign);		
 		root.add(idSign);
 		
-		//块路径
-		String partPath = bpb.partFd(idSign,rangeIndex,fd);
 		
 		//保存块
 		up7.biz.file_part part = new up7.biz.file_part();
