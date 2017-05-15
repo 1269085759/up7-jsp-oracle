@@ -1205,11 +1205,5 @@ function HttpUploaderMgr()
 	    var fd = this.addFolderLoc(fileSvr);
         fd.folderInit = true;
         fd.folderScan = true;
-	    //
-		if (null == fileSvr.files)
-		{
-		    alert("文件为空");
-		    return;
-		}
 	};
 }
