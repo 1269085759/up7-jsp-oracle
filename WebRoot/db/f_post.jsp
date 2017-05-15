@@ -139,7 +139,7 @@ if(	   StringUtils.isBlank( lenSvr )
 		f_child.pathLoc = pathLoc.replace("\\","/");//路径规范化处理
 		f_child.pathSvr = pathLoc.replace(fd.pathLoc,fd.pathSvr);
 		f_child.pathSvr = f_child.pathSvr.replace('\\','/'); 
-		f_child.pathRel = pathLoc.replace(fd.pathLoc,"");
+		f_child.pathRel = pathLoc.replace(fd.pathLoc.concat("\\"),"");
 		f_child.rootSign = fd_idSign;
 		f_child.blockCount = Integer.parseInt(rangeCount);
 		//子文件块路径

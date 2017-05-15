@@ -99,11 +99,21 @@ public class BlockPathBuilder
 	 * @param fd
 	 * @return
 	 */
-	public String rootFd(String idSign,String blockIndex,xdb_files fd)
+	public String rootFd(xdb_files f,String blockIndex,xdb_files fd)
 	{
         String pathSvr = fd.pathSvr;
         try {
-			pathSvr = PathTool.combine(pathSvr, idSign);
+        	int pos = f.pathRel.lastIndexOf("\\");
+        	if(pos == -1)
+        	{
+        		pathSvr = PathTool.combine(pathSvr, f.idSign);
+        	}
+        	else
+        	{
+        		String rel = f.pathRel.substring(0,pos);
+        		pathSvr = PathTool.combine(pathSvr, rel);
+        		pathSvr = PathTool.combine(pathSvr, f.idSign);
+        	}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
