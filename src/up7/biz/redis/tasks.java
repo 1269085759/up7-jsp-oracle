@@ -7,7 +7,6 @@ import java.util.Set;
 import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
-import up7.biz.folder.fd_file_redis;
 import up7.biz.folder.fd_files_redis;
 import up7.biz.folder.fd_folders_redis;
 import up7.model.xdb_files;
@@ -77,18 +76,19 @@ public class tasks {
 		this.con.flushDB();//		
 	}
 	
-	public List<fd_file_redis> all()
+	public List<xdb_files> all()
 	{
-		List<fd_file_redis> arr = null;		
+		List<xdb_files> arr = null;		
 		Set<String> ls = this.con.smembers(this.getKey());
 		System.out.println("用户uid=".concat(this.uid)
 				.concat(" 任务数：").concat(Integer.toString(ls.size())));
-		if(ls.size() > 0) arr = new ArrayList<fd_file_redis>();
+		if(ls.size() > 0) arr = new ArrayList<xdb_files>();
 		
+		FileRedis cache = new FileRedis(this.con);
 		for(String s : ls)
 		{
-			fd_file_redis f = new fd_file_redis();
-			f.read(this.con, s);
+			xdb_files f = cache.read(s);
+			//f.read(this.con, s);
 			arr.add(f);
 		}
 		return arr;
@@ -96,7 +96,7 @@ public class tasks {
 	
 	public String toJson()
 	{
-		List<fd_file_redis> fs = this.all();
+		List<xdb_files> fs = this.all();
 		if(fs == null) return "";
 		
 		Gson g = new Gson();
