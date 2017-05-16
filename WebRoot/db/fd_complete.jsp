@@ -25,6 +25,7 @@ if ( !StringUtils.isBlank(sign) )
 	Jedis j = JedisTool.con();
 	fd_redis fd = new fd_redis(j);
 	fd.read(sign);
+	fd.saveToDb();//保存到数据库
 	
 	//清除缓存
 	tasks svr = new tasks(j);
@@ -32,8 +33,7 @@ if ( !StringUtils.isBlank(sign) )
 	svr.delFd(sign);
 	j.close();
 	
-	fd.mergeAll();//合并文件块
-	fd.saveToDb();//保存到数据库
+	//fd.mergeAll();//合并文件块
 	ret = 1;
 }
 out.write(cbk + "(" + ret + ")");

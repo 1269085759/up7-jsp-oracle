@@ -146,7 +146,7 @@ public class FileDbWriter
 			sp.match("*");
 			ScanResult<String> ret = this.m_cache.sscan(this.root.idSign.concat("-files"), Integer.toString(index), sp);
 			List<String> keys = ret.getResult();
-			index -= keys.size();
+			index += keys.size();
 			List<xdb_files> files = new ArrayList<xdb_files>();
 			
 			//添加到数据库
