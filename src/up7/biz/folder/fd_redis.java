@@ -162,9 +162,9 @@ public class fd_redis
 			e.printStackTrace();
 		}
 		
-		FileDbWriter fw = new FileDbWriter(con,this.m_root);
+		FileDbWriter fw = new FileDbWriter(con,this.con,this.m_root);
 		try {
-			fw.save();
+			fw.saveFiles();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("保存子文件列表失败，数据库错误");

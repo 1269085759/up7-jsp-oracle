@@ -3,16 +3,29 @@ package up7.biz.folder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
+import up7.biz.redis.FileRedis;
 import up7.model.xdb_files;
 
+/**
+ * 将文件夹中的子文件添加到数据库
+ * @author Administrator
+ *
+ */
 public class FileDbWriter 
 {
 	fd_root root;
-	Connection con;
+	Connection m_db;
+	Jedis m_cache;
 	
-	public FileDbWriter(Connection con,fd_root fd)
+	public FileDbWriter(Connection con,Jedis j,fd_root fd)
 	{
-		this.con = con;
+		this.m_cache = j;
+		this.m_db = con;
 		this.root = fd;
 	}
 	
@@ -82,37 +95,14 @@ public class FileDbWriter
         return cmd;
 	}
 	
-	public void save() throws SQLException
+	void save(PreparedStatement cmd,xdb_files f)
 	{
-		if(this.root.files==null) return;
-		if(this.root.files.size() < 1) return;
-		PreparedStatement cmd = this.makeCmd(con);
-		
-		//写根目录
-        cmd.setString(1, this.root.idSign);//idSign
-        cmd.setString(2, this.root.pidSign);//pidSign
-        cmd.setString(3, "");//rootSign
-        cmd.setBoolean(4, false);//fdChild
-        cmd.setInt(5, this.root.uid);//uid
-        cmd.setString(6, this.root.nameLoc);//nameLoc
-        cmd.setString(7, this.root.nameSvr);//nameSvr
-        cmd.setString(8, this.root.pathLoc);//pathLoc
-        cmd.setString(9, this.root.pathSvr);//pathSvr
-        cmd.setLong(10, this.root.lenLoc);//lenLoc
-        cmd.setString(11, this.root.sizeLoc);//sizeLoc
-        cmd.setLong(12, this.root.lenLoc);//lenSvr
-        cmd.setString(13, "100%");//perSvr
-        cmd.setString(14, this.root.sign);//sign
-        cmd.setBoolean(15, true);//sign
-        cmd.execute();
-		
-		//写子文件列表
-		for(xdb_files f : this.root.files)
-		{
-	        cmd.setString(1, f.idSign);//idSign
+        try 
+        {
+			cmd.setString(1, f.idSign);//idSign
 	        cmd.setString(2, f.pidSign);//pidSign
 	        cmd.setString(3, f.rootSign);//rootSign
-	        cmd.setBoolean(4, true);//fdChild
+	        cmd.setBoolean(4, f.f_fdChild);//fdChild
 	        cmd.setInt(5, f.uid);//uid
 	        cmd.setString(6, f.nameLoc);//nameLoc
 	        cmd.setString(7, f.nameSvr);//nameSvr
@@ -123,10 +113,43 @@ public class FileDbWriter
 	        cmd.setLong(12, f.lenLoc);//lenSvr
 	        cmd.setString(13, "100%");//perSvr
 	        cmd.setString(14, f.sign);//sign
-	        cmd.setBoolean(15, false);//fdTask
+	        cmd.setBoolean(15, f.f_fdTask);//fdTask
 	        cmd.setInt(16, f.blockCount);//blockCount
 	        cmd.setInt(17, f.blockSize);//blockSize
-	        cmd.execute();	
+	        cmd.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void saveFiles() throws SQLException
+	{
+		PreparedStatement cmd = this.makeCmd(m_db);
+		//保存文件夹
+		this.save(cmd, this.root);
+		
+		String key = this.root.idSign.concat("-files");
+		int index = 0;
+		long len = this.m_cache.scard(key);
+		FileRedis svr = new FileRedis(this.m_cache);
+		
+		while(index<len)
+		{
+			//每次取100条数据插入数据库
+			ScanParams sp = new ScanParams();		
+			sp.count(100);
+			sp.match("*");
+			ScanResult<String> ret = this.m_cache.sscan(this.root.idSign.concat("-files"), Integer.toString(index), sp);
+			List<String> keys = ret.getResult();
+			index -= keys.size();
+			
+			for(String k : keys)
+			{
+				xdb_files f = svr.read(k);
+				this.save(cmd, f);
+			}
 		}
 		cmd.close();
 	}

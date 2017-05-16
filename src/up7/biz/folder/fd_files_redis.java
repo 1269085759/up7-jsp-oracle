@@ -48,7 +48,7 @@ public class fd_files_redis
 		String key = this.getKey();		
 		for(xdb_files f : fs)
 		{
-			this.con.sadd(key, f.idSign);
+			this.con.sadd(key, f.idSign);			
 		}
 	}
 	
