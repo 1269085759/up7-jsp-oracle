@@ -137,14 +137,15 @@ public class FileDbWriter
 		FileRedis svr = new FileRedis(this.m_cache);
 		BlockMeger bm = new BlockMeger();
 		List<String> keys = null;
+		List<xdb_files> files = null;
 		
 		while(index<len)
 		{
 			//每次取100条数据插入数据库
-			keys = this.m_cache.lrange(key, index, 100);
+			keys = this.m_cache.lrange(key, index, index+100);
 			
 			index += keys.size();
-			List<xdb_files> files = new ArrayList<xdb_files>();
+			files = new ArrayList<xdb_files>();
 			
 			//添加到数据库
 			for(String k : keys)
@@ -159,7 +160,8 @@ public class FileDbWriter
 			{
 				bm.merge(f);	
 			}
-			files.clear();			
+			files.clear();
+			keys.clear();
 		}
 		cmd.close();
 	}
