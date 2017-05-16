@@ -3,11 +3,13 @@ package up7.biz.folder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
 import redis.clients.jedis.ScanResult;
+import up7.biz.BlockMeger;
 import up7.biz.redis.FileRedis;
 import up7.model.xdb_files;
 
@@ -134,6 +136,7 @@ public class FileDbWriter
 		int index = 0;
 		long len = this.m_cache.scard(key);
 		FileRedis svr = new FileRedis(this.m_cache);
+		BlockMeger bm = new BlockMeger();
 		
 		while(index<len)
 		{
@@ -144,12 +147,22 @@ public class FileDbWriter
 			ScanResult<String> ret = this.m_cache.sscan(this.root.idSign.concat("-files"), Integer.toString(index), sp);
 			List<String> keys = ret.getResult();
 			index -= keys.size();
+			List<xdb_files> files = new ArrayList<xdb_files>();
 			
+			//添加到数据库
 			for(String k : keys)
 			{
 				xdb_files f = svr.read(k);
 				this.save(cmd, f);
+				files.add(f);
 			}
+			
+			//合并文件
+			for(xdb_files f : files)
+			{
+				bm.merge(f);	
+			}
+			files.clear();			
 		}
 		cmd.close();
 	}

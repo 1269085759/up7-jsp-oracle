@@ -118,7 +118,7 @@ public class fd_redis
 		this.m_root.pathSvr = j.hget(idSign, "pathSvr");
 		this.m_root.filesCount = Integer.parseInt(j.hget(idSign, "filesCount") );
 		//
-		this.loadFiles(j);//加载文件列表		
+		//this.loadFiles(j);//加载文件列表		
 		this.loadFolders(j);//加载目录列表
 		j.close();
 	}
@@ -176,17 +176,17 @@ public class fd_redis
 	void loadFiles(Jedis j)
 	{
 		//取文件ID列表
-		fd_files_redis rfs = new fd_files_redis(j,this.m_root.idSign);		
-		Set<String> fs = rfs.all();
-		this.m_root.files = new ArrayList<xdb_files>();
-		System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
+		//fd_files_redis rfs = new fd_files_redis(j,this.m_root.idSign);		
+		//Set<String> fs = rfs.all();
+		//this.m_root.files = new ArrayList<xdb_files>();
+		//System.out.println("fd_redis.loadFiles() 文件数：".concat(Integer.toString(fs.size())));
 		
-		FileRedis cache = new FileRedis(j);
-		for(String s : fs)
-		{
-			xdb_files file = cache.read(s);
-			this.m_root.files.add(file);
-		}
+		//FileRedis cache = new FileRedis(j);
+		//for(String s : fs)
+		//{
+			//xdb_files file = cache.read(s);
+			//this.m_root.files.add(file);
+		//}
 	}
 	
 	void loadFolders(Jedis j)
