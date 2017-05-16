@@ -43,7 +43,7 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,56,31650"
+		, "Version"		: "1,2,99,50964"
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
@@ -357,7 +357,18 @@ function DownloaderMgr()
 	};
 	this.queue_begin = function (json) { this.working = true;};
 	this.queue_end = function (json) { this.working = false;};
-	this.load_complete = function (json) { this.nat_load = true; this.btnSetup.hide(); };
+    this.load_complete = function (json)
+    {
+        this.btnSetup.hide();
+        var needUpdate = true;
+        if (typeof (json.version) != "undefined") {
+            if (json.version == this.Config.Version) {
+                needUpdate = false;
+            }
+        }
+        if (needUpdate) this.update_notice();
+        else { this.btnSetup.hide(); }
+    };
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -375,7 +386,13 @@ function DownloaderMgr()
 	    else if (json.name == "queue_complete") { _this.event.queueComplete(); }
 	    else if (json.name == "queue_begin") { _this.queue_begin(json); }
 	    else if (json.name == "queue_end") { _this.queue_end(json); }
-	    else if (json.name == "load_complete") { _this.load_complete(); }
+        else if (json.name == "load_complete") { _this.load_complete(json); }
+        else if (json.name == "extension_complete") {
+            setTimeout(function () {
+                var param = { name: "init", config: _this.Config };
+                _this.browser.postMessage(param);
+            }, 1000);
+        }
 	};
 
     //浏览器对象
@@ -407,12 +424,6 @@ function DownloaderMgr()
                 return mimetype.enabledPlugin;
             }
             return false;
-        }
-        , checkChr: function () { return false;}
-        , checkNat: function () { return false; }
-        , NeedUpdate: function ()
-        {
-            return this.GetVersion() != _this.Config.Version;
         }
 		, GetVersion: function ()
 		{
@@ -507,7 +518,10 @@ function DownloaderMgr()
         }
         , postMessage: function (json)
         {
-            _this.parter.postMessage(JSON.stringify(json));
+            try {
+                _this.parter.postMessage(JSON.stringify(json));
+            }
+            catch (e) { console.log("调用postMessage失败，请检查控件是否安装成功"); }
         }
         , postMessageNat: function (par)
         {
@@ -555,16 +569,13 @@ function DownloaderMgr()
 	    }
 	};
 	this.checkVersion();
-	this.setup_tip = function ()
-	{
-	    this.btnSetup.attr("href", this.Config.ExePath);
-	    this.btnSetup.show();
-	};
-	this.setup_check = function ()
-	{
-	    if (!_this.browser.check()) { this.setup_tip(); /*_this.browser.Setup();*/ }
-	    else { this.btnSetup.hide();}
-	};
+
+    //升级通知
+    this.update_notice = function () {
+        this.btnSetup.text("升级控件");
+        this.btnSetup.css("color", "red");
+        this.btnSetup.show();
+    };
 
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
 	this.safeCheck = function()
@@ -631,7 +642,6 @@ function DownloaderMgr()
 
 	    //this.LoadData();
 		this.safeCheck();//
-		this.setup_check();
 	};
 
     //加载未未完成列表
