@@ -160,7 +160,8 @@ if(	   StringUtils.isBlank( lenSvr )
 		
 		//保存块
 		up7.biz.file_part part = new up7.biz.file_part();
-		part.save(partPath,rangeFile);		
+		part.save(partPath,rangeFile);
+		rangeFile.delete();		
 
 
 		//更新文件夹进度
