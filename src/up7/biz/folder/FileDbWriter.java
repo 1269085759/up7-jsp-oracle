@@ -125,27 +125,24 @@ public class FileDbWriter
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void saveFiles() throws SQLException
-	{
+	{		
 		PreparedStatement cmd = this.makeCmd(m_db);
 		//保存文件夹
 		this.save(cmd, this.root);
 		
 		String key = this.root.idSign.concat("-files");
 		int index = 0;
-		long len = this.m_cache.scard(key);
+		long len = this.m_cache.llen(key);
 		FileRedis svr = new FileRedis(this.m_cache);
 		BlockMeger bm = new BlockMeger();
+		List<String> keys = null;
 		
 		while(index<len)
 		{
 			//每次取100条数据插入数据库
-			ScanParams sp = new ScanParams();		
-			sp.count(100);
-			sp.match("*");
-			ScanResult<String> ret = this.m_cache.sscan(this.root.idSign.concat("-files"), Integer.toString(index), sp);
-			List<String> keys = ret.getResult();
+			keys = this.m_cache.lrange(key, index, 100);
+			
 			index += keys.size();
 			List<xdb_files> files = new ArrayList<xdb_files>();
 			

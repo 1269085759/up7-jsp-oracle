@@ -40,7 +40,7 @@ public class fd_files_redis
 	
 	public void add(String fSign)
 	{	
-		this.con.sadd(this.getKey(), fSign);	
+		this.con.lpush(this.getKey(), fSign);	
 	}
 	
 	public void add(List<xdb_files> fs)
@@ -48,7 +48,7 @@ public class fd_files_redis
 		String key = this.getKey();		
 		for(xdb_files f : fs)
 		{
-			this.con.sadd(key, f.idSign);			
+			this.con.lpush(key, f.idSign);			
 		}
 	}
 	
