@@ -62,9 +62,8 @@ public class DnFileInf
     public int fdID =0;
     
     @SerializedName("pidRoot")    
-    public int pidRoot =0;
-    
-    @SerializedName("filesCount")    
+    public int pidRoot =0;    
+        
     public int fileCount=0;
     
     @SerializedName("files")
