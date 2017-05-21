@@ -419,7 +419,7 @@ public class DBFile {
 			cmd.setBoolean(6, model.complete);
 			//cmd.setDate(6, (java.sql.Date) model.PostedTime);
 			cmd.setBoolean(7, false);
-			cmd.setBoolean(8, model.f_fdChild);
+			cmd.setBoolean(8, model.child);
 			cmd.setInt(9, model.uid);
 			cmd.setString(10, model.nameLoc);
 			cmd.setString(11, model.nameSvr);

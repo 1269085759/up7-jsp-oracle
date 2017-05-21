@@ -104,7 +104,7 @@ public class FileDbWriter
 			cmd.setString(1, f.idSign);//idSign
 	        cmd.setString(2, f.pidSign);//pidSign
 	        cmd.setString(3, f.rootSign);//rootSign
-	        cmd.setBoolean(4, f.f_fdChild);//fdChild
+	        cmd.setBoolean(4, f.child);//fdChild
 	        cmd.setInt(5, f.uid);//uid
 	        cmd.setString(6, f.nameLoc);//nameLoc
 	        cmd.setString(7, f.nameSvr);//nameSvr

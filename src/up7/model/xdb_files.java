@@ -47,8 +47,8 @@ public class xdb_files {
 	public boolean getF_folder(){return this.f_folder;}
 	public int getF_fdID() {return f_fdID;}
 	public void setF_fdID(int fFdID) {f_fdID = fFdID;}
-	public boolean isF_fdChild() {return f_fdChild;}
-	public void setF_fdChild(boolean fFdChild) {f_fdChild = fFdChild;}
+	public boolean isF_fdChild() {return child;}
+	public void setF_fdChild(boolean fFdChild) {child = fFdChild;}
 	public int getUid() {return uid;}
 	public void setUid(int uid) {this.uid = uid;}
 	public String getNameLoc() {return nameLoc;}
@@ -96,7 +96,7 @@ public class xdb_files {
 	/**	 * 与xdb_folders.fd_id对应	 */
 	public int f_fdID=0;
 	//	/// 是否是文件夹中的子文件	/// </summary>
-	public boolean f_fdChild=false;
+	public boolean child=false;
 	/**	 * 用户ID。与第三方系统整合使用。	 */
 	public int uid=0;
 	/**	 * 文件在本地电脑中的名称	 */
