@@ -6,7 +6,7 @@ function FileUploader(fileLoc, mgr)
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,post:null,stop:null }, div: null, split: null };
     this.isFolder = false; //不是文件夹
     this.root = null;//根级文件夹对象。一般为FolderUploader
-    this.browser = mgr.browser;
+    this.app = mgr.app;
     this.Manager = mgr; //上传管理器指针
     this.event = mgr.event;
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
@@ -309,7 +309,7 @@ function FileUploader(fileLoc, mgr)
         this.fields["md5"] = this.fileSvr.md5;
         this.fields["sign"] = this.fileSvr.sign;
         this.fields["idSign"] = this.fileSvr.idSign;
-        this.browser.postFile( jQuery.extend({},this.fileSvr,{fields: this.fields }) );
+        this.app.postFile( jQuery.extend({},this.fileSvr,{fields: this.fields }) );
     };
     this.check_file = function ()
     {
@@ -317,7 +317,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.cancel.hide();
         this.State = HttpUploaderState.MD5Working;
-        this.browser.checkFile(this.fileSvr);
+        this.app.checkFile(this.fileSvr);
     };
     this.stop = function ()
     {
@@ -334,7 +334,7 @@ function FileUploader(fileLoc, mgr)
         }
         this.State = HttpUploaderState.Stop;
 
-        this.browser.stopFile(this.fileSvr);
+        this.app.stopFile(this.fileSvr);
 
         //从上传列表中删除
         if (null == this.root) this.Manager.RemoveQueuePost(this.fileSvr.idSign);
@@ -349,7 +349,7 @@ function FileUploader(fileLoc, mgr)
             this.ui.btn.post.hide();
         	this.ui.btn.stop.hide();
         	this.ui.btn.cancel.hide();
-            this.browser.stopFile(this.fileSvr);
+            this.app.stopFile(this.fileSvr);
         }
     };
 

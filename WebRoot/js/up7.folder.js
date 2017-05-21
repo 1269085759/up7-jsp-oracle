@@ -18,7 +18,7 @@ function FolderUploader(fdLoc, mgr)
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
-    this.browser = mgr.browser;
+    this.app = mgr.app;
     this.LocalFile = ""; //判断是否存在相同项
     this.FileName = "";
 
@@ -70,7 +70,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.hide();
         this.ui.btn.del.hide();
         this.ui.btn.cancel.show();
-        this.browser.scanFolder(this.folderSvr);
+        this.app.scanFolder(this.folderSvr);
     };
     //上传，创建文件夹结构信息
     this.post = function ()
@@ -148,14 +148,14 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.MD5Working;
-        this.browser.checkFolder(this.folderSvr);
+        this.app.checkFolder(this.folderSvr);
     };
     this.post_fd = function ()
     {
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        this.browser.postFolder(jQuery.extend({}, this.folderSvr, { fields: this.fields }));
+        this.app.postFolder(jQuery.extend({}, this.folderSvr, { fields: this.fields }));
     };
     this.post_error = function (json)
     {
@@ -305,6 +305,7 @@ function FolderUploader(fdLoc, mgr)
 
     this.scan_complete = function (json)
     {
+        this.ui.msg.text("扫描完毕，开始上传...");
         jQuery.extend(this.folderSvr, json);
         this.folderScan = true;
         setTimeout(function () {
@@ -351,7 +352,7 @@ function FolderUploader(fdLoc, mgr)
     //一般在StopAll()中调用
     this.stop_manual = function ()
     {
-        this.browser.stopFile({ idSign: this.folderSvr.idSign });
+        this.app.stopFile({ idSign: this.folderSvr.idSign });
         this.State = HttpUploaderState.Stop;
     };
     //手动点击“停止”按钮时
@@ -373,7 +374,7 @@ function FolderUploader(fdLoc, mgr)
             return;
         }
         //
-        this.browser.stopFile({ idSign: this.folderSvr.idSign });
+        this.app.stopFile({ idSign: this.folderSvr.idSign });
         this.manager.RemoveQueuePost(this.folderSvr.idSign);
         this.manager.AppendQueueWait(this.folderSvr.idSign);
     };
@@ -382,7 +383,7 @@ function FolderUploader(fdLoc, mgr)
     this.remove = function ()
     {
         //清除缓存
-        this.browser.delFolder({ idSign: this.folderSvr.idSign });
+        this.app.delFolder({ idSign: this.folderSvr.idSign });
         this.manager.Delete(this.folderSvr.idSign);
         this.ui.div.remove();
         this.ui.split.remove();
