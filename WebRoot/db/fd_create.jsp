@@ -71,7 +71,7 @@ f.pathLoc = pathLoc;
 f.sizeLoc = sizeLoc;
 f.lenLoc = Long.parseLong(lenLoc);
 f.filesCount = Integer.parseInt(fCount);
-f.f_fdTask = true;
+f.f_folder = true;
 //生成路径
 PathGuidBuilder pb = new PathGuidBuilder();
 f.pathSvr = pb.genFolder(0, f.nameLoc);
