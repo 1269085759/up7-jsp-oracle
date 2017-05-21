@@ -604,10 +604,10 @@ public class DBFile {
 			cmd.setString(6, inf.pathSvr);
 			cmd.setLong(7, inf.lenLoc);
 			cmd.setLong(8, inf.lenLoc);			
-			cmd.setString(9, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
-			cmd.setInt(10, inf.blockCount);
-			cmd.setInt(11,inf.blockSize);
-			cmd.setString(12,inf.blockPath);
+			cmd.setString(10, inf.lenLoc>1024 ? inf.sizeLoc : PathTool.getDataSize(inf.lenLoc));
+			cmd.setInt(12, inf.blockCount);
+			cmd.setInt(13,inf.blockSize);
+			cmd.setString(14,inf.blockPath);
 			cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
