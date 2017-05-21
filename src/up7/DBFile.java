@@ -118,7 +118,7 @@ public class DBFile {
 				xdb_files f 	= new xdb_files();
 				f.uid			= uid;
 				f.idSvr 		= r.getInt(1);
-				f.f_fdTask 		= r.getBoolean(2);
+				f.f_folder 		= r.getBoolean(2);
 				f.f_fdID 		= r.getInt(3);
 				f.nameLoc 		= r.getString(4);
 				f.pathLoc 		= r.getString(5);
@@ -150,7 +150,7 @@ public class DBFile {
 		for(xdb_files f : files)
 		{
 			//是文件夹任务=>取文件夹JSON
-			if (f.f_fdTask)
+			if (f.f_folder)
 			{
 				FolderInf fd = new FolderInf();
 				f.fd_json = DBFolder.GetFilesUnComplete(f.f_fdID,fd);
@@ -208,7 +208,7 @@ public class DBFile {
             {
                 xdb_files f = new xdb_files();
                 f.idSvr 	= r.getInt(1);
-                f.f_fdTask 	= r.getBoolean(2);
+                f.f_folder 	= r.getBoolean(2);
                 f.f_fdID 	= r.getInt(3);
                 f.nameLoc 	= r.getString(4);
                 f.pathLoc 	= r.getString(5);

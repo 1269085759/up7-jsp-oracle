@@ -115,7 +115,7 @@ public class FileDbWriter
 	        cmd.setLong(12, f.lenLoc);//lenSvr
 	        cmd.setString(13, "100%");//perSvr
 	        cmd.setString(14, f.sign);//sign
-	        cmd.setBoolean(15, f.f_fdTask);//fdTask
+	        cmd.setBoolean(15, f.f_folder);//fdTask
 	        cmd.setInt(16, f.blockCount);//blockCount
 	        cmd.setInt(17, f.blockSize);//blockSize
 	        cmd.execute();
