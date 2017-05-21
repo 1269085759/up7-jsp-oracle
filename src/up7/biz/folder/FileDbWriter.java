@@ -151,6 +151,7 @@ public class FileDbWriter
 			for(String k : keys)
 			{
 				xdb_files f = svr.read(k);
+				f.child = true;//
 				this.save(cmd, f);
 				files.add(f);
 			}
