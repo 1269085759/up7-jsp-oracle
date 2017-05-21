@@ -540,6 +540,12 @@ function HttpUploaderMgr()
         if (needUpdate) this.update_notice();
         else { this.btnSetup.hide(); }
     };
+	this.load_complete_edge = function (json)
+	{
+	    this.edge_load = true;
+        this.btnSetup.hide();
+        _this.app.init();
+	};
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -557,7 +563,8 @@ function HttpUploaderMgr()
 	    else if (json.name == "scan_process") { _this.scan_process(json); }
         else if (json.name == "scan_complete") { _this.scan_complete(json); }
 	    else if (json.name == "load_complete") { _this.load_complete(json);}
-        else if (json.name == "extension_complete") { 
+	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
+	    else if (json.name == "extension_complete") { 
             setTimeout(function () {
                 var param = { name: "init", config: _this.Config };
                 _this.app.postMessage(param);
