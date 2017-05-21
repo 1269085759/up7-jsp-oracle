@@ -128,6 +128,7 @@ public class xdb_files {
 	public Date PostedTime = new Date();
 	public boolean deleted=false;
 	public String sign = "";
+	public String signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识	
 	/**	 * 文件夹JSON信息	 */
 	public String fd_json="";	
 	public int filesCount=0;//add(2015-03-18):供JS调用
