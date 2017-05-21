@@ -59,7 +59,7 @@ public class CompleteReader
         	//如果是文件夹则pathSvr保存本地路径，用来替换
         	if(fi.fdTask) fi.pathSvr = fi.pathLoc;
         	fi.signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识
-        	fi.filesCount = r.getInt(8);
+        	fi.fileCount = r.getInt(8);
         	files.add(fi);
         }
         r.close();
