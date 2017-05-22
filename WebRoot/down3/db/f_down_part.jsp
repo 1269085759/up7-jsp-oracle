@@ -133,7 +133,7 @@ try
 	out.clear();
 	out = pageContext.pushBody();
 }
-catch(Exception e){}
+catch(Exception e){response.setStatus(500);}
 finally
 {	
 	if(os != null)
