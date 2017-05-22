@@ -19,6 +19,7 @@ String idSign 	= request.getParameter("idSign");
 String perSvr 	= request.getParameter("perSvr");
 String lenSvr 	= request.getParameter("lenSvr");
 String lenLoc 	= request.getParameter("lenLoc");
+String blockSize= request.getParameter("blockSize");
 
 //参数为空
 if (	StringUtils.isBlank(lenLoc)
@@ -36,7 +37,7 @@ if (	StringUtils.isBlank(lenLoc)
 //更新redis进度
 Jedis j = JedisTool.con();
 FileRedis fr = new FileRedis(j);
-fr.process(idSign,perSvr,lenSvr,"0","0");
+fr.process(idSign,perSvr,lenSvr,"0",blockSize);
 %>
 
 

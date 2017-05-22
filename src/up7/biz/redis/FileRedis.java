@@ -30,10 +30,10 @@ public class FileRedis
 		Jedis j = JedisTool.con();
 		j.hset(idSign, "perSvr", perSvr);
 		j.hset(idSign, "lenSvr", lenSvr);
-		if(!StringUtils.equals(blockCount,"0"))
+		if( !blockCount.equalsIgnoreCase("0"))
 		j.hset(idSign, "blockCount", blockCount);
 		
-		if(!StringUtils.equals(blockSize,"0"))
+		if( !blockSize.equalsIgnoreCase("0") )
 			j.hset(idSign, "blockSize", blockSize);
 	}
 	
