@@ -54,6 +54,7 @@ public class FileDbWriter
         sb.append(",f_fdTask");
         sb.append(",f_blockCount");
         sb.append(",f_blockSize");
+        sb.append(",f_blockPath");
         
         sb.append(") values(");
         
@@ -75,6 +76,7 @@ public class FileDbWriter
         sb.append(",?");//f_fdTask
         sb.append(",?");//f_blockCount
         sb.append(",?");//f_blockSize
+        sb.append(",?");//f_blockPath
         sb.append(")");
 
         PreparedStatement cmd = con.prepareStatement(sb.toString());
@@ -95,6 +97,7 @@ public class FileDbWriter
         cmd.setBoolean(15, false);//fdTask
         cmd.setInt(16, 1);
         cmd.setInt(17, 0);
+        cmd.setString(18, "");//blockPath
         return cmd;
 	}
 	
@@ -119,6 +122,7 @@ public class FileDbWriter
 	        cmd.setBoolean(15, f.f_folder);//fdTask
 	        cmd.setInt(16, f.blockCount);//blockCount
 	        cmd.setInt(17, f.blockSize);//blockSize
+	        cmd.setString(18, f.blockPath);//blockPath
 	        cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

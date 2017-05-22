@@ -22,7 +22,7 @@ public class fd_page
 		Integer index = Integer.parseInt(pageIndex);
 		Integer pageStart = ((index-1) * pageSize) + 1;
 		Integer pageEnd = index * pageSize;
-		String sqlData = "select f_nameLoc,f_pathLoc,f_pathSvr,f_lenLoc,f_sizeLoc from up7_files where f_rootSign='"+id+"'";
+		String sqlData = "select f_nameLoc,f_pathLoc,f_pathSvr,f_blockPath,f_lenLoc,f_sizeLoc from up7_files where f_rootSign='"+id+"'";
         String sql = String.format("select * from (select a.*, rownum rn from (%s) a where rownum <= %d) where rn >= %d",sqlData,pageEnd,pageStart);
 
         List<xdb_files> files = new ArrayList<xdb_files>();
@@ -37,8 +37,9 @@ public class fd_page
 	        	f.nameLoc = r.getString(1);//f_nameLoc
 	        	f.pathLoc = r.getString(2);//f_pathLoc
 	        	f.pathSvr = r.getString(3);
-	        	f.lenLoc = r.getLong(4);
-	        	f.sizeLoc = r.getString(5);
+	        	f.blockPath = r.getString(4);
+	        	f.lenLoc = r.getLong(5);
+	        	f.sizeLoc = r.getString(6);
 	        	files.add(f);
 			}
 		} catch (SQLException e) {
