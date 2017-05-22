@@ -89,7 +89,7 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 1//同时上传的任务数
-        , "AutoMeger"       : 0//自动合并文件？1:合并,0:不合并
+        , "AutoMege"        : 0//自动合并文件？1:合并,0:不合并
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8080/Uploader7Oracle/db/fd_create.jsp"
 		, "UrlFdUpdate"		: "http://localhost:8080/Uploader7Oracle/db/fd_update.jsp"
