@@ -8,60 +8,44 @@ public class DnFileInf
 {
 	public DnFileInf(){}
 
-    @SerializedName("idSvr")
     public int idSvr=0;
     
-    @SerializedName("idSign")
     public String idSign="";
     
-    @SerializedName("signSvr")
     public String signSvr="";//服务端生成的一个标识
     
-    @SerializedName("uid")
     public int uid =0;
     
-    @SerializedName("mac")
     public String mac ="";
     
-    @SerializedName("pathLoc")
     public String pathLoc ="";
     
-    @SerializedName("pathSvr")
     public String pathSvr ="";
+    public String blockPath="";
     
-    @SerializedName("fileUrl")
     public String fileUrl ="";
     
-    @SerializedName("lenLoc")
     public long lenLoc =0;
     
-    @SerializedName("lenSvr")
     public long lenSvr =0;
     
-    @SerializedName("sizeSvr")
     public String sizeSvr ="";
     
-    @SerializedName("perLoc")
     public String perLoc ="";
     /// <summary>
     /// 是否已下载完成
     /// </summary>
-    @SerializedName("complete")
     public Boolean complete =false;
     
     /// <summary>
     /// 本地文件名称，用来显示用的。
     /// </summary>
-    @SerializedName("nameLoc")
     public String nameLoc ="";
     
-    @SerializedName("fdTask")    
     public Boolean fdTask =false;
     
-    @SerializedName("fdID")    
     public int fdID =0;
     
-    @SerializedName("pidRoot")    
     public int pidRoot =0;    
         
     public int fileCount=0;

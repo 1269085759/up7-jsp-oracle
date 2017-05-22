@@ -47,7 +47,7 @@ function DownloaderMgr()
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
-		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePart"	: 10485760//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilePartTdr"	: 3//文件块线程数
         //file
         , "UrlCreate"   : "http://localhost:8080/Uploader7Oracle/down3/db/f_create.jsp"
@@ -55,7 +55,7 @@ function DownloaderMgr()
         , "UrlList"     : "http://localhost:8080/Uploader7Oracle/down3/db/f_list.jsp"
         , "UrlListCmp"  : "http://localhost:8080/Uploader7Oracle/down3/db/f_list_cmp.jsp"
         , "UrlUpdate"   : "http://localhost:8080/Uploader7Oracle/down3/db/f_update.jsp"
-        , "UrlDown"     : "http://localhost:8080/Uploader7Oracle/down3/db/f_down.jsp"
+        , "UrlDown"     : "http://localhost:8080/Uploader7Oracle/down3/db/f_down_part.jsp"
 	    //folder
         , "UrlFdCreate" : "http://localhost:8080/Uploader7Oracle/down3/db/fd_create.jsp"
         , "UrlFdPage"   : "http://localhost:8080/Uploader7Oracle/down3/db/fd_page.jsp"

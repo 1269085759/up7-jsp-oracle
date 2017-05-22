@@ -30,8 +30,8 @@ String nameLoc 		= request.getHeader("f-nameLoc");
 String sizeSvr 		= request.getHeader("f-sizeSvr");
 String pathSvr 		= request.getHeader("f-pathSvr");
 String pathLoc 		= request.getHeader("f-pathLoc");
-String blockIndex 	= request.getHeader("f-blockIndex");
-String blockOffset	= request.getHeader("f-blockOffset");
+String blockIndex 	= request.getHeader("f-blockIndex");//基于1
+String fileOffset	= request.getHeader("f-fileOffset");
 String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
 String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
@@ -113,7 +113,7 @@ OutputStream os = null;
 try
 {
 	os = response.getOutputStream();
-	long offset_begin = Long.parseLong(blockOffset);
+	long offset_begin = Long.parseLong(fileOffset);
 	in.skip(offset_begin);//定位索引
 	
 	byte[] buffer = new byte[1048576];//1MB

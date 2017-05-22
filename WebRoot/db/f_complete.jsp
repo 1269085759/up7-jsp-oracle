@@ -17,6 +17,7 @@
 
 String uid 		= request.getParameter("uid");
 String idSign	= request.getParameter("idSign");
+String merge	= request.getParameter("merge");
 String callback = request.getParameter("callback");//jsonp
 
 //返回值。1表示成功
@@ -28,7 +29,8 @@ if ( !StringUtils.isBlank(uid)
 	FileRedis cache = new FileRedis(j);
 	xdb_files f = cache.read(idSign);
 	BlockMeger bm = new BlockMeger();
-	bm.merge(f);
+	//合并文件
+	if(merge.equalsIgnoreCase("1")) bm.merge(f);
 	j.del(idSign);//删除文件缓存
 		
 	//从任务列表（未完成）中删除

@@ -82,14 +82,14 @@ function HttpUploaderMgr()
 		, "FileSizeLimit"	: "0"//自定义允许上传的文件大小，以字节为单位。0表示不限制。字节计算工具：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilesLimit"		: "0"//文件选择数限制。0表示不限制
 		, "AllowMultiSelect": true//多选开关。1:开启多选。0:关闭多选
-		, "RangeSize"		: "67108864"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：64MB。
+		, "RangeSize"		: "10485760"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：64MB。
 		, "Debug"			: false//是否打开调式模式。true,false
 		, "LogFile"			: "F:\\log.txt"//日志文件路径。需要先打开调试模式。
 		, "InitDir"			: ""//初始化路径。示例：D:\\Soft
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 1//同时上传的任务数
-        , "AutoMeger"      : 1//自动合并文件？1:合并,0:不合并
+        , "AutoMeger"       : 0//自动合并文件？1:合并,0:不合并
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8080/Uploader7Oracle/db/fd_create.jsp"
 		, "UrlFdUpdate"		: "http://localhost:8080/Uploader7Oracle/db/fd_update.jsp"
