@@ -22,6 +22,7 @@ public class DnFileInf
     
     public String pathSvr ="";
     public String blockPath="";
+    public int blockSize = 0 ;
     
     public String fileUrl ="";
     

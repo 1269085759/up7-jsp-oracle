@@ -118,7 +118,7 @@ if(	   StringUtils.isBlank( lenSvr )
 		part.save(ps,rangeFile);
 		
 		//更新文件进度
-		if(f_pos == "0") cache.process(idSign,perSvr,lenSvr,rangeCount,rangeSize);
+		if( f_pos.equalsIgnoreCase("0") ) cache.process(idSign,perSvr,lenSvr,rangeCount,rangeSize);
 	}//子文件块
 	else
 	{
@@ -164,7 +164,7 @@ if(	   StringUtils.isBlank( lenSvr )
 
 
 		//更新文件夹进度
-		if(f_pos == "0") cache.process(fd_idSign,fd_perSvr,fd_lenSvr,"0","0");
+		if(f_pos.equalsIgnoreCase("0") ) cache.process(fd_idSign,fd_perSvr,fd_lenSvr,"0","0");
 	}
 	j.close();
 		
