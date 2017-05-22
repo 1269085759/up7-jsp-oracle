@@ -152,7 +152,7 @@ public class DnFolder
 			    root.pathLoc	= r.getString(8);
 				root.pathSvr	= r.getString(8);
 				root.folders	= r.getShort(1);
-				root.filesCount = r.getInt(8);
+				root.fileCount = r.getInt(8);
 				root.filesComplete = r.getInt(10);
 			}
 			r.close();

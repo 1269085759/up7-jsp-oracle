@@ -98,11 +98,11 @@ public class FolderInf {
 	}
 
 	public int getFilesCount() {
-		return filesCount;
+		return fileCount;
 	}
 
 	public void setFilesCount(int filesCount) {
-		this.filesCount = filesCount;
+		this.fileCount = filesCount;
 	}
 
 	public int getFilesComplete() {
@@ -233,7 +233,7 @@ public class FolderInf {
 	public int files = 0;
 	
 	//fix(2015-03-18):单独读取文件总数，供JS使用
-	public int filesCount=0;
+	public int fileCount=0;
 
 	/// <summary>
 	/// 已上传完的文件数

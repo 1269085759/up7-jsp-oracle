@@ -67,7 +67,7 @@ public class DBFolder {
 			cmd.setString(6, inf.pathLoc);
 			cmd.setString(7, inf.pathSvr);
 			cmd.setInt(8, inf.folders);
-			cmd.setInt(9, inf.filesCount);//fix(2015-03-16):读取文件列表错误的问题。
+			cmd.setInt(9, inf.fileCount);//fix(2015-03-16):读取文件列表错误的问题。
 			cmd.setInt(10, inf.pidRoot);
 			cmd.setString(11, inf.pathRel);//add(2015-05-13):相对路径
 		} catch (SQLException e) {
@@ -355,7 +355,7 @@ public class DBFolder {
 	            root.pathLoc = r.getString(5);
 	            root.pathSvr = r.getString(6);
 	            root.folders = r.getInt(7);
-	            root.filesCount = r.getInt(8);
+	            root.fileCount = r.getInt(8);
 	            root.filesComplete = r.getInt(9);
 			}
 			r.close();

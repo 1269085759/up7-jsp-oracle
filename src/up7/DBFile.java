@@ -158,7 +158,7 @@ public class DBFile {
                 long lenPosted = DBFolder.GetLenPosted(f.f_fdID);
                 fd.lenSvr = lenPosted;
                 f.lenSvr = lenPosted;//给客户端使用。
-                fd.filesCount = f.filesCount;//add(2015-03-18):
+                fd.fileCount = f.filesCount;//add(2015-03-18):
                 fd.filesComplete = f.filesComplete;//add(2015-03-18)
                 long len = fd.lenLoc;
                 if (lenPosted > 0 && len > 0)
