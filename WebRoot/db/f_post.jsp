@@ -140,6 +140,7 @@ if(	   StringUtils.isBlank( lenSvr )
 		f_child.pathRel = pathLoc.replace(fd.pathLoc.concat("\\"),"");
 		f_child.rootSign = fd_idSign;
 		f_child.blockCount = Integer.parseInt(rangeCount);
+		f_child.blockSize = Integer.parseInt(rangeSize);
 		//子文件块路径
         BlockPathBuilder bpb = new BlockPathBuilder();
 		f_child.blockPath = bpb.rootFd(f_child,rangeIndex,fd);
