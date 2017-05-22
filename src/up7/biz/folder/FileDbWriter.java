@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ScanParams;
-import redis.clients.jedis.ScanResult;
 import up7.biz.BlockMeger;
 import up7.biz.redis.FileRedis;
 import up7.model.xdb_files;
@@ -23,12 +21,15 @@ public class FileDbWriter
 	fd_root root;
 	Connection m_db;
 	Jedis m_cache;
+	//是否合并文件
+	Boolean autoMerge = true;
 	
-	public FileDbWriter(Connection con,Jedis j,fd_root fd)
+	public FileDbWriter(Connection con,Jedis j,fd_root fd,Boolean merge)
 	{
 		this.m_cache = j;
 		this.m_db = con;
 		this.root = fd;
+		this.autoMerge = merge;
 	}
 	
 	PreparedStatement makeCmd(Connection con) throws SQLException
@@ -155,11 +156,14 @@ public class FileDbWriter
 				this.save(cmd, f);
 				files.add(f);
 			}
-			
+
 			//合并文件
-			for(xdb_files f : files)
+			if(this.autoMerge)
 			{
-				bm.merge(f);	
+				for(xdb_files f : files)
+				{
+					bm.merge(f);
+				}
 			}
 			files.clear();
 			keys.clear();

@@ -33,6 +33,9 @@ public class fd_redis
 	public String data;
 	fd_root m_root = null;
 	Jedis con = null;
+	//是否合并文件
+	public Boolean autoMerge = true;
+	
 	Map<String/*guid*/,String/*pathSvr*/> parentPathMap = new HashMap<String,String>();
 	
 	public fd_redis(){}
@@ -162,7 +165,7 @@ public class fd_redis
 			e.printStackTrace();
 		}
 		
-		FileDbWriter fw = new FileDbWriter(con,this.con,this.m_root);
+		FileDbWriter fw = new FileDbWriter(con,this.con,this.m_root,this.autoMerge);
 		try {
 			fw.saveFiles();
 		} catch (SQLException e) {
