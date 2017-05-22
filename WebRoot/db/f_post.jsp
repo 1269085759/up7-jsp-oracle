@@ -57,10 +57,8 @@ String complete		= "false";//文件块是否已发送完毕（最后一个文件
 String fd_idSign	= request.getHeader("fd-idSign");
 String fd_lenSvr	= request.getHeader("fd-lenSvr");
 String fd_perSvr	= request.getHeader("fd-perSvr");
-pathLoc	= pathLoc.replace("+","%20");
-pathLoc	= URLDecoder.decode(pathLoc,"UTF-8");//utf-8解码
-nameLoc	= nameLoc.replace("+","%20");
-nameLoc	= URLDecoder.decode(nameLoc,"UTF-8");//utf-8解码
+pathLoc	= PathTool.url_decode(pathLoc);
+nameLoc	= PathTool.url_decode(nameLoc);
  
 // Check that we have a file upload request
 boolean isMultipart = ServletFileUpload.isMultipartContent(request);
