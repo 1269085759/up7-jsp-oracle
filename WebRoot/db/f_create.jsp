@@ -39,7 +39,7 @@ if (	StringUtils.isBlank(uid)
 
 xdb_files fileSvr= new xdb_files();
 fileSvr.idSign = idSign;
-fileSvr.f_fdChild = false;
+fileSvr.f_folder = false;
 fileSvr.uid = Integer.parseInt(uid);
 fileSvr.nameLoc = PathTool.getName(pathLoc);
 fileSvr.pathLoc = pathLoc;

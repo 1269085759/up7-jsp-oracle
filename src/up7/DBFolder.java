@@ -1,15 +1,5 @@
 package up7;
 import java.sql.*;
-import java.util.ArrayList;
-
-import org.apache.commons.lang.StringUtils;
-
-import up7.model.FileInf;
-import up7.model.FolderInf;
-
-import com.google.gson.Gson;
-
-import net.sf.json.JSONObject;
 
 /*
  * 原型

@@ -1,20 +1,9 @@
 package down3.biz;
 
-import com.google.gson.Gson;
-
 import down3.model.DnFolderInf;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
-
-import up7.DBFile;
 import up7.DbHelper;
-import up7.model.FileInf;
-import up7.model.FolderInf;
-
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class DnFolder 
 {

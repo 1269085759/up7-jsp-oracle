@@ -1,12 +1,7 @@
 package up7;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.bson.BSON;
-import org.bson.BSONObject;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.MongoClient;
@@ -17,7 +12,6 @@ import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.gridfs.GridFSFindIterable;
 import com.mongodb.client.model.Filters;
-import com.mongodb.gridfs.GridFSFile;
 
 public class GridFSSvr {
 	private String dbName="up7";//数据库名称

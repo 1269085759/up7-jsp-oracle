@@ -1,17 +1,7 @@
 package up7;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import up7.biz.folder.fd_file_redis;
-import up7.model.FileInf;
-import up7.model.FolderInf;
 import up7.model.xdb_files;
-import net.sf.json.JSONArray;
-import com.google.gson.Gson;
 
 /*
  * 原型
