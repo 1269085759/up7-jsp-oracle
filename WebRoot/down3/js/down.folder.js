@@ -120,6 +120,7 @@
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
         jQuery.extend(param, { nameLoc: encodeURIComponent(this.fileSvr.nameLoc) });
         jQuery.extend(param, { pathLoc: encodeURIComponent(this.fileSvr.pathLoc) });
+        jQuery.extend(param, { sizeSvr: encodeURIComponent(this.fileSvr.sizeSvr) });
         jQuery.extend(param, { signSvr: this.fileSvr.signSvr});
         var ptr = this;
         $.ajax({

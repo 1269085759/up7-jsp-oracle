@@ -28,6 +28,7 @@ String cbk 		= request.getParameter("callback");
 String signSvr	= request.getParameter("signSvr");
 String nameLoc	= request.getParameter("nameLoc");
 String pathLoc	= request.getParameter("pathLoc");
+String sizeSvr	= request.getParameter("sizeSvr");
 nameLoc		 	= nameLoc.replace("+","%20");
 nameLoc			= URLDecoder.decode(nameLoc,"UTF-8");
 pathLoc		 	= pathLoc.replace("+","%20");
@@ -41,6 +42,7 @@ if (	!StringUtils.isBlank(uid)
 	DnFileInf fd = new DnFileInf();
 	fd.nameLoc = nameLoc;
 	fd.pathLoc = pathLoc;
+	fd.sizeSvr = sizeSvr;
 	fd.signSvr = signSvr;
 	fd.fdTask = true;
 	
