@@ -35,7 +35,8 @@ if ( !StringUtils.isBlank(sign) )
 	svr.delFd(sign);
 	j.close();
 	
-	//fd.mergeAll();//合并文件块
+	//合并文件块
+	if(merge.equalsIgnoreCase("1"))	fd.mergeAll();
 	ret = 1;
 }
 out.write(cbk + "(" + ret + ")");

@@ -53,6 +53,7 @@ public class FileRedis
 		j.hset(f.idSign, "pidSign", f.pidSign);
 		j.hset(f.idSign, "pathLoc", f.pathLoc);
 		j.hset(f.idSign, "pathSvr", f.pathSvr);
+		j.hset(f.idSign, "pathRel", f.pathRel);
 		j.hset(f.idSign, "blockPath", f.blockPath);
 		j.hset(f.idSign, "nameLoc", f.nameLoc);
 		j.hset(f.idSign, "nameSvr", f.nameSvr);
@@ -77,6 +78,7 @@ public class FileRedis
 		f.pidSign 	 = j.hget(idSign, "pidSign");
 		f.pathLoc 	 = j.hget(idSign, "pathLoc");
 		f.pathSvr 	 = j.hget(idSign, "pathSvr");
+		f.pathRel	 = j.hget(idSign, "pathRel");
 		f.blockPath  = j.hget(idSign, "blockPath");
 		f.nameLoc 	 = j.hget(idSign, "nameLoc");
 		f.nameSvr 	 = j.hget(idSign, "nameSvr");

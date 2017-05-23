@@ -45,6 +45,7 @@ public class FileDbWriter
         sb.append(",f_nameSvr");
         sb.append(",f_pathLoc");
         sb.append(",f_pathSvr");
+        sb.append(",f_pathRel");
         sb.append(",f_lenLoc");
         sb.append(",f_sizeLoc");
         sb.append(",f_lenSvr");
@@ -67,6 +68,7 @@ public class FileDbWriter
         sb.append(",?");//f_nameSvr
         sb.append(",?");//f_pathLoc
         sb.append(",?");//f_pathSvr
+        sb.append(",?");//f_pathRel
         sb.append(",?");//f_lenLoc
         sb.append(",?");//f_sizeLoc
         sb.append(",?");//f_lenSvr
@@ -89,15 +91,16 @@ public class FileDbWriter
         cmd.setString(7, "");//nameSvr
         cmd.setString(8, "");//pathLoc
         cmd.setString(9, "");//pathSvr
-        cmd.setLong(10, 0);//lenLoc
-        cmd.setString(11, "");//sizeLoc
-        cmd.setLong(12, 0);//lenSvr
-        cmd.setString(13, "");//perSvr
-        cmd.setString(14, "");//sign
-        cmd.setBoolean(15, false);//fdTask
-        cmd.setInt(16, 1);
-        cmd.setInt(17, 0);
-        cmd.setString(18, "");//blockPath
+        cmd.setString(10, "");//pathRel
+        cmd.setLong(11, 0);//lenLoc
+        cmd.setString(12, "");//sizeLoc
+        cmd.setLong(13, 0);//lenSvr
+        cmd.setString(14, "");//perSvr
+        cmd.setString(15, "");//sign
+        cmd.setBoolean(16, false);//fdTask
+        cmd.setInt(17, 1);
+        cmd.setInt(18, 0);
+        cmd.setString(19, "");//blockPath
         return cmd;
 	}
 	
@@ -114,15 +117,16 @@ public class FileDbWriter
 	        cmd.setString(7, f.nameSvr);//nameSvr
 	        cmd.setString(8, f.pathLoc);//pathLoc
 	        cmd.setString(9, f.pathSvr);//pathSvr
-	        cmd.setLong(10, f.lenLoc);//lenLoc
-	        cmd.setString(11, f.sizeLoc);//sizeLoc
-	        cmd.setLong(12, f.lenLoc);//lenSvr
-	        cmd.setString(13, "100%");//perSvr
-	        cmd.setString(14, f.sign);//sign
-	        cmd.setBoolean(15, f.f_folder);//fdTask
-	        cmd.setInt(16, f.blockCount);//blockCount
-	        cmd.setInt(17, f.blockSize);//blockSize
-	        cmd.setString(18, f.blockPath);//blockPath
+	        cmd.setString(10, f.pathRel);//pathRel
+	        cmd.setLong(11, f.lenLoc);//lenLoc
+	        cmd.setString(12, f.sizeLoc);//sizeLoc
+	        cmd.setLong(13, f.lenLoc);//lenSvr
+	        cmd.setString(14, "100%");//perSvr
+	        cmd.setString(15, f.sign);//sign
+	        cmd.setBoolean(16, f.f_folder);//fdTask
+	        cmd.setInt(17, f.blockCount);//blockCount
+	        cmd.setInt(18, f.blockSize);//blockSize
+	        cmd.setString(19, f.blockPath);//blockPath
 	        cmd.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
