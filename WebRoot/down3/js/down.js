@@ -270,8 +270,7 @@ function DownloaderMgr()
 	this.add_file = function (fileSvr)
 	{
         var obj = this.add_ui(false, fileSvr);
-	    if (obj != null) obj.addQueue();
-        if (obj != null) obj.svr_create();
+	    if (obj != null) obj.addQueue();        
 	    return obj;
 	};
     this.add_folder = function (fileSvr)
@@ -285,8 +284,7 @@ function DownloaderMgr()
 	    obj.ui.ico.fd.show();
         jQuery.extend(obj.fileSvr, fileSvr);//
         jQuery.extend(obj.fileSvr, { fileUrl: this.Config["UrlDown"] });
-	    obj.addQueue();
-        obj.init_end();
+	    obj.addQueue();        
 	    return obj;
 	};
 	this.exist_url = function (url)
@@ -309,6 +307,11 @@ function DownloaderMgr()
 	{
 	    var p = this.filesMap[json.signSvr];
 	    p.init_end(json);
+	};
+	this.add_end = function (json)
+	{
+	    var p = this.filesMap[json.signSvr];
+	    p.add_end(json);
 	};
 	this.down_begin = function (json)
 	{
@@ -377,6 +380,7 @@ function DownloaderMgr()
 	    else if (json.name == "down_recv_size") { _this.down_recv_size(json); }
 	    else if (json.name == "down_recv_name") { _this.down_recv_name(json); }
 	    else if (json.name == "init_end") { _this.init_end(json); }
+	    else if (json.name == "add_end") { _this.add_end(json); }
 	    else if (json.name == "down_begin") { _this.down_begin(json); }
 	    else if (json.name == "down_process") { _this.down_process(json); }
 	    else if (json.name == "down_part") { _this.down_part(json); }

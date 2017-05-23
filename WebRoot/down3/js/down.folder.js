@@ -51,6 +51,12 @@
     {
         this.browser.addFolder(this.fileSvr);
     };
+    
+    this.add_end = function(json)
+    {
+    	jQuery.extend(this.fileSvr,json);
+    	this.svr_create();
+    };
 
     //方法-开始下载
     this.down = function ()
@@ -232,7 +238,6 @@
     //更新服务器进度
     this.down_part = function (json)
     {
-        //this.svr_update(json);//更新频繁，对服务器会造成较大压力。考虑做优化。
     };
 
     this.init_end = function (json)

@@ -75,6 +75,12 @@ function FileDownloader(fileLoc, mgr)
     {
         this.browser.addFile(this.fileSvr);
     };
+    
+    this.add_end = function(json)
+    {
+    	jQuery.extend(this.fileSvr,json);
+    	this.svr_create();//
+    };
 
     //方法-开始下载
     this.down = function ()
