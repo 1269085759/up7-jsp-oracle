@@ -91,7 +91,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;
-        this.browser.addFile(this.fileSvr);
+        //this.browser.addFile(this.fileSvr);
         this.Manager.start_queue();//下载队列
     };
 

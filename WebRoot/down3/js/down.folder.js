@@ -67,7 +67,7 @@
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;        
-        this.browser.addFolder(this.fileSvr);
+        //this.browser.addFolder(this.fileSvr);
         this.Manager.start_queue();//下载队列
     };
 
