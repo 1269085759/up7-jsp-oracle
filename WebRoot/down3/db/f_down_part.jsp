@@ -29,7 +29,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 String lenSvr 		= request.getHeader("f-lenSvr");
 String nameLoc 		= request.getHeader("f-nameLoc");
 String sizeSvr 		= request.getHeader("f-sizeSvr");
-String pathSvr 		= request.getHeader("f-pathSvr");
 String pathLoc 		= request.getHeader("f-pathLoc");
 String blockPath 	= request.getHeader("f-blockPath");
 String blockIndex 	= request.getHeader("f-blockIndex");//基于1
@@ -46,12 +45,10 @@ String fd_sizeLoc 	= request.getHeader("fd-sizeLoc");
 String fd_percent 	= request.getHeader("fd-percent");
 
 blockPath= PathTool.url_decode(blockPath);
-pathSvr	 = PathTool.url_decode(pathSvr);
 pathLoc	 = PathTool.url_decode(pathLoc);
 
 if (	StringUtils.isEmpty(lenSvr)
 	//||	StringUtils.isEmpty(sizeSvr)
-	||	StringUtils.isEmpty(pathSvr)
 	//||	StringUtils.isEmpty(nameLoc)
 	||	StringUtils.isEmpty(pathLoc)
 	||	StringUtils.isEmpty(blockIndex)
@@ -64,7 +61,6 @@ if (	StringUtils.isEmpty(lenSvr)
 	System.out.println("lenSvr:".concat(lenSvr));
 	System.out.println("nameLoc:".concat(nameLoc));
 	System.out.println("sizeSvr:".concat(sizeSvr));
-	System.out.println("pathSvr:".concat(pathSvr));
 	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
 	System.out.println("blockSize:".concat(blockSize));
@@ -72,6 +68,7 @@ if (	StringUtils.isEmpty(lenSvr)
 	System.out.println("signSvr:".concat(signSvr));
 	System.out.println("percent:".concat(percent));
 	System.out.println("f_down.jsp 业务逻辑参数为空。");
+	response.setStatus(500);
 	return;
 }
 
