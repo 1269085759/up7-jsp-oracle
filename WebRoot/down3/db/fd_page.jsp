@@ -34,5 +34,6 @@ String json = fd.read(index,id);
 //json = URLEncoder.encode(json,"UTF-8");
 //UrlEncode会将空格解析成+号
 //json = json.replaceAll("\\+", "%20");
+response.setHeader("Content-Length",json.length()+"");//返回Content-length标记，以便控件正确读取返回地址。
 out.write(json);
 %>
