@@ -87,11 +87,12 @@ function FileDownloader(fileLoc, mgr)
     //方法-开始下载
     this.down = function ()
     {
+        //续传
+        if (this.State == HttpDownloaderState.Stop) this.browser.addFile(this.fileSvr);
         this.hideBtns();
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;
-        //this.browser.addFile(this.fileSvr);
         this.Manager.start_queue();//下载队列
     };
 

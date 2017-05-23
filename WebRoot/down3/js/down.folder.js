@@ -63,6 +63,8 @@
     //方法-开始下载
     this.down = function ()
     {
+        //续传
+        if (this.State == HttpDownloaderState.Stop) this.browser.addFolder(this.fileSvr);
         this.hideBtns();
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
