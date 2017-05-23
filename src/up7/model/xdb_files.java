@@ -108,7 +108,7 @@ public class xdb_files {
 	public String getpathLoc(){return this.pathLoc;}
 	/**	 * 文件在服务器中的完整路径。示例：F:\\ftp\\uer\\md5.exe	 */
 	public String pathSvr="";
-	/**	 * 文件在服务器中的相对路径。示例：/www/web/upload/md5.exe	 */
+	/**	 * 文件相对路径(用于层级结构)。示例：md5.exe	 */
 	public String pathRel="";
 	//文件块目录 f:/webapps/files/年/月/日/guid/file-guid/
 	public String blockPath = "";
