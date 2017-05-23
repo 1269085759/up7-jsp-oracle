@@ -29,6 +29,7 @@ function FileDownloader(fileLoc, mgr)
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Fields, { nameLoc: encodeURIComponent(fileLoc.nameLoc), sizeSvr: fileLoc.sizeSvr });//每一个对象自带一个fields幅本
     this.State = HttpDownloaderState.None;
+    this.inited = false;
     this.event = mgr.event;
     this.fileSvr = {
           id:0//累加，唯一标识
@@ -160,8 +161,7 @@ function FileDownloader(fileLoc, mgr)
                 if (msg.value == null) return;
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 _this.fileSvr.idSign = json.idSign;
-                //文件已经下载完
-                //if (_this.isComplete()) { _this.svr_delete(); }
+                _this.inited = true;
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }

@@ -248,6 +248,7 @@ function DownloaderMgr()
         f.ui.name.text(fileSvr.nameLoc);
 	    f.ui.process.css("width", fileSvr.perLoc);
 	    f.ui.percent.text("(" + fileSvr.perLoc + ")");
+	    obj.inited = true;
 	    //jQuery.extend(f.fileSvr, fileSvr);
 	    f.addQueue();//添加到队列
 	};
@@ -262,6 +263,7 @@ function DownloaderMgr()
 	    obj.ui.size.text(fdSvr.sizeSvr);
 	    obj.ui.process.css("width", fdSvr.perLoc);
 	    obj.ui.percent.text("(" + fdSvr.perLoc + ")");
+	    obj.inited = true;//
 	    jQuery.extend(true, obj.fileSvr, fdSvr);//
 	    
 	    obj.addQueue();
@@ -269,7 +271,7 @@ function DownloaderMgr()
 	};
 	this.add_file = function (fileSvr)
 	{
-        var obj = this.add_ui(false, fileSvr);
+        var obj = this.add_ui(false, fileSvr);        
 	    if (obj != null) obj.addQueue();        
 	    return obj;
 	};

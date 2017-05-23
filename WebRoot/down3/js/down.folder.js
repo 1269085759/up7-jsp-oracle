@@ -7,6 +7,7 @@
     this.Config = mgr.Config;
     this.fields = jQuery.extend({},mgr.Fields);//每一个对象自带一个fields幅本
     this.State = HttpDownloaderState.None;
+    this.inited = false;
     this.event = mgr.event;
     this.fileSvr = {
           signSvr:0//累加，唯一标识
@@ -54,8 +55,8 @@
     
     this.add_end = function(json)
     {
-    	//续传不初始化
-    	if(this.fileSvr.lenLoc > 1) return;
+    	//已经初始化
+    	if(this.inited) return;
     	jQuery.extend(this.fileSvr,json);
     	this.svr_create();
     };
@@ -143,6 +144,7 @@
             {
                 ptr.ui.btn.down.show();
                 ptr.ui.msg.text("初始化完毕...");
+                ptr.inited = true;
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
