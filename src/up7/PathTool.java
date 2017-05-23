@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 
 import org.apache.commons.lang.StringUtils;
@@ -92,6 +93,22 @@ public class PathTool {
 		v = v.replaceAll("\\+","%20");
 		try {
 			v = URLDecoder.decode(v,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			v = "";
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//utf-8解码
+		return v;
+	}
+	
+	public static String url_encode(String v)
+	{
+		if(v== null) return "";
+		if(StringUtils.isEmpty(v)) return "";
+		
+		try {
+			v = URLEncoder.encode(v,"UTF-8");
+			v = v.replace("+","%20");
 		} catch (UnsupportedEncodingException e) {
 			v = "";
 			// TODO Auto-generated catch block

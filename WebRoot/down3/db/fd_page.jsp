@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><%@ 
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="up7.biz.folder.*" %><%@
+	page import="up7.*" %><%@
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
 	page import="org.apache.commons.lang.*" %><%@ 
@@ -31,6 +32,7 @@ if (StringUtils.isBlank(id)
 
 fd_page fd = new fd_page();
 String json = fd.read(index,id);
+json = PathTool.url_encode(json);
 //json = URLEncoder.encode(json,"UTF-8");
 //UrlEncode会将空格解析成+号
 //json = json.replaceAll("\\+", "%20");
