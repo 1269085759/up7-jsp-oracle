@@ -2,6 +2,9 @@
 	page contentType="text/html;charset=UTF-8"%><%@ 
 	page import="down3.biz.*" %><%@
 	page import="down3.model.*" %><%@ 
+	page import="up7.*" %><%@	
+	page import="redis.clients.jedis.Jedis" %><%@
+	page import="down3.biz.redis.*" %><%@
 	page import="java.net.URLDecoder" %><%@ 
 	page import="java.net.URLEncoder" %><%@ 
 	page import="org.apache.commons.lang.*" %><%@ 
@@ -16,16 +19,12 @@
 		2012-05-24 完善
 		2012-06-29 增加创建文件逻辑，
 */
-String fid 		= request.getParameter("idSvr");
+String fid 		= request.getParameter("singSvr");
 String uid 		= request.getParameter("uid");
 String lenLoc	= request.getParameter("lenLoc");
 String per		= request.getParameter("perLoc");
 String cbk 		= request.getParameter("callback");//jsonp
 //
-String file_id  = request.getParameter("file_id");
-String file_lenLoc = request.getParameter("file_lenLoc");
-String file_per = request.getParameter("file_per");
-
 if (StringUtils.isBlank(uid)
 	||StringUtils.isBlank(fid)
 	||StringUtils.isBlank(cbk)
@@ -35,11 +34,9 @@ if (StringUtils.isBlank(uid)
 	return;
 }
 
-DnFile db = new DnFile();
-if(Integer.parseInt(fid)>0)db.updateProcess(Integer.parseInt(fid),Integer.parseInt(uid),lenLoc,per);
-//更新子文件
-if (!StringUtils.isBlank(file_id) && !StringUtils.isBlank(file_lenLoc))
-{
-    db.updateProcess(Integer.parseInt(file_id), Integer.parseInt(uid), file_lenLoc, file_per);
-}
+//添加到缓存
+Jedis j = JedisTool.con();
+FileRedis fr = new FileRedis(j);
+fr.process(fid,per,lenLoc);
+
 out.write(cbk + "({\"value\":1})");%>

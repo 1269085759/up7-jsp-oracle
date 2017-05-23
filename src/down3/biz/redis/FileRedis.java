@@ -39,6 +39,7 @@ public class FileRedis {
 		f.pathSvr = this.con.hget(signSvr, "pathSvr");//服务器文件地址
 		f.sizeSvr = this.con.hget(signSvr, "sizeSvr");//
 		f.nameLoc = this.con.hget(signSvr, "nameLoc");//
+		f.fdTask = this.con.hget(signSvr, "fdTask").equalsIgnoreCase("true");;
 		return f;
 	}
 	

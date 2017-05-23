@@ -96,18 +96,9 @@
 
     //在出错，停止中调用
     this.svr_update = function (json)
-    {
-        if (this.fileSvr.idSvr == 0) return;
-
+    {       
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { idSvr: this.fileSvr.idSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
-
-        if (json != null)
-        {
-            //子文件
-            var f = this.fileSvr.files[json.file.id];
-            jQuery.extend(param, { file_id: f.idSvr, file_lenLoc: f.lenLoc, file_per: f.perLoc });
-        }
+        jQuery.extend(param, { signSvr: this.fileSvr.signSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
 
         $.ajax({
             type: "GET"
