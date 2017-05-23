@@ -48,7 +48,6 @@ public class FileRedis {
 	public void process(String signSvr,String perLoc,String lenLoc)
 	{
 		Jedis j = this.con;
-		if(j.exists(signSvr)) return;
 		
 		j.hset(signSvr, "lenLoc", lenLoc );//已下载大小		
 		j.hset(signSvr, "perLoc", perLoc );//已下载百分比
