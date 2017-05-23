@@ -262,7 +262,7 @@
         this.event.downError(this, json.code);//biz event
         if (json.msg.length > 1) { this.ui.msg.text(json.msg); }
         else { this.ui.msg.text(DownloadErrorCode[json.code + ""]); }
-        this.State = HttpDownloaderState.Error;
+        this.State = HttpDownloaderState.Stop;
         //this.SvrUpdate();
     };
 

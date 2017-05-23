@@ -248,7 +248,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.btn.del.show();
         this.event.downError(this, json.code);//biz event
         this.ui.msg.text(DownloadErrorCode[json.code+""]);
-        this.State = HttpDownloaderState.Error;
+        this.State = HttpDownloaderState.Stop;
         //this.SvrUpdate();
     };
 
