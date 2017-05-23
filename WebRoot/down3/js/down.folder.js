@@ -54,6 +54,8 @@
     
     this.add_end = function(json)
     {
+    	//续传不初始化
+    	if(this.fileSvr.lenLoc > 1) return;
     	jQuery.extend(this.fileSvr,json);
     	this.svr_create();
     };
