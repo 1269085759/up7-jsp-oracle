@@ -19,7 +19,7 @@
 		2012-05-24 完善
 		2012-06-29 增加创建文件逻辑，
 */
-String fid 		= request.getParameter("singSvr");
+String fid 		= request.getParameter("signSvr");
 String uid 		= request.getParameter("uid");
 String lenLoc	= request.getParameter("lenLoc");
 String per		= request.getParameter("perLoc");
