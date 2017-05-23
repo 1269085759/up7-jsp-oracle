@@ -24,7 +24,8 @@ public class FileRedis {
 		j.hset(f.signSvr, "lenLoc", Long.toString(f.lenLoc) );//已下载大小		
 		j.hset(f.signSvr, "lenSvr",Long.toString( f.lenSvr ) );//文件大小
 		j.hset(f.signSvr, "sizeSvr", f.sizeSvr);
-		j.hset(f.signSvr, "perLoc",f.perLoc );//已下载百分比		
+		j.hset(f.signSvr, "perLoc",f.perLoc );//已下载百分比
+		j.hset(f.signSvr, "fdTask",Boolean.toString(f.fdTask) );
 	}
 	
 	public DnFileInf read(String signSvr)
