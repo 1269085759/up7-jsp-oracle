@@ -25,7 +25,7 @@ String lenLoc	= request.getParameter("lenLoc");
 String per		= request.getParameter("perLoc");
 String cbk 		= request.getParameter("callback");//jsonp
 //
-if (StringUtils.isBlank(uid)
+if (StringUtils.isEmpty(uid)
 	||StringUtils.isBlank(fid)
 	||StringUtils.isBlank(cbk)
 	||StringUtils.isBlank(lenLoc))
