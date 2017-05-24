@@ -6,7 +6,6 @@
 	page import="up7.biz.*" %><%@
 	page import="up7.model.*" %><%@
 	page import="up7.biz.redis.*" %><%@
-	page import="up7.FolderCache" %><%@
 	page import="up7.XDebug" %><%@
 	page import="up7.*" %><%@
 	page import="org.apache.commons.fileupload.FileItem" %><%@
