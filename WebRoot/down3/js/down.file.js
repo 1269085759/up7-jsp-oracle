@@ -80,8 +80,8 @@ function FileDownloader(fileLoc, mgr)
     this.add_end = function(json)
     {
     	//续传不初始化
-    	if(this.fileSvr.lenLoc > 1) return;
-    	jQuery.extend(this.fileSvr,json);
+    	if(this.inited) return;
+    	this.fileSvr.pathLoc = json.pathLoc;    	
     	this.svr_create();//
     };
 

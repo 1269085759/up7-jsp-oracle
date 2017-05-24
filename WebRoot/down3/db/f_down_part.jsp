@@ -32,7 +32,7 @@ String sizeSvr 		= request.getHeader("f-sizeSvr");
 String pathLoc 		= request.getHeader("f-pathLoc");
 String blockPath 	= request.getHeader("f-blockPath");
 String blockIndex 	= request.getHeader("f-blockIndex");//基于1
-String blockOffset	= request.getHeader("f-blockOffset");
+String blockOffset	= request.getHeader("f-blockOffset");//块偏移，基于0
 String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
 String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
@@ -94,7 +94,7 @@ System.out.println(partPath);
 RandomAccessFile raf = new RandomAccessFile(partPath,"r");
 FileInputStream in = new FileInputStream( raf.getFD() );
 
-long dataToRead = Long.parseLong(rangeSize);
+long dataToRead = Long.parseLong(rangeSize) - Long.parseLong(blockOffset);
 String fileName = nameLoc;//QQ.exe
 fileName = URLEncoder.encode(fileName,"UTF-8");
 fileName = fileName.replace("+","%20");

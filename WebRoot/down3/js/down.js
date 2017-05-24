@@ -248,7 +248,7 @@ function DownloaderMgr()
         f.ui.name.text(fileSvr.nameLoc);
 	    f.ui.process.css("width", fileSvr.perLoc);
 	    f.ui.percent.text("(" + fileSvr.perLoc + ")");
-	    obj.inited = true;
+	    f.inited = true;
 	    //jQuery.extend(f.fileSvr, fileSvr);
 	    f.addQueue();//添加到队列
 	};
@@ -484,18 +484,18 @@ function DownloaderMgr()
         }
 		, openPath:function(f)
 		{
-            var param = { name: "open_path", config: _this.Config };            
+            var param = { name: "open_path"};            
             this.postMessage(param);
 		}
 		, openFile:function(f)
 		{
-            var param = { name: "open_file", config: _this.Config };            
+            var param = { name: "open_file"};            
             this.postMessage(param);
 		}
         , addFile: function (f)
         {
             _this.queueCount++;
-            var param = { name: "add_file", config: _this.Config };
+            var param = { name: "add_file"};
             jQuery.extend(param, f);
             this.postMessage(param);
         }

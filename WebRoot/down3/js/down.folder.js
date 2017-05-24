@@ -57,7 +57,7 @@
     {
     	//已经初始化
     	if(this.inited) return;
-    	jQuery.extend(this.fileSvr,json);
+    	this.fileSvr.pathLoc = json.pathLoc;
     	this.svr_create();
     };
 
