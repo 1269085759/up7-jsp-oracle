@@ -6,7 +6,7 @@ public class DnFolderInf extends DnFileInf
 {
 	public DnFolderInf()
 	{
-		this.fdTask = true;
+		this.folder = true;
 		this.files = new ArrayList<DnFileInf>();
 	}
 }

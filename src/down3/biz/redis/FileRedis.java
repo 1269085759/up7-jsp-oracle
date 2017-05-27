@@ -25,7 +25,7 @@ public class FileRedis {
 		j.hset(f.signSvr, "lenSvr",Long.toString( f.lenSvr ) );//文件大小
 		j.hset(f.signSvr, "sizeSvr", f.sizeSvr);
 		j.hset(f.signSvr, "perLoc",f.perLoc );//已下载百分比
-		j.hset(f.signSvr, "fdTask",Boolean.toString(f.fdTask) );
+		j.hset(f.signSvr, "fdTask",Boolean.toString(f.folder) );
 	}
 	
 	public DnFileInf read(String signSvr)
@@ -40,7 +40,7 @@ public class FileRedis {
 		f.pathSvr = this.con.hget(signSvr, "pathSvr");//服务器文件地址
 		f.sizeSvr = this.con.hget(signSvr, "sizeSvr");//
 		f.nameLoc = this.con.hget(signSvr, "nameLoc");//
-		f.fdTask = this.con.hget(signSvr, "fdTask").equalsIgnoreCase("true");;
+		f.folder = this.con.hget(signSvr, "fdTask").equalsIgnoreCase("true");;
 		return f;
 	}
 	

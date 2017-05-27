@@ -43,7 +43,7 @@ public class DnFileInf
     /// </summary>
     public String nameLoc ="";
     
-    public Boolean fdTask =false;
+    public Boolean folder =false;
     
     public int fdID =0;
     
@@ -76,8 +76,8 @@ public class DnFileInf
 	public void setComplete(Boolean complete) {this.complete = complete;}
 	public String getNameLoc() {return nameLoc;}
 	public void setNameLoc(String nameLoc) {this.nameLoc = nameLoc;}
-	public Boolean getFdTask() {return fdTask;}
-	public void setFdTask(Boolean fdTask) {this.fdTask = fdTask;}
+	public Boolean getFdTask() {return folder;}
+	public void setFdTask(Boolean fdTask) {this.folder = fdTask;}
 	public int getFdID() {return fdID;}
 	public void setFdID(int fdID) {this.fdID = fdID;}
 	public int getPidRoot() {return pidRoot;}

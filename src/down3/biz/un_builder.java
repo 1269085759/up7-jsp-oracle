@@ -79,7 +79,7 @@ public class un_builder
         f.read(0,  r);
 
         //是文件夹
-        if (f.fdTask)
+        if (f.folder)
         {
             
             if (this.folders.containsKey(f.idSvr) )
@@ -93,7 +93,7 @@ public class un_builder
                 item.lenSvr = f.lenSvr;
                 item.sizeSvr = f.sizeSvr;
                 item.perLoc = f.perLoc;
-                item.fdTask = true;
+                item.folder = true;
             }
             else
             {

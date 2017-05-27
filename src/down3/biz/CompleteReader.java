@@ -59,9 +59,9 @@ public class CompleteReader
         	fi.blockPath = r.getString(8);
         	fi.blockSize = r.getInt(9);
         	fi.sizeSvr = r.getString(4);
-        	fi.fdTask = r.getBoolean(5);
+        	fi.folder = r.getBoolean(5);
         	//如果是文件夹则pathSvr保存本地路径，用来替换
-        	if(fi.fdTask) fi.pathSvr = fi.pathLoc;
+        	if(fi.folder) fi.pathSvr = fi.pathLoc;
         	fi.signSvr = UUID.randomUUID().toString();//服务端生成，唯一标识
         	fi.fileCount = r.getInt(10);
         	files.add(fi);

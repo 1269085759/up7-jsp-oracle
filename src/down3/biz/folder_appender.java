@@ -73,7 +73,7 @@ public class folder_appender
         cmd.setLong(4, f.lenSvr);
         cmd.setString(5, f.sizeSvr);
         cmd.setInt(6, f.pidRoot);
-        cmd.setBoolean(7, f.fdTask);
+        cmd.setBoolean(7, f.folder);
         cmd.setInt(8, f.idSvr);
         cmd.execute();
     }

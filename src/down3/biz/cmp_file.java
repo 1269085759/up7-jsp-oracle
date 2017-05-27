@@ -17,8 +17,8 @@ public class cmp_file extends DnFileInf
         this.lenSvr = r.getLong("f_lenSvr");
         this.sizeSvr = r.getString("f_sizeLoc");
         this.pidRoot = pidRoot;
-        this.fdTask = r.getBoolean("f_fdTask");
+        this.folder = r.getBoolean("f_fdTask");
         this.fdID = r.getInt("f_fdID");
-        if (this.fdTask) this.pathLoc = r.getString("f_pathLoc");
+        if (this.folder) this.pathLoc = r.getString("f_pathLoc");
 	}
 }

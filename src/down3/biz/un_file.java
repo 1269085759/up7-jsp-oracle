@@ -20,7 +20,7 @@ public class un_file extends DnFileInf
         this.sizeSvr = r.getString("f_sizeSvr");
         this.fileUrl = r.getString("f_fileUrl");
         this.pidRoot = r.getInt("f_pidRoot");
-        this.fdTask = r.getBoolean("f_fdTask");
-        if (this.fdTask) this.pathLoc = r.getString("f_pathLoc");
+        this.folder = r.getBoolean("f_fdTask");
+        if (this.folder) this.pathLoc = r.getString("f_pathLoc");
     }
 }
