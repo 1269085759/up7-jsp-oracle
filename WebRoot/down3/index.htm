@@ -42,14 +42,14 @@
                         var url = downer.Config["UrlDown"] + "?fid=" + f.signSvr;
                         jQuery.extend(f, { fileUrl: url });
 
-                        if (f.fdTask ) { tdType.text("文件夹"); }
+                        if (f.folder) { tdType.text("文件夹"); }
                         else { tdType.text("文件"); }
                         tdName.text(f.nameLoc);
                         tdSize.text(f.sizeSvr);
                         tdOp.text("下载").css("cursor", "pointer").click(function ()
                         {
                             //文件夹
-                            if (f.fdTask )
+                            if (f.folder)
                             {
                                 var d = downer.add_folder(f);
                                 if (d == null) return;//

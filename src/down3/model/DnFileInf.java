@@ -32,6 +32,8 @@ public class DnFileInf
     
     public String sizeSvr ="";
     
+    public String sizeLoc = "";
+    
     public String perLoc ="";
     /// <summary>
     /// 是否已下载完成

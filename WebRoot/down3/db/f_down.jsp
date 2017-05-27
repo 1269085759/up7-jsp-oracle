@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 String lenSvr 		= request.getHeader("f-lenSvr");
 String nameLoc 		= request.getHeader("f-nameLoc");
-String sizeSvr 		= request.getHeader("f-sizeSvr");
+String sizeLoc 		= request.getHeader("f-sizeLoc");
 String pathSvr 		= request.getHeader("f-pathSvr");
 String pathLoc 		= request.getHeader("f-pathLoc");
 String blockIndex 	= request.getHeader("f-blockIndex");//基于1
@@ -64,7 +64,7 @@ if (	StringUtils.isEmpty(lenSvr)
 {
 	System.out.println("lenSvr:".concat(lenSvr));
 	System.out.println("nameLoc:".concat(nameLoc));
-	System.out.println("sizeSvr:".concat(sizeSvr));
+	System.out.println("sizeLoc:".concat(sizeLoc));
 	System.out.println("pathSvr:".concat(pathSvr));
 	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
@@ -82,7 +82,7 @@ if( StringUtils.isEmpty(fd_signSvr) )
 	//添加到缓存
 	Jedis j = JedisTool.con();
 	FileRedis fr = new FileRedis(j);
-	fr.process(signSvr,percent,lenLoc);
+	fr.process(signSvr,percent,lenLoc,sizeLoc);
 	j.close();
 }//子文件
 else
@@ -90,7 +90,7 @@ else
 	//添加到缓存
 	Jedis j = JedisTool.con();
 	FileRedis fr = new FileRedis(j);
-	fr.process(fd_signSvr,fd_percent,fd_lenLoc);
+	fr.process(fd_signSvr,fd_percent,fd_lenLoc,fd_sizeLoc);
 	j.close();
 }
 

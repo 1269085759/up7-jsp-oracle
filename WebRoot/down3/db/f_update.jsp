@@ -22,8 +22,11 @@
 String fid 		= request.getParameter("signSvr");
 String uid 		= request.getParameter("uid");
 String lenLoc	= request.getParameter("lenLoc");
+String sizeLoc  = request.getParameter("sizeLoc");
 String per		= request.getParameter("perLoc");
 String cbk 		= request.getParameter("callback");//jsonp
+sizeLoc	 = sizeLoc.replaceAll("\\+","%20");
+sizeLoc	 = URLDecoder.decode(sizeLoc,"UTF-8");//utf-8解码
 //
 if (StringUtils.isEmpty(uid)
 	||StringUtils.isBlank(fid)
@@ -37,6 +40,6 @@ if (StringUtils.isEmpty(uid)
 //添加到缓存
 Jedis j = JedisTool.con();
 FileRedis fr = new FileRedis(j);
-fr.process(fid,per,lenLoc);
+fr.process(fid,per,lenLoc,sizeLoc);
 
 out.write(cbk + "({\"value\":1})");%>

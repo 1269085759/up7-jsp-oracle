@@ -109,7 +109,7 @@
     this.svr_update = function (json)
     {       
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { signSvr: this.fileSvr.signSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
+        jQuery.extend(param, { signSvr: this.fileSvr.signSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc, sizeLoc: encodeURIComponent(this.fileSvr.sizeLoc) });
 
         $.ajax({
             type: "GET"
@@ -229,6 +229,7 @@
     this.down_process = function (json)
     {
         this.fileSvr.lenLoc = json.lenLoc;//保存进度
+        this.fileSvr.sizeLoc = json.sizeLoc;
         this.fileSvr.perLoc = json.percent;
         //更新文件进度
         //this.fileSvr.files[json.file.id];

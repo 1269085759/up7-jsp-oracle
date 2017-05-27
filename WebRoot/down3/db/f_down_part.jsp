@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 String lenSvr 		= request.getHeader("f-lenSvr");
 String nameLoc 		= request.getHeader("f-nameLoc");
-String sizeSvr 		= request.getHeader("f-sizeSvr");
+String sizeLoc 		= request.getHeader("f-sizeLoc");
 String pathLoc 		= request.getHeader("f-pathLoc");
 String blockPath 	= request.getHeader("f-blockPath");
 String blockIndex 	= request.getHeader("f-blockIndex");//基于1
@@ -37,11 +37,13 @@ String blockSize	= request.getHeader("f-blockSize");//逻辑块大小
 String rangeSize	= request.getHeader("f-rangeSize");//当前请求的块大小
 String lenLoc 		= request.getHeader("f-lenLoc");
 String signSvr 		= request.getHeader("f-signSvr");
-String uid 			= request.getHeader("f-uid");
 String percent		= request.getHeader("f-percent");
 String fd_signSvr 	= request.getHeader("fd-signSvr");
 String fd_lenLoc 	= request.getHeader("fd-lenLoc");
 String fd_sizeLoc 	= request.getHeader("fd-sizeLoc");
+if(!StringUtils.isEmpty(fd_sizeLoc)) sizeLoc = fd_sizeLoc;
+if(!StringUtils.isEmpty(fd_signSvr)) signSvr = fd_signSvr;
+if(!StringUtils.isEmpty(fd_lenLoc)) lenLoc = fd_lenLoc;
 String fd_percent 	= request.getHeader("fd-percent");
 
 blockPath= PathTool.url_decode(blockPath);
@@ -60,7 +62,7 @@ if (	StringUtils.isEmpty(lenSvr)
 {
 	System.out.println("lenSvr:".concat(lenSvr));
 	System.out.println("nameLoc:".concat(nameLoc));
-	System.out.println("sizeSvr:".concat(sizeSvr));
+	System.out.println("sizeLoc:".concat(sizeLoc));
 	System.out.println("pathLoc:".concat(pathLoc));
 	System.out.println("blockIndex:".concat(blockIndex));
 	System.out.println("blockSize:".concat(blockSize));
@@ -78,7 +80,7 @@ if( StringUtils.isEmpty(fd_signSvr) )
 	//添加到缓存
 	Jedis j = JedisTool.con();
 	FileRedis fr = new FileRedis(j);
-	fr.process(signSvr,percent,lenLoc);
+	fr.process(signSvr,percent,lenLoc,sizeLoc);
 	j.close();
 }//子文件
 else
@@ -86,7 +88,7 @@ else
 	//添加到缓存
 	Jedis j = JedisTool.con();
 	FileRedis fr = new FileRedis(j);
-	fr.process(fd_signSvr,fd_percent,fd_lenLoc);
+	fr.process(signSvr,fd_percent,lenLoc,sizeLoc);
 	j.close();
 }
 String partPath = PathTool.combine(blockPath,blockIndex.concat(".part"));

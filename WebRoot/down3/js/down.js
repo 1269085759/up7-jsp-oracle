@@ -667,7 +667,7 @@ function DownloaderMgr()
 
                 for (var i = 0, l = files.length; i < l; ++i)
                 {
-                    if (files[i].fdTask)
+                    if (files[i].folder)
                     { _this.resume_folder(files[i]); }
                     else { _this.resume_file(files[i]); }
                 }

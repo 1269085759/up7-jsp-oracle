@@ -45,11 +45,12 @@ public class FileRedis {
 	}
 	
 	//更新进度
-	public void process(String signSvr,String perLoc,String lenLoc)
+	public void process(String signSvr,String perLoc,String lenLoc,String sizeLoc)
 	{
 		Jedis j = this.con;
 		
 		j.hset(signSvr, "lenLoc", lenLoc );//已下载大小		
 		j.hset(signSvr, "perLoc", perLoc );//已下载百分比
+		j.hset(signSvr, "sizeLoc", sizeLoc );
 	}
 }
