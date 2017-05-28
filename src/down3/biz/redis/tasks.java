@@ -16,56 +16,54 @@ import redis.clients.jedis.Jedis;
  *
  */
 public class tasks {
-	String space = "down3";//下载，命名空间，防止与上传冲突
-	String key = "tasks-down3-";
 	Jedis con=null;
 	String uid ="";
 	
 	public tasks(String uid,Jedis j){this.uid=uid; this.con = j;}
 	
-	//tasks-down3-uid
-	String getKey(){return key.concat(uid);}
-	
-	//所有下载项都要加到下载的空间下
-	void addSpace(String key)
-	{
-		this.con.lpush(this.space, key);
-	}
 	
 	public void clear()
 	{
-		long len = this.con.llen(this.space);//取总长度
+		Set<String> keys = this.con.keys("d-*");
+		for(String k : keys)
+		{
+			
+		}
+	}
+	
+	void clearUser(String key)
+	{
+		long len = this.con.scard(key);
 		while(len > 0)
 		{
-			List<String> list = this.con.lrange(this.space, 0 ,500);
-			for(String k : list)
+			List<String> keys = this.con.srandmember(key, 500);
+			len -= keys.size();
+			for(String k : keys)
 			{
 				this.con.del(k);
 			}
-			len = len - list.size();
 		}
 	}
 	
 	public void add(DnFileInf f)
 	{
-		//添加到队列
-		this.con.sadd(this.getKey(), f.signSvr);
-		
-		//添加一条信息
+		//添加文件信息
 		FileRedis f_svr = new FileRedis(this.con);
 		f_svr.create(f);
 		
-		this.addSpace(this.getKey());
-		this.addSpace(f.signSvr);		
+		KeyMaker km = new KeyMaker();
+		String space = km.space(this.uid);
+		this.con.sadd(space, f.signSvr);		
 	}
 	
 	//删除文件
 	public void del(String signSvr)
 	{
-		//从队列中删除
-		this.con.srem(this.getKey(), signSvr);
-		//从空间中删除
-		this.con.lrem(this.space, 1,signSvr);
+		KeyMaker km = new KeyMaker();
+		String space = km.space(this.uid);
+		
+		//从队列中删除(当前用户的下载列表)
+		this.con.srem(space, signSvr);
 		
 		//删除文件信息
 		this.con.del(signSvr);
@@ -77,12 +75,14 @@ public class tasks {
 	 */
 	public String toJson()
 	{
-		System.out.println("下载队列：".concat(Long.toString( this.con.scard(this.getKey() ) ) ) );
-		Set<String> keys = this.con.smembers(this.getKey());
+		
+		KeyMaker km = new KeyMaker();
+		String space = km.space(this.uid);
+		
+		Set<String> keys = this.con.smembers(space);
 		List<DnFileInf> files = new ArrayList<DnFileInf>();
 		for(String key : keys)
 		{
-			System.out.println(key);
 			FileRedis f_svr = new FileRedis(this.con);
 			DnFileInf data = f_svr.read(key);
 			files.add(data);

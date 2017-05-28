@@ -144,17 +144,15 @@ if(	   StringUtils.isBlank( lenSvr )
         BlockPathBuilder bpb = new BlockPathBuilder();
 		f_child.blockPath = bpb.rootFd(f_child,rangeIndex,fd);
 		String partPath = PathTool.combine(f_child.blockPath,rangeIndex+".part");
-
-		if(!j.exists(idSign))
+		
+		//将文件信息添加到缓存,文件夹上传完毕后会将缓存数据写入数据库
+		cache.create(f_child);
+		if(f_pos.equalsIgnoreCase("0"))
 		{
-			//添加到文件夹
+			//添加到文件夹列表
 			up7.biz.folder.fd_files_redis root = new up7.biz.folder.fd_files_redis(j,fd_idSign);		
 			root.add(idSign);
 		}
-		
-		//将文件信息添加到缓存,文件夹上传完毕后会将缓存数据写入数据库
-		cache.create(f_child);		
-		
 		
 		//保存块
 		up7.biz.file_part part = new up7.biz.file_part();

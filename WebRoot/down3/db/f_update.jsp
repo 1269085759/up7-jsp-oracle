@@ -25,8 +25,7 @@ String lenLoc	= request.getParameter("lenLoc");
 String sizeLoc  = request.getParameter("sizeLoc");
 String per		= request.getParameter("perLoc");
 String cbk 		= request.getParameter("callback");//jsonp
-sizeLoc	 = sizeLoc.replaceAll("\\+","%20");
-sizeLoc	 = URLDecoder.decode(sizeLoc,"UTF-8");//utf-8解码
+sizeLoc 		= PathTool.url_decode(sizeLoc);
 //
 if (StringUtils.isEmpty(uid)
 	||StringUtils.isBlank(fid)
