@@ -27,7 +27,7 @@ public class tasks {
 		Set<String> keys = this.con.keys("d-*");
 		for(String k : keys)
 		{
-			
+			this.clearUser(k);
 		}
 	}
 	
